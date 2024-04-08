@@ -12,14 +12,14 @@ class AboutScreen extends StatelessWidget {
       child: Center(
         child: Column(
           children: [
-            const SizedBox(height: 10),
+            const SizedBox(height: 32),
             Image.asset(
               'assets/images/logo.png',
               width: 250,
               height: 250,
             ),
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(4),
               child: Text(
                 """""",
                 style: Theme.of(context).textTheme.titleSmall!.copyWith(

@@ -85,8 +85,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             child: Row(children: [
               Text(
                 Config.title,
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
               ),
             ]),

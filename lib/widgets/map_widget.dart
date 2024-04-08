@@ -102,6 +102,7 @@ class _MapWidget extends State<MapWidget> {
             ),
             SuperclusterLayer.immutable(
               initialMarkers: _markers,
+              loadingOverlayBuilder: (context) => const Center(child: CircularProgressIndicator()),
               indexBuilder: IndexBuilders.computeWithOriginalMarkers,
               onMarkerTap: (marker) {
                 int id = int.parse(marker.key.toString().replaceAll(RegExp('[^0-9]'), ''));
