@@ -93,21 +93,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           ListTile(
             leading: Icon(
-              FontAwesomeIcons.map,
-              size: 26,
-              color: Theme.of(context).colorScheme.onBackground,
-            ),
-            title: Text('Map',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall!
-                    .copyWith(color: Theme.of(context).colorScheme.onBackground, fontSize: 24)),
-            onTap: () {
-              widget.onSelectScreen('map');
-            },
-          ),
-          ListTile(
-            leading: Icon(
               FontAwesomeIcons.locationDot,
               size: 26,
               color: Theme.of(context).colorScheme.onBackground,
@@ -134,6 +119,21 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     .copyWith(color: Theme.of(context).colorScheme.onBackground, fontSize: 24)),
             onTap: () {
               widget.onSelectScreen('practices');
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              FontAwesomeIcons.map,
+              size: 26,
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+            title: Text('Map',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall!
+                    .copyWith(color: Theme.of(context).colorScheme.onBackground, fontSize: 24)),
+            onTap: () {
+              widget.onSelectScreen('map');
             },
           ),
           ListTile(

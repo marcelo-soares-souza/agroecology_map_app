@@ -14,15 +14,15 @@ class HomeScreen extends StatefulWidget {
   final Widget activePage;
   final String activePageTitle;
 
-  const HomeScreen({super.key, this.activePage = const MapScreen(), this.activePageTitle = 'Map'});
+  const HomeScreen({super.key, this.activePage = const LocationsScreen(), this.activePageTitle = 'Locations'});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Widget activePage = const MapScreen();
-  String activePageTitle = 'Map';
+  Widget activePage = const LocationsScreen();
+  String activePageTitle = 'Locations';
   String _searchQuery = '';
 
   void _addLocation() async {

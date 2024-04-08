@@ -7,6 +7,7 @@ import 'package:agroecology_map_app/models/practice/practice.dart';
 import 'package:agroecology_map_app/screens/practice_details.dart';
 import 'package:agroecology_map_app/services/practice_service.dart';
 import 'package:agroecology_map_app/widgets/practices/practice_item_widget.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class PracticesWidget extends StatefulWidget {
   final String filter;
@@ -18,8 +19,8 @@ class PracticesWidget extends StatefulWidget {
 }
 
 class _PracticesWidget extends State<PracticesWidget> {
-  bool _isLoading = true;
-  List<Practice> _practices = [];
+  final _numberOfPostsPerRequest = 25;
+  final PagingController<int, Practice> _pagingController = PagingController(firstPageKey: 1);
 
   void selectPractice(BuildContext context, Practice practice) {
     Navigator.of(context).push(
@@ -34,33 +35,43 @@ class _PracticesWidget extends State<PracticesWidget> {
     );
   }
 
-  Future<void> _loadPractices() async {
-    _practices.clear();
-
-    try {
-      if (widget.filter.isNotEmpty) {
-        _practices = await PracticeService.retrievePracticesByFilter(widget.filter);
-      } else {
-        _practices = await PracticeService.retrieveAllPractices();
-      }
-
-      setState(() => _isLoading = false);
-    } catch (e) {
-      throw Exception('[PracticesWidget] Error: $e');
-    }
-
-    return;
-  }
-
   @override
   void initState() {
+    _pagingController.addPageRequestListener((page) {
+      _fetchPage(page);
+    });
+
     super.initState();
-    _loadPractices();
+  }
+
+  Future<void> _fetchPage(int page) async {
+    try {
+      List<Practice> practiceList = [];
+
+      if (widget.filter.isNotEmpty) {
+        practiceList = await PracticeService.retrievePracticesByFilter(widget.filter);
+      } else {
+        practiceList = await PracticeService.retrievePracticesPerPage(page);
+      }
+
+      final isLastPage = practiceList.length < _numberOfPostsPerRequest;
+
+      if (isLastPage) {
+        _pagingController.appendLastPage(practiceList);
+      } else {
+        final nextPageKey = page + 1;
+        _pagingController.appendPage(practiceList, nextPageKey);
+      }
+    } catch (e) {
+      debugPrint("[DEBUG] _fetchPage error --> $e");
+      _pagingController.error = e;
+    }
   }
 
   void _removePractice(Practice practice) async {
-    Map<String, String> response = await PracticeService.removePractice(practice.id);
-    if (response['status'] == 'success') setState(() => _practices.remove(practice));
+    await PracticeService.removePractice(practice.id);
+
+    _pagingController.refresh();
 
     if (!mounted) return;
     FormHelper.successMessage(context, 'Practice Removed');
@@ -68,36 +79,18 @@ class _PracticesWidget extends State<PracticesWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Widget content = Column(children: [
-      const SizedBox(height: 200),
-      Center(
-          child: Text(
-        textAlign: TextAlign.center,
-        'No practices found',
-        style: Theme.of(context).textTheme.titleLarge!.copyWith(
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-      ))
-    ]);
-
-    if (_isLoading) {
-      content = const Center(child: CircularProgressIndicator());
-    } else {
-      if (_practices.isNotEmpty) {
-        content = RefreshIndicator(
-          onRefresh: () async {
-            setState(() => _isLoading = true);
-            await _loadPractices();
-          },
-          child: ListView.builder(
-            itemCount: _practices.length,
-            itemBuilder: (ctx, index) => Slidable(
+    Widget content = RefreshIndicator(
+        onRefresh: () => Future.sync(() => _pagingController.refresh()),
+        child: PagedListView<int, Practice>(
+          pagingController: _pagingController,
+          builderDelegate: PagedChildBuilderDelegate<Practice>(
+            itemBuilder: (ctx, item, index) => Slidable(
               endActionPane: ActionPane(
                 motion: const ScrollMotion(),
                 children: [
-                  if (_practices[index].hasPermission) ...[
+                  if (item.hasPermission) ...[
                     SlidableAction(
-                      onPressed: (onPressed) => _removePractice(_practices[index]),
+                      onPressed: (onPressed) => _removePractice(item),
                       label: 'Delete',
                       icon: FontAwesomeIcons.trash,
                       backgroundColor: const Color(0xFFFE4A49),
@@ -106,17 +99,15 @@ class _PracticesWidget extends State<PracticesWidget> {
                   ]
                 ],
               ),
-              key: ValueKey(_practices[index].id),
+              key: ValueKey(item.id),
               child: PracticeItemWidget(
-                key: ObjectKey(_practices[index].id),
-                practice: _practices[index],
+                key: ObjectKey(item.id),
+                practice: item,
                 onSelectPractice: selectPractice,
               ),
             ),
           ),
-        );
-      }
-    }
+        ));
 
     return content;
   }

@@ -30,24 +30,6 @@ class _LocationsWidget extends State<LocationsWidget> {
     );
   }
 
-  // Future<void> _loadLocations() async {
-  //   try {
-  //     _locations.clear();
-
-  //     if (widget.filter.isNotEmpty) {
-  //       _locations = await LocationService.retrieveLocationsByFilter(widget.filter);
-  //     } else {
-  //       _locations = await LocationService.retrieveAllLocations();
-  //     }
-
-  //     setState(() => _isLoading = false);
-  //   } catch (e) {
-  //     throw Exception('[LocationsWidget] Error: $e');
-  //   }
-
-  //   return;
-  // }
-
   @override
   void initState() {
     _pagingController.addPageRequestListener((page) {
