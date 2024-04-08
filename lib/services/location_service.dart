@@ -32,6 +32,20 @@ class LocationService {
     return locations;
   }
 
+  static Future<List<Location>> retrieveLocationsPerPage(page) async {
+    final List<Location> locations = [];
+
+    final res = await httpClient.get(Config.getURI('locations.json'), params: {'page': page});
+
+    for (final location in json.decode(res.body.toString())) {
+      Location l = Location.fromJson(location);
+      l.hasPermission = await AuthService.hasPermission(l.accountId);
+      locations.add(l);
+    }
+
+    return locations;
+  }
+
   static Future<List<Location>> retrieveLocationsByFilter(String filter) async {
     final List<Location> locations = [];
     final res = await httpClient.get(Config.getURI('locations.json'), params: {'filter': 'true', 'name': filter});

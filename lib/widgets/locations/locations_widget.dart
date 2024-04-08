@@ -7,6 +7,7 @@ import 'package:agroecology_map_app/models/location.dart';
 import 'package:agroecology_map_app/screens/location_details.dart';
 import 'package:agroecology_map_app/services/location_service.dart';
 import 'package:agroecology_map_app/widgets/locations/location_item_widget.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class LocationsWidget extends StatefulWidget {
   final String filter;
@@ -18,8 +19,8 @@ class LocationsWidget extends StatefulWidget {
 }
 
 class _LocationsWidget extends State<LocationsWidget> {
-  bool _isLoading = true;
-  List<Location> _locations = [];
+  final _numberOfPostsPerRequest = 25;
+  final PagingController<int, Location> _pagingController = PagingController(firstPageKey: 1);
 
   void selectLocation(BuildContext context, Location location) {
     Navigator.of(context).push(
@@ -29,70 +30,86 @@ class _LocationsWidget extends State<LocationsWidget> {
     );
   }
 
-  Future<void> _loadLocations() async {
-    try {
-      _locations.clear();
+  // Future<void> _loadLocations() async {
+  //   try {
+  //     _locations.clear();
 
-      if (widget.filter.isNotEmpty) {
-        _locations = await LocationService.retrieveLocationsByFilter(widget.filter);
-      } else {
-        _locations = await LocationService.retrieveAllLocations();
-      }
+  //     if (widget.filter.isNotEmpty) {
+  //       _locations = await LocationService.retrieveLocationsByFilter(widget.filter);
+  //     } else {
+  //       _locations = await LocationService.retrieveAllLocations();
+  //     }
 
-      setState(() => _isLoading = false);
-    } catch (e) {
-      throw Exception('[LocationsWidget] Error: $e');
-    }
+  //     setState(() => _isLoading = false);
+  //   } catch (e) {
+  //     throw Exception('[LocationsWidget] Error: $e');
+  //   }
 
-    return;
-  }
+  //   return;
+  // }
 
   @override
   void initState() {
+    _pagingController.addPageRequestListener((page) {
+      _fetchPage(page);
+    });
     super.initState();
-    _loadLocations();
+  }
+
+  Future<void> _fetchPage(int page) async {
+    try {
+      List<Location> locationList = [];
+
+      if (widget.filter.isNotEmpty) {
+        locationList = await LocationService.retrieveLocationsByFilter(widget.filter);
+      } else {
+        locationList = await LocationService.retrieveLocationsPerPage(page);
+      }
+
+      final isLastPage = locationList.length < _numberOfPostsPerRequest;
+
+      if (isLastPage) {
+        _pagingController.appendLastPage(locationList);
+      } else {
+        final nextPageKey = page + 1;
+        _pagingController.appendPage(locationList, nextPageKey);
+      }
+    } catch (e) {
+      debugPrint("[DEBUG] _fetchPage error --> $e");
+      _pagingController.error = e;
+    }
+  }
+
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
   }
 
   void _removeLocation(Location location) async {
-    Map<String, String> response = await LocationService.removeLocation(location.id);
-    if (response['status'] == 'success') setState(() => _locations.remove(location));
+    await LocationService.removeLocation(location.id);
+
+    _pagingController.refresh();
 
     if (!mounted) return;
+
     FormHelper.successMessage(context, 'Location removed');
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget content = Column(children: [
-      const SizedBox(height: 200),
-      Center(
-          child: Text(
-        textAlign: TextAlign.center,
-        'No locations found',
-        style: Theme.of(context).textTheme.titleLarge!.copyWith(
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-      ))
-    ]);
-
-    if (_isLoading) {
-      content = const Center(child: CircularProgressIndicator());
-    } else {
-      if (_locations.isNotEmpty) {
-        content = RefreshIndicator(
-          onRefresh: () async {
-            setState(() => _isLoading = true);
-            await _loadLocations();
-          },
-          child: ListView.builder(
-            itemCount: _locations.length,
-            itemBuilder: (ctx, index) => Slidable(
+    Widget content = RefreshIndicator(
+        onRefresh: () => Future.sync(() => _pagingController.refresh()),
+        child: PagedListView<int, Location>(
+          pagingController: _pagingController,
+          builderDelegate: PagedChildBuilderDelegate<Location>(
+            itemBuilder: (ctx, item, index) => Slidable(
               endActionPane: ActionPane(
                 motion: const ScrollMotion(),
                 children: [
-                  if (_locations[index].hasPermission) ...[
+                  if (item.hasPermission) ...[
                     SlidableAction(
-                      onPressed: (onPressed) => _removeLocation(_locations[index]),
+                      onPressed: (onPressed) => _removeLocation(item),
                       label: 'Delete',
                       icon: FontAwesomeIcons.trash,
                       backgroundColor: const Color(0xFFFE4A49),
@@ -101,17 +118,15 @@ class _LocationsWidget extends State<LocationsWidget> {
                   ]
                 ],
               ),
-              key: ValueKey(_locations[index].id),
+              key: ValueKey(item.id),
               child: LocationItemWidget(
-                key: ObjectKey(_locations[index].id),
-                location: _locations[index],
+                key: ObjectKey(item.id),
+                location: item,
                 onSelectLocation: selectLocation,
               ),
             ),
           ),
-        );
-      }
-    }
+        ));
 
     return content;
   }
