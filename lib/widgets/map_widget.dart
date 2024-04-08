@@ -31,23 +31,21 @@ class _MapWidget extends State<MapWidget> {
       _markers.clear();
       _locations.clear();
 
-      _locations = await LocationService.retrieveAllLocations();
+      _locations = await LocationService.retrieveMapLocations();
 
       for (final location in _locations) {
-        if (location.hideMyLocation == 'false') {
-          final id = location.id;
+        final id = location.id;
 
-          if (location.latitude != 'null' && location.longitude != 'null') {
-            final latitude = double.parse(location.latitude);
-            final longitude = double.parse(location.longitude);
+        if (location.latitude != 'null' && location.longitude != 'null') {
+          final latitude = double.parse(location.latitude);
+          final longitude = double.parse(location.longitude);
 
-            _markers.add(
-              LocationHelper.buildMarker(
-                id.toString(),
-                LatLng(latitude, longitude),
-              ),
-            );
-          }
+          _markers.add(
+            LocationHelper.buildMarker(
+              id.toString(),
+              LatLng(latitude, longitude),
+            ),
+          );
         }
       }
 

@@ -32,6 +32,18 @@ class LocationService {
     return locations;
   }
 
+  static Future<List<Location>> retrieveMapLocations() async {
+    final List<Location> locations = [];
+
+    final res = await httpClient.get(Config.getURI('map.json'));
+    for (final location in json.decode(res.body.toString())) {
+      Location l = Location.fromJson(location);
+      locations.add(l);
+    }
+
+    return locations;
+  }
+
   static Future<List<Location>> retrieveLocationsPerPage(page) async {
     final List<Location> locations = [];
 

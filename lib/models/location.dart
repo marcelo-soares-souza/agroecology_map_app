@@ -84,7 +84,7 @@ class Location {
       responsibleForInformation: json['responsible_for_information'].toString(),
       url: json['url'].toString(),
       imageUrl: json['image_url'].toString(),
-      accountId: json['account_id'],
+      accountId: json['account_id'] ?? 0,
     );
   }
 

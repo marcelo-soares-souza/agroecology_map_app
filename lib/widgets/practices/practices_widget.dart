@@ -1,3 +1,4 @@
+import 'package:agroecology_map_app/configs/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -19,7 +20,7 @@ class PracticesWidget extends StatefulWidget {
 }
 
 class _PracticesWidget extends State<PracticesWidget> {
-  final _numberOfPostsPerRequest = 25;
+  final _numberOfItemsPerRequest = Config.maxNumberOfItemsPerRequest;
   final PagingController<int, Practice> _pagingController = PagingController(firstPageKey: 1);
 
   void selectPractice(BuildContext context, Practice practice) {
@@ -54,7 +55,7 @@ class _PracticesWidget extends State<PracticesWidget> {
         practiceList = await PracticeService.retrievePracticesPerPage(page);
       }
 
-      final isLastPage = practiceList.length < _numberOfPostsPerRequest;
+      final isLastPage = practiceList.length < _numberOfItemsPerRequest;
 
       if (isLastPage) {
         _pagingController.appendLastPage(practiceList);

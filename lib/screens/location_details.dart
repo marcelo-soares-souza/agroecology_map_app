@@ -22,11 +22,12 @@ class LocationDetailsScreen extends StatefulWidget {
   final void Function(Location location) onRemoveLocation;
   static dynamic _dummyOnRemoveLocation(Location location) {}
 
-  const LocationDetailsScreen(
-      {super.key,
-      required this.location,
-      this.onRemoveLocation = _dummyOnRemoveLocation,
-      this.disableControls = false});
+  const LocationDetailsScreen({
+    super.key,
+    required this.location,
+    this.onRemoveLocation = _dummyOnRemoveLocation,
+    this.disableControls = false,
+  });
 
   @override
   State<LocationDetailsScreen> createState() {
@@ -309,58 +310,63 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.location.name),
-        actions: [
-          if (!_isLoading && _location.hasPermission) ...[
-            if (!widget.disableControls)
-              if (_selectedPageIndex == 1)
-                IconButton(
-                    icon: const Icon(FontAwesomeIcons.camera),
-                    color: Colors.orange,
+    Widget content = const Center(child: CircularProgressIndicator());
+    if (_isLoading != true) {
+      content = Scaffold(
+        appBar: AppBar(
+          title: Text(_location.name),
+          actions: [
+            if (!_isLoading && _location.hasPermission) ...[
+              if (!widget.disableControls)
+                if (_selectedPageIndex == 1)
+                  IconButton(
+                      icon: const Icon(FontAwesomeIcons.camera),
+                      color: Colors.orange,
+                      onPressed: () {
+                        _selectPage(1);
+                        setState(() {
+                          _sendMedia = true;
+                        });
+                      })
+                else if (_selectedPageIndex == 0 && _location.hasPermission) ...[
+                  IconButton(
+                    icon: const Icon(FontAwesomeIcons.penToSquare),
+                    color: Colors.green,
                     onPressed: () {
-                      _selectPage(1);
-                      setState(() {
-                        _sendMedia = true;
-                      });
-                    })
-              else if (_selectedPageIndex == 0 && _location.hasPermission) ...[
-                IconButton(
-                  icon: const Icon(FontAwesomeIcons.penToSquare),
-                  color: Colors.green,
-                  onPressed: () {
-                    _editLocation(_location);
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(FontAwesomeIcons.trashCan),
-                  color: Colors.red,
-                  onPressed: _showAlertDialog,
-                ),
-              ]
-          ]
-        ],
-      ),
-      body: activePage,
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-        type: BottomNavigationBarType.fixed,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        onTap: _selectPage,
-        currentIndex: _selectedPageIndex,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.locationDot),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.photoFilm),
-            label: 'Gallery',
-          ),
-        ],
-      ),
-    );
+                      _editLocation(_location);
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(FontAwesomeIcons.trashCan),
+                    color: Colors.red,
+                    onPressed: _showAlertDialog,
+                  ),
+                ]
+            ]
+          ],
+        ),
+        body: activePage,
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          type: BottomNavigationBarType.fixed,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          onTap: _selectPage,
+          currentIndex: _selectedPageIndex,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(FontAwesomeIcons.locationDot),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(FontAwesomeIcons.photoFilm),
+              label: 'Gallery',
+            ),
+          ],
+        ),
+      );
+    }
+
+    return content;
   }
 }

@@ -102,6 +102,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (activePageTitle == 'Locations') {
       title = TextField(
+        onSubmitted: (value) {
+          Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  HomeScreen(activePage: LocationsScreen(filter: _searchQuery), activePageTitle: 'Locations'),
+            ),
+          );
+        },
         cursorColor: Colors.white,
         onChanged: (value) => _searchQuery = value,
         decoration: InputDecoration(
@@ -128,6 +138,16 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     } else if (activePageTitle == 'Practices') {
       title = TextField(
+        onSubmitted: (value) {
+          Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  HomeScreen(activePage: PracticesScreen(filter: _searchQuery), activePageTitle: 'Practices'),
+            ),
+          );
+        },
         cursorColor: Colors.white,
         onChanged: (value) => _searchQuery = value,
         decoration: InputDecoration(

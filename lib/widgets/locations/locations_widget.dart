@@ -1,3 +1,4 @@
+import 'package:agroecology_map_app/configs/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -19,7 +20,7 @@ class LocationsWidget extends StatefulWidget {
 }
 
 class _LocationsWidget extends State<LocationsWidget> {
-  final _numberOfPostsPerRequest = 25;
+  final _numberOfItemsPerRequest = Config.maxNumberOfItemsPerRequest;
   final PagingController<int, Location> _pagingController = PagingController(firstPageKey: 1);
 
   void selectLocation(BuildContext context, Location location) {
@@ -48,7 +49,7 @@ class _LocationsWidget extends State<LocationsWidget> {
         locationList = await LocationService.retrieveLocationsPerPage(page);
       }
 
-      final isLastPage = locationList.length < _numberOfPostsPerRequest;
+      final isLastPage = locationList.length < _numberOfItemsPerRequest;
 
       if (isLastPage) {
         _pagingController.appendLastPage(locationList);
