@@ -117,8 +117,8 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: InputDecoration(
             hintText: "Search Location...",
             hintStyle: TextStyle(
-              color: Colors.grey.withOpacity(0.4),
-              fontSize: 18,
+              color: Colors.grey.withOpacity(0.3),
+              fontSize: 21,
             ),
             border: InputBorder.none,
             suffixIcon: IconButton(
@@ -153,8 +153,8 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: InputDecoration(
             hintText: "Search Practice...",
             hintStyle: TextStyle(
-              color: Colors.grey.withOpacity(0.4),
-              fontSize: 18,
+              color: Colors.grey.withOpacity(0.3),
+              fontSize: 20,
             ),
             border: InputBorder.none,
             suffixIcon: IconButton(

@@ -21,25 +21,29 @@ class AboutScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(4),
               child: Text(
-                """""",
-                style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                      color: Theme.of(context).colorScheme.secondary,
+                """
+Agroecology Map is an open source, citizen science and open data platform that since 2017 has been maintained by a group of volunteers who work to strengthen and create new collaboration networks that improve sharing knowledge about Agroecology.
+
+We hope to sow ideas (and dreams) to harvest well-being, sustainability and preservation.
+                """,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
               ),
             ),
             InkWell(
-              child: Text('Click here to read more',
-                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
+              child: Text('Learn more about us',
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
                         color: Theme.of(context).colorScheme.secondary,
                       )),
               onTap: () => launchUrl(Uri.parse(Config.aboutPage)),
             ),
             const SizedBox(
-              height: 20,
+              height: 16,
             ),
             InkWell(
-              child: Text('Read our Privacy Policy',
-                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
+              child: Text('Read our privacy policy',
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
                         color: Theme.of(context).colorScheme.secondary,
                       )),
               onTap: () => launchUrl(Uri.parse(Config.privacyPolicyPage)),
