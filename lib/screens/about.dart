@@ -19,7 +19,7 @@ class AboutScreen extends StatelessWidget {
               height: 250,
             ),
             Padding(
-              padding: const EdgeInsets.all(4),
+              padding: const EdgeInsets.symmetric(horizontal: 28),
               child: Text(
                 """
 Agroecology Map is an open source, citizen science and open data platform that since 2017 has been maintained by a group of volunteers who work to strengthen and create new collaboration networks that improve sharing knowledge about Agroecology.
