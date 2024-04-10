@@ -7,7 +7,6 @@ import 'package:agroecology_map_app/helpers/custom_interceptor.dart';
 import 'package:agroecology_map_app/models/gallery_item.dart';
 import 'package:agroecology_map_app/models/practice/practice.dart';
 import 'package:agroecology_map_app/models/practice/characterises.dart';
-import 'package:agroecology_map_app/models/practice/what_you_do.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 
 class PracticeService {
@@ -135,34 +134,6 @@ class PracticeService {
       if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
 
       return {'status': 'success', 'message': 'Practice added'};
-    }
-    return {'status': 'failed', 'message': 'An error occured. Please login again.'};
-  }
-
-  static Future<Map<String, String>> updateWhatYouDo(WhatYouDo whatYouDo) async {
-    bool isTokenValid = await AuthService.validateToken();
-    if (isTokenValid) {
-      final whatYouDoJson = whatYouDo.toJson();
-
-      whatYouDoJson.remove('id');
-      whatYouDoJson.remove('created_at');
-      whatYouDoJson.remove('updated_at');
-
-      final body = json.encode(whatYouDoJson);
-
-      debugPrint('[DEBUG]: updateWhatYouDo body: $body');
-
-      final res = await httpClient.post(Config.getURI('/what_you_dos.json'), body: body);
-
-      debugPrint('[DEBUG]: statusCode ${res.statusCode}');
-      debugPrint('[DEBUG]: Body ${res.body}');
-
-      dynamic message = json.decode(res.body);
-      String error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
-
-      if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
-
-      return {'status': 'success', 'message': 'What You Do Updated'};
     }
     return {'status': 'failed', 'message': 'An error occured. Please login again.'};
   }

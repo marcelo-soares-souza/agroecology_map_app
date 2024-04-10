@@ -154,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
             hintText: "Search Practice...",
             hintStyle: TextStyle(
               color: Colors.grey.withOpacity(0.3),
-              fontSize: 20,
+              fontSize: 21,
             ),
             border: InputBorder.none,
             suffixIcon: IconButton(

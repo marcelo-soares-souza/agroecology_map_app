@@ -55,23 +55,16 @@ class Practice {
 
   final main = {
     'Summary Description': 'summaryDescription',
+    'Where it is realized?': 'whereItIsRealized',
     'Location': 'location',
     'Responsible for Information': 'responsibleForInformation',
-  };
-
-  final whatYouDo = {
-    'Where it is realized?': 'whereItIsRealized',
-    'Practical implementation of the practice': 'practicalImplementationOfThePractice',
-    'Type of agroecological practice': 'typeOfAgroecologicalPractice',
-    'Why you use and what you expect from this practice': 'whyYouUseAndWhatYouExpectFromThisPractice',
-    'Land Size': 'landSize',
-    'Substitution of less ecological alternative': 'substitutionOfLessEcologicalAlternative',
   };
 
   final characterises = {
     'Agroecology principles addressed': 'agroecologyPrinciplesAddressed',
     'Food system components addressed': 'foodSystemComponentsAddressed'
   };
+
   Practice({
     required this.id,
     required this.name,

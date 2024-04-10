@@ -8,7 +8,6 @@ import 'package:agroecology_map_app/screens/home.dart';
 import 'package:agroecology_map_app/services/practice_service.dart';
 import 'package:agroecology_map_app/widgets/new_media_widget.dart';
 import 'package:agroecology_map_app/widgets/practices/new_characterises_widget.dart';
-import 'package:agroecology_map_app/widgets/practices/new_what_you_dos_widget.dart';
 import 'package:agroecology_map_app/widgets/text_block_widget.dart';
 
 class PracticeDetailsScreen extends StatefulWidget {
@@ -33,7 +32,6 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
   late List<GalleryItem> _gallery;
 
   late List<Widget> mainBlock;
-  late List<Widget> whatYouDoBlock;
   late List<Widget> characteriseBlock;
 
   Future<void> _retrieveFullPractice() async {
@@ -42,15 +40,6 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
     mainBlock = <Widget>[
       for (final i in _practice.main.entries)
         if (_practice.getFieldByName(i.value).length > 0)
-          TextBlockWidget(
-            label: i.key,
-            value: _practice.getFieldByName(i.value),
-          )
-    ];
-
-    whatYouDoBlock = <Widget>[
-      for (final i in _practice.whatYouDo.entries)
-        if (_practice.getFieldByName(i.value).isNotEmpty)
           TextBlockWidget(
             label: i.key,
             value: _practice.getFieldByName(i.value),
@@ -75,9 +64,8 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
 
   Map<int, String> pageSelectedTitle = {
     0: 'Summary',
-    1: 'What you Do',
-    2: 'Characterise',
-    3: 'Gallery',
+    1: 'Characterise',
+    2: 'Gallery',
   };
 
   void _selectPage(int index, [String operation = '']) {
@@ -149,7 +137,7 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
-              if (_selectedPageIndex != 3) ...[
+              if (_selectedPageIndex != 2) ...[
                 CachedNetworkImage(
                   errorWidget: (context, url, error) => const Icon(
                     FontAwesomeIcons.circleExclamation,
@@ -169,10 +157,8 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
               ],
               if (_selectedPageOperation == 'add') ...[
                 if (_selectedPageIndex == 1)
-                  SizedBox(child: NewWhatYouDos(practice: _practice))
-                else if (_selectedPageIndex == 2)
                   SizedBox(child: NewCharacterises(practice: _practice))
-                else if (_selectedPageIndex == 3)
+                else if (_selectedPageIndex == 2)
                   SizedBox(
                     child: NewMediaWidget(
                       practice: _practice,
@@ -182,11 +168,9 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
                   )
               ] else if (_selectedPageIndex == 0 && mainBlock.isNotEmpty)
                 ...mainBlock
-              else if (_selectedPageIndex == 1 && whatYouDoBlock.isNotEmpty)
-                ...whatYouDoBlock
-              else if (_selectedPageIndex == 2 && characteriseBlock.isNotEmpty)
+              else if (_selectedPageIndex == 1 && characteriseBlock.isNotEmpty)
                 ...characteriseBlock
-              else if (_selectedPageIndex == 3) ...[
+              else if (_selectedPageIndex == 2) ...[
                 //
                 // Gallery
                 //
@@ -287,11 +271,6 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
                   icon: const Icon(FontAwesomeIcons.penToSquare),
                   color: Colors.green,
                   onPressed: () => _selectPage(2, 'add'))
-            else if (_selectedPageIndex == 3 && _selectedPageOperation != 'add')
-              IconButton(
-                  icon: const Icon(FontAwesomeIcons.camera),
-                  color: Colors.orange,
-                  onPressed: () => _selectPage(3, 'add'))
             else if (_selectedPageIndex == 0 && _practice.hasPermission) ...[
               IconButton(
                 icon: const Icon(FontAwesomeIcons.trashCan),
@@ -314,10 +293,6 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.seedling),
             label: 'Summary',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.bookOpen),
-            label: 'What you Do',
           ),
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.info),
