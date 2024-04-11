@@ -3,6 +3,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <application
+        android:allowBackup="false"
+        android:fullBackupContent="false"
         android:label="Agroecology Map"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">

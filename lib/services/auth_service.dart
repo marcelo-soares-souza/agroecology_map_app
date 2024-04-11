@@ -7,7 +7,12 @@ import 'dart:convert';
 import 'package:agroecology_map_app/helpers/custom_interceptor.dart';
 
 class AuthService {
-  static const storage = FlutterSecureStorage();
+  static const storage = FlutterSecureStorage(
+    aOptions: AndroidOptions(
+      encryptedSharedPreferences: true,
+      resetOnError: true,
+    ),
+  );
 
   static InterceptedClient httpClient = InterceptedClient.build(
     onRequestTimeout: () => throw 'Request Timeout',
@@ -110,9 +115,14 @@ class AuthService {
   }
 
   static Future<bool> hasPermission(int accountId) async {
-    if (!await storage.containsKey(key: 'account_id') || !await storage.containsKey(key: 'token')) return false;
-    var storedAccountId = await storage.read(key: 'account_id');
-    if (accountId.toString() != storedAccountId) return false;
-    return true;
+    try {
+      if (!await storage.containsKey(key: 'account_id') || !await storage.containsKey(key: 'token')) return false;
+      var storedAccountId = await storage.read(key: 'account_id');
+      if (accountId.toString() != storedAccountId) return false;
+      return true;
+    } catch (e) {
+      debugPrint('[DEBUG]: hasPermission ERROR $e');
+      return false;
+    }
   }
 }
