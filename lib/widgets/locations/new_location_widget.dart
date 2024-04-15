@@ -24,6 +24,8 @@ class NewLocation extends StatefulWidget {
 
 class _NewLocation extends State<NewLocation> {
   bool _isLoading = true;
+  bool _isLoggedIn = false;
+  bool _isSending = false;
 
   final LocationHelper _locationHelper = LocationHelper();
   final Location _location = Location.initLocation();
@@ -31,15 +33,18 @@ class _NewLocation extends State<NewLocation> {
   final LatLng _initialCenter = const LatLng(16.0, 16.0);
   final MapController mapController = MapController();
   final _formKey = GlobalKey<FormState>();
-  bool _isSending = false;
-  bool _isLoggedIn = false;
   File? _selectedImage;
   Marker _marker = LocationHelper.buildMarker('', const LatLng(16.0, 16.0));
 
   void _checkIfIsLoggedIn() async {
     if (await AuthService.isLoggedIn()) {
-      setState(() => _isLoggedIn = true);
+      setState(() {
+        _isLoggedIn = true;
+      });
     }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -47,7 +52,6 @@ class _NewLocation extends State<NewLocation> {
     super.initState();
     _checkIfIsLoggedIn();
     _getCurrentPosition();
-    setState(() => _isLoading = false);
   }
 
   void _saveItem() async {
@@ -112,14 +116,14 @@ class _NewLocation extends State<NewLocation> {
     Widget content = const Center(child: CircularProgressIndicator());
 
     if (!_isLoading) {
-      content = Center(
-        child: Text(
-          'You need to login to add a new record',
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).colorScheme.secondary),
-        ),
-      );
-
-      if (_isLoggedIn) {
+      if (!_isLoggedIn) {
+        content = Center(
+          child: Text(
+            'You need to login to add a new record',
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).colorScheme.secondary),
+          ),
+        );
+      } else {
         content = SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(12),
@@ -345,9 +349,6 @@ class _NewLocation extends State<NewLocation> {
     setState(() {
       LatLng coordinates = LatLng(double.parse(_location.latitude), double.parse(_location.longitude));
       _marker = LocationHelper.buildMarker(_location.id.toString(), coordinates);
-
-      // ignore: unnecessary_null_comparison
-      if (mapController != null) mapController.move(coordinates, 3);
     });
   }
 }

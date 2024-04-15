@@ -21,16 +21,20 @@ class NewPractice extends StatefulWidget {
 
 class _NewPractice extends State<NewPractice> {
   bool _isLoading = true;
+  bool _isLoggedIn = false;
+  bool _isSending = false;
+  bool _isEmpty = true;
+
   final Practice _practice = Practice.initPractice();
   List<Location> _locations = [];
   final _formKey = GlobalKey<FormState>();
-  bool _isSending = false;
-  bool _isLoggedIn = false;
   File? _selectedImage;
 
   void _checkIfIsLoggedIn() async {
     if (await AuthService.isLoggedIn()) {
-      setState(() => _isLoggedIn = true);
+      setState(() {
+        _isLoggedIn = true;
+      });
     }
   }
 
@@ -38,11 +42,23 @@ class _NewPractice extends State<NewPractice> {
     String accountId = await AuthService.getCurrentAccountId();
 
     if (accountId.isEmpty || accountId == '0') {
+      setState(() => _isLoading = false);
       return;
     }
 
     List<Location> locations = await LocationService.retrieveAllLocationsByAccount(accountId);
-    setState(() => _locations = locations);
+
+    setState(() {
+      _locations = locations;
+
+      debugPrint('Locations: ${_locations.length}');
+
+      if (_locations.isNotEmpty) {
+        _isEmpty = false;
+      }
+    });
+
+    setState(() => _isLoading = false);
   }
 
   @override
@@ -50,8 +66,6 @@ class _NewPractice extends State<NewPractice> {
     super.initState();
     _checkIfIsLoggedIn();
     _retrieveLocations();
-
-    setState(() => _isLoading = false);
   }
 
   List<DropdownMenuItem<String>> get dropDownLocations {
@@ -114,15 +128,15 @@ class _NewPractice extends State<NewPractice> {
     Widget content = const Center(child: CircularProgressIndicator());
 
     if (!_isLoading) {
-      content = Center(
-        child: Text(
-          'You need to login to add a new record',
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).colorScheme.secondary),
-        ),
-      );
-
-      if (_locations.isNotEmpty) {
-        if (_isLoggedIn) {
+      if (!_isLoggedIn) {
+        content = Center(
+          child: Text(
+            'You need to login to add a new record',
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).colorScheme.secondary),
+          ),
+        );
+      } else {
+        if (!_isEmpty) {
           content = SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(12),
@@ -197,14 +211,14 @@ class _NewPractice extends State<NewPractice> {
               ),
             ),
           );
+        } else {
+          content = Center(
+            child: Text(
+              'You need to add at least one location',
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).colorScheme.secondary),
+            ),
+          );
         }
-      } else {
-        content = Center(
-          child: Text(
-            'You need to add at least one location',
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).colorScheme.secondary),
-          ),
-        );
       }
     }
 
