@@ -28,7 +28,7 @@ class TextBlockWidget extends StatelessWidget {
               textAlign: TextAlign.justify,
               value,
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
             ),
           ),

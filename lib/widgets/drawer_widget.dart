@@ -95,13 +95,15 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             leading: Icon(
               FontAwesomeIcons.locationDot,
               size: 26,
-              color: Theme.of(context).colorScheme.onBackground,
+              color: Theme.of(context).colorScheme.secondary,
             ),
-            title: Text('Locations',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall!
-                    .copyWith(color: Theme.of(context).colorScheme.onBackground, fontSize: 24)),
+            title: Text(
+              'Locations',
+              style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: 24,
+                  ),
+            ),
             onTap: () {
               widget.onSelectScreen('locations');
             },
@@ -110,13 +112,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             leading: Icon(
               FontAwesomeIcons.seedling,
               size: 26,
-              color: Theme.of(context).colorScheme.onBackground,
+              color: Theme.of(context).colorScheme.secondary,
             ),
             title: Text('Practices',
                 style: Theme.of(context)
                     .textTheme
                     .titleSmall!
-                    .copyWith(color: Theme.of(context).colorScheme.onBackground, fontSize: 24)),
+                    .copyWith(color: Theme.of(context).colorScheme.secondary, fontSize: 24)),
             onTap: () {
               widget.onSelectScreen('practices');
             },
@@ -125,13 +127,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             leading: Icon(
               FontAwesomeIcons.map,
               size: 26,
-              color: Theme.of(context).colorScheme.onBackground,
+              color: Theme.of(context).colorScheme.secondary,
             ),
             title: Text('Map',
                 style: Theme.of(context)
                     .textTheme
                     .titleSmall!
-                    .copyWith(color: Theme.of(context).colorScheme.onBackground, fontSize: 24)),
+                    .copyWith(color: Theme.of(context).colorScheme.secondary, fontSize: 24)),
             onTap: () {
               widget.onSelectScreen('map');
             },
@@ -140,13 +142,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             leading: Icon(
               isLoggedIn ? FontAwesomeIcons.rightFromBracket : FontAwesomeIcons.rightToBracket,
               size: 26,
-              color: Theme.of(context).colorScheme.onBackground,
+              color: Theme.of(context).colorScheme.secondary,
             ),
             title: Text(isLoggedIn ? 'Logout' : 'Login',
                 style: Theme.of(context)
                     .textTheme
                     .titleSmall!
-                    .copyWith(color: Theme.of(context).colorScheme.onBackground, fontSize: 24)),
+                    .copyWith(color: Theme.of(context).colorScheme.secondary, fontSize: 24)),
             onTap: () {
               isLoggedIn ? _logout() : widget.onSelectScreen('login');
             },
@@ -155,13 +157,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             leading: Icon(
               FontAwesomeIcons.info,
               size: 26,
-              color: Theme.of(context).colorScheme.onBackground,
+              color: Theme.of(context).colorScheme.secondary,
             ),
             title: Text('About',
                 style: Theme.of(context)
                     .textTheme
                     .titleSmall!
-                    .copyWith(color: Theme.of(context).colorScheme.onBackground, fontSize: 24)),
+                    .copyWith(color: Theme.of(context).colorScheme.secondary, fontSize: 24)),
             onTap: () {
               widget.onSelectScreen('about');
             },

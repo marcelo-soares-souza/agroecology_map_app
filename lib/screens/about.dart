@@ -28,15 +28,16 @@ Agroecology Map is an open source, citizen science and open data platform that s
 We hope to sow ideas (and dreams) to harvest well-being, sustainability and preservation.
                 """,
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Theme.of(context).colorScheme.onBackground,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
               ),
             ),
             InkWell(
               child: Text('Learn more about us',
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        color: Theme.of(context).colorScheme.secondary,
-                      )),
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(color: Theme.of(context).colorScheme.secondary, fontSize: 21)),
               onTap: () => launchUrl(Uri.parse(Config.aboutPage)),
             ),
             const SizedBox(
@@ -44,9 +45,10 @@ We hope to sow ideas (and dreams) to harvest well-being, sustainability and pres
             ),
             InkWell(
               child: Text('Read our privacy policy',
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        color: Theme.of(context).colorScheme.secondary,
-                      )),
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(color: Theme.of(context).colorScheme.secondary, fontSize: 21)),
               onTap: () => launchUrl(Uri.parse(Config.privacyPolicyPage)),
             ),
             const SizedBox(

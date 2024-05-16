@@ -87,7 +87,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           titleTextStyle: TextStyle(color: Theme.of(context).primaryColor),
           contentTextStyle: TextStyle(color: Theme.of(context).secondaryHeaderColor),
           title: const Text('Delete this Location'),

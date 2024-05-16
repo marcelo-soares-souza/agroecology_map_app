@@ -158,7 +158,7 @@ class _NewPractice extends State<NewPractice> {
                         filled: false,
                         fillColor: Colors.blueAccent,
                       ),
-                      dropdownColor: Theme.of(context).colorScheme.background,
+                      dropdownColor: Theme.of(context).colorScheme.secondary,
                     ),
                     const SizedBox(height: 21),
                     const Text('Practice Name', style: TextStyle(color: Colors.grey, fontSize: 18)),
