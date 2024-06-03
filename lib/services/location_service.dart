@@ -97,6 +97,24 @@ class LocationService {
     return gallery;
   }
 
+  static Future<List<GalleryItem>> retrieveLocationGalleryPerPage(String locationId, page) async {
+    final List<GalleryItem> gallery = [];
+
+    final res = await httpClient.get(Config.getURI('/locations/$locationId/gallery.json'), params: {'page': page});
+
+    debugPrint('[DEBUG]: statusCode ${res.statusCode}');
+    debugPrint('[DEBUG]: body ${res.body}');
+
+    dynamic data = json.decode(res.body.toString());
+
+    if (res.body.length > 14) {
+      for (final item in data['gallery']) {
+        gallery.add(GalleryItem.fromJson(item));
+      }
+    }
+    return gallery;
+  }
+
   static Future<List<Location>> retrieveAllLocationsByAccount(String accountId) async {
     final List<Location> locations = [];
 

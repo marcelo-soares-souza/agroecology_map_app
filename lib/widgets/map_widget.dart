@@ -100,12 +100,16 @@ class _MapWidget extends State<MapWidget> {
             ),
             SuperclusterLayer.immutable(
               initialMarkers: _markers,
-              loadingOverlayBuilder: (context) => const Center(child: CircularProgressIndicator()),
+              loadingOverlayBuilder: (contextSuper) => const Center(child: CircularProgressIndicator()),
               indexBuilder: IndexBuilders.computeWithOriginalMarkers,
               onMarkerTap: (marker) {
-                int id = int.parse(marker.key.toString().replaceAll(RegExp('[^0-9]'), ''));
-                final Location location = _locations.where((l) => l.id == id).first;
-                selectLocation(context, location);
+                try {
+                  final Location location = _locations.where((l) => l.id == marker.id).first;
+                  selectLocation(context, location);
+                } catch (e) {
+                  debugPrint('[DEBUG]: ${e.toString()}');
+                  debugPrintStack();
+                }
               },
               builder: (context, position, markerCount, extraClusterData) {
                 return Container(

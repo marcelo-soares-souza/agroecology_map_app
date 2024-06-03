@@ -1,13 +1,13 @@
 name: agroecology_map_app
 description: "Agroecology Map App"
 homepage: "https://agroecologymap.org"
-version: 1.0.2
+version: 1.0.4
 
 platforms:
   android:
 
 environment:
-  sdk: '>=3.2.5 <4.0.0'
+  sdk: ">=3.2.5 <4.0.0"
 
 dependencies:
   flutter:
@@ -16,8 +16,9 @@ dependencies:
   google_fonts: ^6.2.1
   flutter_launcher_icons: ^0.13.1
   http: ^1.2.1
-  flutter_map: ^6.1.0
-  flutter_map_supercluster: ^5.0.0-dev.1
+  flutter_map: ^7.0.0
+  flutter_map_supercluster:
+    path: "/home/marcelo/Development/Pessoal/AgroecologyMap/deps/flutter_map_supercluster"
   latlong2: ^0.9.1
   font_awesome_flutter: ^10.7.0
   cached_network_image: ^3.3.1
@@ -45,11 +46,11 @@ flutter:
     - assets/images/logo.png
 
 funding:
- - https://ko-fi.com/agroecologymap
+  - https://ko-fi.com/agroecologymap
 
 topics:
- - agroecology
- - permaculture
- - agroforestry
- - citizenscience
- - freesoftware
+  - agroecology
+  - permaculture
+  - agroforestry
+  - citizenscience
+  - freesoftware

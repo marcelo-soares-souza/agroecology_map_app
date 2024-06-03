@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:agroecology_map_app/configs/config.dart';
 import 'package:agroecology_map_app/helpers/location_helper.dart';
@@ -36,16 +37,17 @@ class LocationDetailsScreen extends StatefulWidget {
 }
 
 class _LocationDetailsScreen extends State<LocationDetailsScreen> {
+  final _numberOfItemsPerRequest = 8;
+  final PagingController<int, GalleryItem> _pagingController = PagingController(firstPageKey: 1);
+
   bool _sendMedia = false;
   bool _isLoading = true;
   int _selectedPageIndex = 0;
-  late List<GalleryItem> _gallery;
   late Location _location;
   Marker? _marker;
 
   Future<void> _retrieveAll() async {
     _location = await LocationService.retrieveLocation(widget.location.id.toString());
-    _gallery = await LocationService.retrieveLocationGallery(widget.location.id.toString());
 
     _marker = LocationHelper.buildMarker(
         _location.id.toString(),
@@ -57,8 +59,8 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
   }
 
   void _removeGalleryItem(GalleryItem galleryItem) async {
-    Map<String, String> response = await LocationService.removeGalleryItem(widget.location.id, galleryItem.id);
-    if (response['status'] == 'success') setState(() => _gallery.remove(galleryItem));
+    await LocationService.removeGalleryItem(widget.location.id, galleryItem.id);
+    _pagingController.refresh();
   }
 
   void _selectPage(int index) {
@@ -77,8 +79,38 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
 
   @override
   void initState() {
-    super.initState();
     _retrieveAll();
+    _pagingController.addPageRequestListener((page) {
+      _fetchPage(page);
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _fetchPage(int page) async {
+    try {
+      List<GalleryItem> gallery = [];
+
+      gallery = await LocationService.retrieveLocationGalleryPerPage(widget.location.id.toString(), page);
+
+      final isLastPage = gallery.length < _numberOfItemsPerRequest;
+
+      if (isLastPage) {
+        _pagingController.appendLastPage(gallery);
+      } else {
+        final nextPageKey = page + 1;
+        _pagingController.appendPage(gallery, nextPageKey);
+      }
+      debugPrint("[DEBUG] _fetchPage Gallery Length --> ${gallery.length}");
+    } catch (e) {
+      debugPrint("[DEBUG] _fetchPage error --> $e");
+      _pagingController.error = e;
+    }
   }
 
   Future<void> _showAlertDialog() async {
@@ -133,181 +165,175 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
   Widget build(BuildContext context) {
     Widget activePage = const Center(child: CircularProgressIndicator());
 
-    if (!_isLoading) {
-      activePage = RefreshIndicator(
-        onRefresh: () async {
-          setState(() => _isLoading = true);
-          await _retrieveAll();
-        },
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Column(
-            children: [
-              const SizedBox(height: 4),
-              if (_selectedPageIndex == 0) ...[
+    Widget galleryWidget = RefreshIndicator(
+      onRefresh: () => Future.sync(() => _pagingController.refresh()),
+      child: PagedListView<int, GalleryItem>(
+        pagingController: _pagingController,
+        builderDelegate: PagedChildBuilderDelegate<GalleryItem>(
+          itemBuilder: (ctx, item, index) => Slidable(
+            key: ValueKey(item.id),
+            endActionPane: ActionPane(
+              motion: const ScrollMotion(),
+              children: [
+                if (_location.hasPermission)
+                  SlidableAction(
+                    onPressed: (onPressed) => _removeGalleryItem(item),
+                    label: 'Delete',
+                    icon: FontAwesomeIcons.trash,
+                    backgroundColor: const Color(0xFFFE4A49),
+                    foregroundColor: Colors.white,
+                  )
+              ],
+            ),
+            child: Stack(
+              children: [
                 CachedNetworkImage(
                   errorWidget: (context, url, error) => const Icon(
                     FontAwesomeIcons.circleExclamation,
                     color: Colors.red,
                   ),
-                  height: 250,
+                  height: 300,
                   width: double.infinity,
                   fit: BoxFit.cover,
                   placeholder: (context, url) => const Center(
-                    child: SizedBox(
-                      width: 30.0,
-                      height: 30.0,
-                      child: CircularProgressIndicator(),
+                      child: SizedBox(
+                    width: 30.0,
+                    height: 30.0,
+                    child: CircularProgressIndicator(),
+                  )),
+                  imageUrl: item.imageUrl,
+                ),
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    color: Colors.black54,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 6,
+                      horizontal: 44,
                     ),
-                  ),
-                  imageUrl: _location.imageUrl,
-                ),
-                TextBlockWidget(
-                  label: 'Description',
-                  value: _location.description,
-                ),
-                TextBlockWidget(
-                  label: 'Country',
-                  value: '${_location.country} (${_location.countryCode})',
-                ),
-                TextBlockWidget(
-                  label: 'Farm and Farming System',
-                  value: '${_location.farmAndFarmingSystem} - ${_location.farmAndFarmingSystemComplement}',
-                ),
-                TextBlockWidget(
-                  label: 'Details of the farming system',
-                  value: _location.farmAndFarmingSystemDetails,
-                ),
-                TextBlockWidget(
-                  label: 'What is your dream ',
-                  value: _location.whatIsYourDream,
-                ),
-                Text(
-                  overflow: TextOverflow.ellipsis,
-                  'Location',
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 300,
-                    child: FlutterMap(
-                      options: MapOptions(
-                        initialCenter: LatLng(double.parse(_location.latitude), double.parse(_location.longitude)),
-                        minZoom: 1.0,
-                        maxZoom: 16.0,
-                        initialZoom: 2.0,
-                        interactionOptions: Config.interactionOptions,
-                      ),
+                    child: Column(
                       children: [
-                        TileLayer(urlTemplate: Config.osmURL),
-                        MarkerLayer(markers: [_marker!])
+                        Text(
+                          item.description.length > 4 ? item.description : _location.name,
+                          maxLines: 2,
+                          textAlign: TextAlign.center,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
-                TextBlockWidget(
-                  label: 'Responsible for Information',
-                  value: _location.responsibleForInformation,
-                ),
-              ] else if (_selectedPageIndex == 1 && _sendMedia == false) ...[
-                //
-                // Gallery
-                //
-                if (_gallery.isEmpty) ...[
-                  const SizedBox(height: 200),
-                  Center(
-                      child: Text(
-                    textAlign: TextAlign.center,
-                    'No images available',
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                  ))
-                ] else
-                  for (final i in _gallery) ...[
-                    Slidable(
-                      key: ValueKey(i.id),
-                      endActionPane: ActionPane(
-                        motion: const ScrollMotion(),
-                        children: [
-                          if (_location.hasPermission)
-                            SlidableAction(
-                              onPressed: (onPressed) => _removeGalleryItem(i),
-                              label: 'Delete',
-                              icon: FontAwesomeIcons.trash,
-                              backgroundColor: const Color(0xFFFE4A49),
-                              foregroundColor: Colors.white,
-                            )
-                        ],
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+
+    if (!_isLoading) {
+      if (_selectedPageIndex == 1 && _sendMedia == false) {
+        activePage = galleryWidget;
+      } else {
+        activePage = RefreshIndicator(
+          onRefresh: () async {
+            setState(() => _isLoading = true);
+            await _retrieveAll();
+          },
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              children: [
+                const SizedBox(height: 4),
+                if (_selectedPageIndex == 0) ...[
+                  CachedNetworkImage(
+                    errorWidget: (context, url, error) => const Icon(
+                      FontAwesomeIcons.circleExclamation,
+                      color: Colors.red,
+                    ),
+                    height: 250,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => const Center(
+                      child: SizedBox(
+                        width: 30.0,
+                        height: 30.0,
+                        child: CircularProgressIndicator(),
                       ),
-                      child: Stack(
+                    ),
+                    imageUrl: _location.imageUrl,
+                  ),
+                  TextBlockWidget(
+                    label: 'Description',
+                    value: _location.description,
+                  ),
+                  TextBlockWidget(
+                    label: 'Country',
+                    value: '${_location.country} (${_location.countryCode})',
+                  ),
+                  TextBlockWidget(
+                    label: 'Farm and Farming System',
+                    value: '${_location.farmAndFarmingSystem} - ${_location.farmAndFarmingSystemComplement}',
+                  ),
+                  TextBlockWidget(
+                    label: 'Details of the farming system',
+                    value: _location.farmAndFarmingSystemDetails,
+                  ),
+                  TextBlockWidget(
+                    label: 'What is your dream ',
+                    value: _location.whatIsYourDream,
+                  ),
+                  Text(
+                    overflow: TextOverflow.ellipsis,
+                    'Location',
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 300,
+                      child: FlutterMap(
+                        options: MapOptions(
+                          initialCenter: LatLng(double.parse(_location.latitude), double.parse(_location.longitude)),
+                          minZoom: 1.0,
+                          maxZoom: 16.0,
+                          initialZoom: 2.0,
+                          interactionOptions: Config.interactionOptions,
+                        ),
                         children: [
-                          CachedNetworkImage(
-                            errorWidget: (context, url, error) => const Icon(
-                              FontAwesomeIcons.circleExclamation,
-                              color: Colors.red,
-                            ),
-                            height: 300,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) => const Center(
-                                child: SizedBox(
-                              width: 30.0,
-                              height: 30.0,
-                              child: CircularProgressIndicator(),
-                            )),
-                            imageUrl: i.imageUrl,
-                          ),
-                          if (i.description.length > 4)
-                            Positioned(
-                              bottom: 0,
-                              left: 0,
-                              right: 0,
-                              child: Container(
-                                color: Colors.black54,
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 6,
-                                  horizontal: 44,
-                                ),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      i.description,
-                                      maxLines: 2,
-                                      textAlign: TextAlign.center,
-                                      softWrap: true,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
+                          TileLayer(urlTemplate: Config.osmURL),
+                          MarkerLayer(markers: [_marker!])
                         ],
                       ),
                     ),
-                    const SizedBox(height: 20),
-                  ],
-              ] else if (_selectedPageIndex == 1 && _sendMedia == true) ...[
-                NewMediaWidget(
-                  location: widget.location,
-                  practice: Practice.initPractice(),
-                  onSetPage: _selectPage,
-                ),
-              ]
-            ],
+                  ),
+                  TextBlockWidget(
+                    label: 'Responsible for Information',
+                    value: _location.responsibleForInformation,
+                  ),
+                ] else if (_selectedPageIndex == 1 && _sendMedia == true) ...[
+                  NewMediaWidget(
+                    location: widget.location,
+                    practice: Practice.initPractice(),
+                    onSetPage: _selectPage,
+                  ),
+                ]
+              ],
+            ),
           ),
-        ),
-      );
+        );
+      }
     }
 
     Widget content = const Center(child: CircularProgressIndicator());

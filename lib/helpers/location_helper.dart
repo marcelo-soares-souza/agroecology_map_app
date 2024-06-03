@@ -53,7 +53,7 @@ class LocationHelper {
   }
 
   static Marker buildMarker(String id, LatLng point) => Marker(
-        key: Key(id),
+        key: ValueKey(id),
         point: point,
         child: const Icon(
           FontAwesomeIcons.seedling,
@@ -61,5 +61,6 @@ class LocationHelper {
           size: 30.0,
         ),
         alignment: Alignment.topCenter,
+        id: int.parse(id),
       );
 }

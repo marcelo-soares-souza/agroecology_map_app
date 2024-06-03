@@ -82,34 +82,35 @@ class _LocationsWidget extends State<LocationsWidget> {
   @override
   Widget build(BuildContext context) {
     Widget content = RefreshIndicator(
-        onRefresh: () => Future.sync(() => _pagingController.refresh()),
-        child: PagedListView<int, Location>(
-          pagingController: _pagingController,
-          builderDelegate: PagedChildBuilderDelegate<Location>(
-            itemBuilder: (ctx, item, index) => Slidable(
-              endActionPane: ActionPane(
-                motion: const ScrollMotion(),
-                children: [
-                  if (item.hasPermission) ...[
-                    SlidableAction(
-                      onPressed: (onPressed) => _removeLocation(item),
-                      label: 'Delete',
-                      icon: FontAwesomeIcons.trash,
-                      backgroundColor: const Color(0xFFFE4A49),
-                      foregroundColor: Colors.white,
-                    )
-                  ]
-                ],
-              ),
-              key: ValueKey(item.id),
-              child: LocationItemWidget(
-                key: ObjectKey(item.id),
-                location: item,
-                onSelectLocation: selectLocation,
-              ),
+      onRefresh: () => Future.sync(() => _pagingController.refresh()),
+      child: PagedListView<int, Location>(
+        pagingController: _pagingController,
+        builderDelegate: PagedChildBuilderDelegate<Location>(
+          itemBuilder: (ctx, item, index) => Slidable(
+            endActionPane: ActionPane(
+              motion: const ScrollMotion(),
+              children: [
+                if (item.hasPermission) ...[
+                  SlidableAction(
+                    onPressed: (onPressed) => _removeLocation(item),
+                    label: 'Delete',
+                    icon: FontAwesomeIcons.trash,
+                    backgroundColor: const Color(0xFFFE4A49),
+                    foregroundColor: Colors.white,
+                  )
+                ]
+              ],
+            ),
+            key: ValueKey(item.id),
+            child: LocationItemWidget(
+              key: ObjectKey(item.id),
+              location: item,
+              onSelectLocation: selectLocation,
             ),
           ),
-        ));
+        ),
+      ),
+    );
 
     return content;
   }
