@@ -1,10 +1,12 @@
+import 'package:agroecology_map_app/models/custom_icon.dart';
 import 'package:flutter/material.dart';
 
 class TextBlockWidget extends StatelessWidget {
   final String label;
   final String value;
+  final CustomIcon? icon;
 
-  const TextBlockWidget({super.key, required this.label, required this.value});
+  const TextBlockWidget({super.key, required this.label, required this.value, this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +15,7 @@ class TextBlockWidget extends StatelessWidget {
       children: [
         if (value.isNotEmpty) ...[
           const SizedBox(height: 14),
+          if (icon != null) Icon(icon?.icon, color: icon?.color),
           Text(
             overflow: TextOverflow.ellipsis,
             label,

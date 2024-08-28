@@ -15,6 +15,10 @@ class Location {
   String responsibleForInformation;
   String url;
   String imageUrl;
+  String temperature;
+  String humidity;
+  String moisture;
+  String sensorsLastUpdatedAt;
   String createdAt;
   String updatedAt;
   String base64Image;
@@ -38,6 +42,10 @@ class Location {
     required this.longitude,
     required this.responsibleForInformation,
     required this.url,
+    required this.temperature,
+    required this.humidity,
+    required this.moisture,
+    required this.sensorsLastUpdatedAt,
     required this.accountId,
   })  : base64Image = '',
         hasPermission = false,
@@ -62,6 +70,10 @@ class Location {
       longitude: '-47.89',
       responsibleForInformation: '',
       url: '',
+      temperature: '',
+      humidity: '',
+      moisture: '',
+      sensorsLastUpdatedAt: '',
       accountId: 0,
     );
   }
@@ -84,6 +96,10 @@ class Location {
       responsibleForInformation: json['responsible_for_information'].toString(),
       url: json['url'].toString(),
       imageUrl: json['image_url'].toString(),
+      temperature: json['temperature'].toString(),
+      humidity: json['humidity'].toString(),
+      moisture: json['moisture'].toString(),
+      sensorsLastUpdatedAt: json['sensors_last_updated_at'].toString(),
       accountId: json['account_id'] ?? 0,
     );
   }

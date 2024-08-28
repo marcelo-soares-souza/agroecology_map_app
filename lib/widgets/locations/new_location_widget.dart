@@ -60,11 +60,8 @@ class _NewLocation extends State<NewLocation> {
 
       setState(() => _isSending = true);
 
-      _location.farmAndFarmingSystemComplement = _locationHelper.farmAndFarmingSystemComplementValues.entries
-          .where((entry) => entry.value == true)
-          .map((entry) => entry.key)
-          .toList()
-          .join(', ');
+      _location.farmAndFarmingSystemComplement =
+          _locationHelper.farmAndFarmingSystemComplementValues.entries.where((entry) => entry.value == true).map((entry) => entry.key).toList().join(', ');
 
       _location.country = _location.countryCode;
 
@@ -185,8 +182,7 @@ class _NewLocation extends State<NewLocation> {
                     CheckboxListTile(
                       title: Text(key),
                       value: _locationHelper.farmAndFarmingSystemComplementValues[key],
-                      onChanged: (value) =>
-                          setState(() => _locationHelper.farmAndFarmingSystemComplementValues[key] = value!),
+                      onChanged: (value) => setState(() => _locationHelper.farmAndFarmingSystemComplementValues[key] = value!),
                     )
                   ],
                   const SizedBox(height: 24),
@@ -338,7 +334,7 @@ class _NewLocation extends State<NewLocation> {
     final hasPermission = await _handleLocationPermission();
     if (!hasPermission) return;
 
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position position) {
+    await Geolocator.getCurrentPosition().then((Position position) {
       setState(() {
         _currentPosition = position;
         _location.latitude = _currentPosition?.latitude.toString() ?? '-15.75';

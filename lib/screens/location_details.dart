@@ -1,3 +1,4 @@
+import 'package:agroecology_map_app/models/custom_icon.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -328,6 +329,43 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                     practice: Practice.initPractice(),
                     onSetPage: _selectPage,
                   ),
+                ] else if (_selectedPageIndex == 2) ...[
+                  CachedNetworkImage(
+                    errorWidget: (context, url, error) => const Icon(
+                      FontAwesomeIcons.circleExclamation,
+                      color: Colors.red,
+                    ),
+                    height: 250,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => const Center(
+                      child: SizedBox(
+                        width: 30.0,
+                        height: 30.0,
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                    imageUrl: _location.imageUrl,
+                  ),
+                  TextBlockWidget(
+                    label: 'Temperature',
+                    value: _location.temperature,
+                    icon: CustomIcon(icon: FontAwesomeIcons.temperatureHalf, color: const Color.fromARGB(255, 248, 36, 21)),
+                  ),
+                  TextBlockWidget(
+                    label: 'Humidity',
+                    value: _location.humidity,
+                    icon: CustomIcon(icon: FontAwesomeIcons.water, color: const Color.fromARGB(255, 14, 141, 245)),
+                  ),
+                  TextBlockWidget(
+                    label: 'Soil moisture',
+                    value: _location.moisture,
+                    icon: CustomIcon(icon: FontAwesomeIcons.seedling, color: Colors.green),
+                  ),
+                  TextBlockWidget(
+                    label: 'Updated at',
+                    value: _location.sensorsLastUpdatedAt,
+                  ),
                 ]
               ],
             ),
@@ -379,15 +417,21 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
           showUnselectedLabels: false,
           onTap: _selectPage,
           currentIndex: _selectedPageIndex,
-          items: const [
-            BottomNavigationBarItem(
+          items: [
+            const BottomNavigationBarItem(
               icon: Icon(FontAwesomeIcons.locationDot),
               label: 'Home',
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(FontAwesomeIcons.photoFilm),
               label: 'Gallery',
             ),
+            if (_location.temperature.isNotEmpty && _location.temperature != 'null') ...[
+              const BottomNavigationBarItem(
+                icon: Icon(FontAwesomeIcons.temperatureFull),
+                label: 'Sensors',
+              )
+            ],
           ],
         ),
       );
