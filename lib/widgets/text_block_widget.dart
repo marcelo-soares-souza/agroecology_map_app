@@ -19,7 +19,7 @@ class TextBlockWidget extends StatelessWidget {
             Icon(
               icon?.icon,
               color: icon?.color,
-              size: 32,
+              size: 30,
             ),
             const SizedBox(
               height: 6,
@@ -36,17 +36,18 @@ class TextBlockWidget extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 21),
             child: Text(
-              textAlign: TextAlign.justify,
+              textAlign: TextAlign.center,
               value,
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     color: Theme.of(context).colorScheme.secondary,
                     fontSize: 20,
+                    height: 1.5,
                   ),
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 3),
         ],
       ],
     );

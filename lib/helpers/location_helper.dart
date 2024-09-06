@@ -61,6 +61,6 @@ class LocationHelper {
           size: 30.0,
         ),
         alignment: Alignment.topCenter,
-        id: int.parse(id),
+        id: int.parse(id.isEmpty ? '0' : id),
       );
 }
