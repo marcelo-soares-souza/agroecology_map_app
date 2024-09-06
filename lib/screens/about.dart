@@ -29,26 +29,19 @@ We hope to sow ideas (and dreams) to harvest well-being, sustainability and pres
                 """,
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
+                      fontSize: 20,
                     ),
               ),
             ),
             InkWell(
-              child: Text('Learn more about us',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium!
-                      .copyWith(color: Theme.of(context).colorScheme.secondary, fontSize: 21)),
+              child: Text('Learn more about us', style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Theme.of(context).colorScheme.secondary, fontSize: 21)),
               onTap: () => launchUrl(Uri.parse(Config.aboutPage)),
             ),
             const SizedBox(
               height: 16,
             ),
             InkWell(
-              child: Text('Read our privacy policy',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium!
-                      .copyWith(color: Theme.of(context).colorScheme.secondary, fontSize: 21)),
+              child: Text('Read our privacy policy', style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Theme.of(context).colorScheme.secondary, fontSize: 21)),
               onTap: () => launchUrl(Uri.parse(Config.privacyPolicyPage)),
             ),
             const SizedBox(

@@ -70,9 +70,9 @@ class Location {
       longitude: '-47.89',
       responsibleForInformation: '',
       url: '',
-      temperature: '',
-      humidity: '',
-      moisture: '',
+      temperature: '0.0',
+      humidity: '0.0',
+      moisture: '0.0',
       sensorsLastUpdatedAt: '',
       accountId: 0,
     );

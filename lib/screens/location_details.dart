@@ -223,7 +223,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                           softWrap: true,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                            fontSize: 14,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
@@ -281,7 +281,11 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                   ),
                   TextBlockWidget(
                     label: 'Farm and Farming System',
-                    value: '${_location.farmAndFarmingSystem} - ${_location.farmAndFarmingSystemComplement}',
+                    value: _location.farmAndFarmingSystem,
+                  ),
+                  TextBlockWidget(
+                    label: 'What do you have on your farm?',
+                    value: _location.farmAndFarmingSystemComplement,
                   ),
                   TextBlockWidget(
                     label: 'Details of the farming system',
@@ -330,37 +334,63 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                     onSetPage: _selectPage,
                   ),
                 ] else if (_selectedPageIndex == 2) ...[
-                  CachedNetworkImage(
-                    errorWidget: (context, url, error) => const Icon(
-                      FontAwesomeIcons.circleExclamation,
-                      color: Colors.red,
-                    ),
-                    height: 250,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => const Center(
-                      child: SizedBox(
-                        width: 30.0,
-                        height: 30.0,
-                        child: CircularProgressIndicator(),
+                  Stack(
+                    children: [
+                      CachedNetworkImage(
+                        errorWidget: (context, url, error) => const Icon(
+                          FontAwesomeIcons.circleExclamation,
+                          color: Colors.red,
+                        ),
+                        height: 250,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => const Center(
+                          child: SizedBox(
+                            width: 30.0,
+                            height: 30.0,
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                        imageUrl: _location.imageUrl,
                       ),
-                    ),
-                    imageUrl: _location.imageUrl,
+                      Positioned(
+                        right: 10,
+                        top: 8,
+                        child: CircleAvatar(
+                          radius: 25,
+                          backgroundColor: const Color.fromARGB(255, 243, 243, 243),
+                          child: Icon(
+                            size: 28,
+                            FontAwesomeIcons.seedling,
+                            color: double.parse(_location.moisture) > 50 ? Colors.green : Colors.red,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   TextBlockWidget(
                     label: 'Temperature',
-                    value: _location.temperature,
-                    icon: CustomIcon(icon: FontAwesomeIcons.temperatureHalf, color: const Color.fromARGB(255, 248, 36, 21)),
+                    value: '${_location.temperature} °C',
+                    icon: CustomIcon(
+                      icon: FontAwesomeIcons.temperatureHalf,
+                      color: const Color.fromARGB(255, 230, 141, 8),
+                    ),
                   ),
                   TextBlockWidget(
                     label: 'Humidity',
-                    value: _location.humidity,
-                    icon: CustomIcon(icon: FontAwesomeIcons.water, color: const Color.fromARGB(255, 14, 141, 245)),
+                    value: '${_location.humidity}%',
+                    icon: CustomIcon(
+                      icon: FontAwesomeIcons.water,
+                      color: const Color.fromARGB(255, 14, 141, 245),
+                    ),
                   ),
                   TextBlockWidget(
                     label: 'Soil moisture',
-                    value: _location.moisture,
-                    icon: CustomIcon(icon: FontAwesomeIcons.seedling, color: Colors.green),
+                    value: '${_location.moisture}%',
+                    icon: CustomIcon(
+                      icon: FontAwesomeIcons.seedling,
+                      color: double.parse(_location.moisture) > 50 ? Colors.green : Colors.red,
+                    ),
                   ),
                   TextBlockWidget(
                     label: 'Updated at',

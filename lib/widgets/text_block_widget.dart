@@ -15,13 +15,23 @@ class TextBlockWidget extends StatelessWidget {
       children: [
         if (value.isNotEmpty) ...[
           const SizedBox(height: 14),
-          if (icon != null) Icon(icon?.icon, color: icon?.color),
+          if (icon != null) ...[
+            Icon(
+              icon?.icon,
+              color: icon?.color,
+              size: 32,
+            ),
+            const SizedBox(
+              height: 6,
+            ),
+          ],
           Text(
             overflow: TextOverflow.ellipsis,
             label,
             style: Theme.of(context).textTheme.titleMedium!.copyWith(
                   color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.bold,
+                  fontSize: 21,
                 ),
           ),
           const SizedBox(height: 10),
@@ -32,10 +42,11 @@ class TextBlockWidget extends StatelessWidget {
               value,
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     color: Theme.of(context).colorScheme.secondary,
+                    fontSize: 20,
                   ),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 4),
         ],
       ],
     );

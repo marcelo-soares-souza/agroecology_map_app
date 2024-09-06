@@ -226,7 +226,7 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
                                     softWrap: true,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,
                                     ),
