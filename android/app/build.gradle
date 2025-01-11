@@ -33,15 +33,16 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace "org.agroecologymap"
     compileSdkVersion flutter.compileSdkVersion
-    ndkVersion '26.2.11394342'
+    ndkVersion '28.0.12674087'
+    compileSdk 35
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility=17
+        targetCompatibility=17
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
 
     sourceSets {
@@ -79,5 +80,5 @@ flutter {
 }
 
 dependencies {
-    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'com.google.android.material:material:1.12.0'
 }

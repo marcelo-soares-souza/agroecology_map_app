@@ -39,7 +39,7 @@ class TextBlockWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 21),
             child: Text(
               textAlign: TextAlign.center,
-              value,
+              value!.trim(),
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     color: Theme.of(context).colorScheme.secondary,
                     fontSize: 20,
