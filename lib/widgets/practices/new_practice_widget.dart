@@ -172,7 +172,7 @@ class _NewPractice extends State<NewPractice> {
                       decoration: InputDecoration(
                         hintText: 'Name this practice (e.g. my agroforestry, permaculture experiment, etc.).?',
                         hintStyle: TextStyle(
-                          color: Colors.grey.withOpacity(0.4),
+                          color: Colors.grey.withValues(alpha: 0.4),
                           fontSize: 12,
                         ),
                       ),

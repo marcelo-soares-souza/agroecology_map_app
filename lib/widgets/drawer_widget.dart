@@ -76,7 +76,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               gradient: LinearGradient(
                 colors: [
                   Theme.of(context).colorScheme.primaryContainer,
-                  Theme.of(context).colorScheme.primaryContainer.withOpacity(0.8)
+                  Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.8)
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,

@@ -60,8 +60,11 @@ class _NewLocation extends State<NewLocation> {
 
       setState(() => _isSending = true);
 
-      _location.farmAndFarmingSystemComplement =
-          _locationHelper.farmAndFarmingSystemComplementValues.entries.where((entry) => entry.value == true).map((entry) => entry.key).toList().join(', ');
+      _location.farmAndFarmingSystemComplement = _locationHelper.farmAndFarmingSystemComplementValues.entries
+          .where((entry) => entry.value == true)
+          .map((entry) => entry.key)
+          .toList()
+          .join(', ');
 
       _location.country = _location.countryCode;
 
@@ -141,7 +144,7 @@ class _NewLocation extends State<NewLocation> {
                     decoration: InputDecoration(
                       hintText: 'How would you like to name the place where you practice agroecology?',
                       hintStyle: TextStyle(
-                        color: Colors.grey.withOpacity(0.4),
+                        color: Colors.grey.withValues(alpha: 0.4),
                         fontSize: 12,
                       ),
                     ),
@@ -182,7 +185,8 @@ class _NewLocation extends State<NewLocation> {
                     CheckboxListTile(
                       title: Text(key),
                       value: _locationHelper.farmAndFarmingSystemComplementValues[key],
-                      onChanged: (value) => setState(() => _locationHelper.farmAndFarmingSystemComplementValues[key] = value!),
+                      onChanged: (value) =>
+                          setState(() => _locationHelper.farmAndFarmingSystemComplementValues[key] = value!),
                     )
                   ],
                   const SizedBox(height: 24),
@@ -209,7 +213,7 @@ class _NewLocation extends State<NewLocation> {
                     decoration: InputDecoration(
                       hintText: 'Do you have a dream of transforming your farm and/or location?',
                       hintStyle: TextStyle(
-                        color: Colors.grey.withOpacity(0.4),
+                        color: Colors.grey.withValues(alpha: 0.4),
                         fontSize: 12,
                       ),
                     ),
@@ -230,7 +234,7 @@ class _NewLocation extends State<NewLocation> {
                     decoration: InputDecoration(
                       hintText: 'Tell us a bit about your place, what you do in the place you register',
                       hintStyle: TextStyle(
-                        color: Colors.grey.withOpacity(0.4),
+                        color: Colors.grey.withValues(alpha: 0.4),
                         fontSize: 12,
                       ),
                     ),

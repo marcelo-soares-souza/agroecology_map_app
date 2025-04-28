@@ -117,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: InputDecoration(
             hintText: "Search Location...",
             hintStyle: TextStyle(
-              color: Colors.grey.withOpacity(0.3),
+              color: Colors.grey.withValues(alpha: 0.3),
               fontSize: 21,
             ),
             border: InputBorder.none,
@@ -153,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: InputDecoration(
             hintText: "Search Practice...",
             hintStyle: TextStyle(
-              color: Colors.grey.withOpacity(0.3),
+              color: Colors.grey.withValues(alpha: 0.3),
               fontSize: 21,
             ),
             border: InputBorder.none,
