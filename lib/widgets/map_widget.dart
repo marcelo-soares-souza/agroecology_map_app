@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_marker_cluster_plus/flutter_map_marker_cluster_plus.dart';
+
 import 'package:latlong2/latlong.dart';
-import 'package:flutter_map_supercluster/flutter_map_supercluster.dart';
 import 'package:agroecology_map_app/configs/config.dart';
 import 'package:agroecology_map_app/helpers/location_helper.dart';
 
@@ -97,34 +98,34 @@ class _MapWidget extends State<MapWidget> {
           children: [
             TileLayer(
               urlTemplate: Config.osmURL,
+              userAgentPackageName: 'org.agroecologymap.app',
             ),
-            SuperclusterLayer.immutable(
-              initialMarkers: _markers,
-              loadingOverlayBuilder: (contextSuper) => const Center(child: CircularProgressIndicator()),
-              indexBuilder: IndexBuilders.computeWithOriginalMarkers,
-              onMarkerTap: (marker) {
-                try {
-                  final Location location = _locations.where((l) => l.id == marker.id).first;
+            MarkerClusterLayerWidget(
+              options: MarkerClusterLayerOptions(
+                maxClusterRadius: 45,
+                size: const Size(40, 40),
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(50),
+                maxZoom: 15,
+                markers: _markers,
+                onMarkerTap: (marker) {
+                  final markerId = RegExp(r'\d+').firstMatch(marker.key.toString())?.group(0);
+                  debugPrint('[DEBUG]: $markerId');
+                  final location = _locations.firstWhere((loc) => loc.id.toString() == markerId);
                   selectLocation(context, location);
-                } catch (e) {
-                  debugPrint('[DEBUG]: ${e.toString()}');
-                  debugPrintStack();
-                }
-              },
-              builder: (context, position, markerCount, extraClusterData) {
-                return Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.0),
-                    color: Colors.blue,
-                  ),
-                  child: Center(
-                    child: Text(
-                      markerCount.toString(),
-                      style: const TextStyle(color: Colors.white),
+                },
+                builder: (context, markers) {
+                  return Container(
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.blue),
+                    child: Center(
+                      child: Text(
+                        markers.length.toString(),
+                        style: const TextStyle(color: Colors.white),
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ],
         );
