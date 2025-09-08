@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
-
 import 'package:agroecology_map_app/configs/config.dart';
 import 'package:agroecology_map_app/screens/home.dart';
+import 'package:flutter/material.dart';
 
 void main() {
   runApp(const AgroecologyMapApp());

@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:agroecology_map_app/configs/config.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DrawerWidget extends StatefulWidget {
   final void Function(String screen) onSelectScreen;
@@ -19,23 +19,21 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
   void _checkIfLoggedIn() async {
     try {
-      bool loggedIn = await AuthService.isLoggedIn();
+      final loggedIn = await AuthService.isLoggedIn();
+      bool nextStatus = false;
 
       if (loggedIn) {
-        bool tokenIsValid = await AuthService.validateToken();
-        // debugPrint('[DEBUG]: isLoggedIn $tokenIsValid');
-
-        isLoggedIn = tokenIsValid;
-      }
-
-      // debugPrint('[DEBUG]: isLoggedIn $isLoggedIn');
-
-      if (!isLoggedIn) {
+        final valid = await AuthService.validateToken();
+        nextStatus = valid;
+        if (!valid) {
+          await AuthService.logout();
+        }
+      } else {
         await AuthService.logout();
       }
 
       setState(() {
-        isLoggedIn = isLoggedIn;
+        isLoggedIn = nextStatus;
       });
     } catch (e) {
       debugPrint('[DEBUG]: _checkIfLoggedIn ERROR $e');
@@ -45,7 +43,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   }
 
   void _logout() async {
-    bool logoutSuccess = await AuthService.logout();
+    final bool logoutSuccess = await AuthService.logout();
 
     if (logoutSuccess) {
       setState(() {

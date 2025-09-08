@@ -1,9 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:agroecology_map_app/configs/config.dart';
 import 'package:agroecology_map_app/helpers/form_helper.dart';
 import 'package:agroecology_map_app/helpers/location_helper.dart';
@@ -13,6 +10,9 @@ import 'package:agroecology_map_app/screens/locations.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/location_service.dart';
 import 'package:agroecology_map_app/widgets/image_input.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 class EditLocation extends StatefulWidget {
   final Location location;
@@ -56,7 +56,7 @@ class _EditLocation extends State<EditLocation> {
     _marker = LocationHelper.buildMarker('', _initialCenter);
 
     _location.farmAndFarmingSystemComplement.split(',').forEach((element) {
-      String key = element.trim();
+      final String key = element.trim();
       if (key.isNotEmpty) {
         _locationHelper.farmAndFarmingSystemComplementValues[key] = true;
       }
@@ -88,8 +88,8 @@ class _EditLocation extends State<EditLocation> {
 
       final Map<String, String> response = await LocationService.updateLocation(_location);
 
-      String status = response['status'].toString();
-      String message = response['message'].toString();
+      final String status = response['status'].toString();
+      final String message = response['message'].toString();
 
       if (!mounted) return;
 
@@ -112,7 +112,7 @@ class _EditLocation extends State<EditLocation> {
   }
 
   void _updateCoordinates() async {
-    LatLng coordinates = await LocationService.getCoordinates(_location.countryCode);
+    final LatLng coordinates = await LocationService.getCoordinates(_location.countryCode);
 
     setState(() {
       _location.latitude = coordinates.latitude.toString();

@@ -1,8 +1,7 @@
+import 'package:agroecology_map_app/models/location.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import 'package:agroecology_map_app/models/location.dart';
 
 class LocationItemWidget extends StatelessWidget {
   final Location location;

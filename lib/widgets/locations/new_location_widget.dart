@@ -1,10 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:agroecology_map_app/configs/config.dart';
 import 'package:agroecology_map_app/helpers/form_helper.dart';
 import 'package:agroecology_map_app/helpers/location_helper.dart';
@@ -14,6 +10,10 @@ import 'package:agroecology_map_app/screens/locations.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/location_service.dart';
 import 'package:agroecology_map_app/widgets/image_input.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:latlong2/latlong.dart';
 
 class NewLocation extends StatefulWidget {
   const NewLocation({super.key});
@@ -77,8 +77,8 @@ class _NewLocation extends State<NewLocation> {
 
       final Map<String, String> response = await LocationService.sendLocation(_location);
 
-      String status = response['status'].toString();
-      String message = response['message'].toString();
+      final String status = response['status'].toString();
+      final String message = response['message'].toString();
 
       if (!mounted) return;
 
@@ -101,7 +101,7 @@ class _NewLocation extends State<NewLocation> {
   }
 
   void _updateCoordinates() async {
-    LatLng coordinates = await LocationService.getCoordinates(_location.countryCode);
+    final LatLng coordinates = await LocationService.getCoordinates(_location.countryCode);
 
     setState(() {
       _location.latitude = coordinates.latitude.toString();
@@ -350,7 +350,7 @@ class _NewLocation extends State<NewLocation> {
     });
 
     setState(() {
-      LatLng coordinates = LatLng(double.parse(_location.latitude), double.parse(_location.longitude));
+      final LatLng coordinates = LatLng(double.parse(_location.latitude), double.parse(_location.longitude));
       _marker = LocationHelper.buildMarker(_location.id.toString(), coordinates);
     });
   }

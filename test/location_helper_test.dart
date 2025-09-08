@@ -1,6 +1,6 @@
+import 'package:agroecology_map_app/helpers/location_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:agroecology_map_app/helpers/location_helper.dart';
 
 void main() {
   testWidgets('LocationHelper dropdowns and marker build', (tester) async {

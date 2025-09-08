@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:agroecology_map_app/helpers/form_helper.dart';
 import 'package:agroecology_map_app/models/gallery_item.dart';
 import 'package:agroecology_map_app/models/location.dart';
@@ -11,6 +10,7 @@ import 'package:agroecology_map_app/screens/practice_details.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/location_service.dart';
 import 'package:agroecology_map_app/widgets/image_input.dart';
+import 'package:flutter/material.dart';
 
 class NewMediaWidget extends StatefulWidget {
   final Location location;
@@ -71,8 +71,8 @@ class _NewMediaWidget extends State<NewMediaWidget> {
 
       final Map<String, String> response = await LocationService.sendMediaToLocation(_galleryItem);
 
-      String status = response['status'].toString();
-      String message = response['message'].toString();
+      final String status = response['status'].toString();
+      final String message = response['message'].toString();
 
       if (!mounted) return;
 

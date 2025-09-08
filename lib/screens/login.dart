@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_login/flutter_login.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import 'package:agroecology_map_app/configs/config.dart';
 import 'package:agroecology_map_app/screens/home.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_login/flutter_login.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -21,7 +20,7 @@ class _LoginScreen extends State<LoginScreen> {
   Duration get singupTime => const Duration(milliseconds: 500);
 
   Future<String?> _authUser(LoginData data) async {
-    bool isAuthenticated = await AuthService.login(data.name, data.password);
+    final bool isAuthenticated = await AuthService.login(data.name, data.password);
 
     return Future.delayed(loginTime).then((_) {
       if (!isAuthenticated) {
@@ -37,11 +36,11 @@ class _LoginScreen extends State<LoginScreen> {
     //  debugPrint('$key: $value');
     // });
 
-    Map<String, String> response =
+    final Map<String, String> response =
         await AuthService.signup(signupData.additionalSignupData!['name'], signupData.name, signupData.password);
 
-    String status = response['status'].toString();
-    String message = response['message'].toString();
+    final String status = response['status'].toString();
+    final String message = response['message'].toString();
 
     return Future.delayed(singupTime).then((_) {
       if (status == 'failed') {

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class PracticeHelper {
   static List<DropdownMenuItem<String>> get dropDownWhereItIsRealizedOptions {
-    Map<String, String> options = {
+    final Map<String, String> options = {
       'On-farm': 'On-farm',
       'Off-farm': 'Off-farm',
       'Other': 'Other',
       '': 'None of above',
     };
 
-    List<DropdownMenuItem<String>> whereItIsRealizedItems = [];
+    final List<DropdownMenuItem<String>> whereItIsRealizedItems = [];
     for (MapEntry<String, String> option in options.entries) {
       whereItIsRealizedItems.add(
         DropdownMenuItem(
@@ -58,18 +58,18 @@ class PracticeHelper {
   };
 
   static List<DropdownMenuItem<String>> get dropDownEffectiveOptions {
-    Map<String, String> options = {
+    final Map<String, String> options = {
       'Very effective': 'Very effective',
       'Rather effective': 'Rather effective',
-      'Neither effective nor uneffective': 'Neither effective nor uneffective',
-      'Rather uneffective': 'Rather uneffective',
-      'Very uneffective': 'Very uneffective',
+      'Neither effective nor ineffective': 'Neither effective nor ineffective',
+      'Rather ineffective': 'Rather ineffective',
+      'Very ineffective': 'Very ineffective',
       'I am not sure': 'I am not sure',
       'Not applicable': 'Not applicable',
       '': 'None of above',
     };
 
-    List<DropdownMenuItem<String>> effectiveItems = [];
+    final List<DropdownMenuItem<String>> effectiveItems = [];
     for (MapEntry<String, String> option in options.entries) {
       effectiveItems.add(
         DropdownMenuItem(
@@ -83,7 +83,7 @@ class PracticeHelper {
   }
 
   static List<DropdownMenuItem<String>> get dropDownKnowledgeAndSkillsOptions {
-    Map<String, String> options = {
+    final Map<String, String> options = {
       'High specialised knowledge required': 'High specialised knowledge required',
       'Rather high specialised knowledge required': 'Rather high specialised knowledge required',
       'Specialised knowledge required neither high nor low': 'Specialised knowledge required neither high nor low',
@@ -94,7 +94,7 @@ class PracticeHelper {
       '': 'None of above',
     };
 
-    List<DropdownMenuItem<String>> knowledgeAndSkillsItems = [];
+    final List<DropdownMenuItem<String>> knowledgeAndSkillsItems = [];
     for (MapEntry<String, String> option in options.entries) {
       knowledgeAndSkillsItems.add(
         DropdownMenuItem(
@@ -108,10 +108,10 @@ class PracticeHelper {
   }
 
   static List<DropdownMenuItem<String>> get dropDownLabourOptions {
-    Map<String, String> options = {
+    final Map<String, String> options = {
       'High labour required': 'High labour required',
       'Rather high labour required': 'Rather high labour required',
-      'Neither high nor low labout required': 'Neither high nor low labout required',
+      'Neither high nor low labour required': 'Neither high nor low labour required',
       'Rather low labour required': 'Rather low labour required',
       'Low labour required': 'Low labour required',
       'I am not sure': 'I am not sure',
@@ -119,7 +119,7 @@ class PracticeHelper {
       '': 'None of above',
     };
 
-    List<DropdownMenuItem<String>> labourItems = [];
+    final List<DropdownMenuItem<String>> labourItems = [];
     for (MapEntry<String, String> option in options.entries) {
       labourItems.add(
         DropdownMenuItem(
@@ -133,7 +133,7 @@ class PracticeHelper {
   }
 
   static List<DropdownMenuItem<String>> get dropDownCostsOptions {
-    Map<String, String> options = {
+    final Map<String, String> options = {
       'High costs': 'High costs',
       'Rather high costs': 'Rather high costs',
       'Neither high nor low costs': 'Neither high nor low costs',
@@ -144,7 +144,7 @@ class PracticeHelper {
       '': 'None of above',
     };
 
-    List<DropdownMenuItem<String>> costsItems = [];
+    final List<DropdownMenuItem<String>> costsItems = [];
     for (MapEntry<String, String> option in options.entries) {
       costsItems.add(
         DropdownMenuItem(
@@ -158,7 +158,7 @@ class PracticeHelper {
   }
 
   static List<DropdownMenuItem<String>> get dropDownDegradedOptions {
-    Map<String, String> options = {
+    final Map<String, String> options = {
       'Works well in depleted environment': 'Works well in depleted environment',
       'Works rather well in depleted environment': 'Works rather well in depleted environment',
       'Neither works well nor poorly in depleted environment': 'Neither works well nor poorly in depleted environment',
@@ -169,7 +169,7 @@ class PracticeHelper {
       '': 'None of above',
     };
 
-    List<DropdownMenuItem<String>> degradedItems = [];
+    final List<DropdownMenuItem<String>> degradedItems = [];
     for (MapEntry<String, String> option in options.entries) {
       degradedItems.add(
         DropdownMenuItem(
@@ -183,7 +183,7 @@ class PracticeHelper {
   }
 
   static List<DropdownMenuItem<String>> get dropDownTimeOptions {
-    Map<String, String> options = {
+    final Map<String, String> options = {
       'Works instantly': 'Works instantly',
       'Works rather rapidly': 'Works rather rapidly',
       'Works neither rapidly nor slowly': 'Works neither rapidly nor slowly',
@@ -194,7 +194,7 @@ class PracticeHelper {
       '': 'None of above',
     };
 
-    List<DropdownMenuItem<String>> timeItems = [];
+    final List<DropdownMenuItem<String>> timeItems = [];
     for (MapEntry<String, String> option in options.entries) {
       timeItems.add(
         DropdownMenuItem(
@@ -217,7 +217,7 @@ class PracticeHelper {
   };
 
   static List<DropdownMenuItem<String>> get dropDownKnowledgeTimingOptions {
-    Map<String, String> options = {
+    final Map<String, String> options = {
       'A long time ago': 'A long time ago',
       'Some time ago': 'Some time ago',
       'Recently': 'Recently',
@@ -225,7 +225,7 @@ class PracticeHelper {
       '': 'None of above',
     };
 
-    List<DropdownMenuItem<String>> knowledgeTimingItems = [];
+    final List<DropdownMenuItem<String>> knowledgeTimingItems = [];
     for (MapEntry<String, String> option in options.entries) {
       knowledgeTimingItems.add(
         DropdownMenuItem(

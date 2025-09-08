@@ -1,14 +1,6 @@
-import 'package:agroecology_map_app/models/custom_icon.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:agroecology_map_app/configs/config.dart';
 import 'package:agroecology_map_app/helpers/location_helper.dart';
-
+import 'package:agroecology_map_app/models/custom_icon.dart';
 import 'package:agroecology_map_app/models/gallery_item.dart';
 import 'package:agroecology_map_app/models/location.dart';
 import 'package:agroecology_map_app/models/practice/practice.dart';
@@ -17,6 +9,13 @@ import 'package:agroecology_map_app/services/location_service.dart';
 import 'package:agroecology_map_app/widgets/locations/edit_location_widget.dart';
 import 'package:agroecology_map_app/widgets/new_media_widget.dart';
 import 'package:agroecology_map_app/widgets/text_block_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:latlong2/latlong.dart';
 
 class LocationDetailsScreen extends StatefulWidget {
   final Location location;
@@ -166,7 +165,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
   Widget build(BuildContext context) {
     Widget activePage = const Center(child: CircularProgressIndicator());
 
-    Widget galleryWidget = RefreshIndicator(
+    final Widget galleryWidget = RefreshIndicator(
       onRefresh: () => Future.sync(() => _pagingController.refresh()),
       child: PagedListView<int, GalleryItem>(
         pagingController: _pagingController,

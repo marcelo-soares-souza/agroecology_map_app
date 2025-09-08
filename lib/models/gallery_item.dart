@@ -40,7 +40,7 @@ class GalleryItem {
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, String> json = {
+    final Map<String, String> json = {
       'description': description,
       'image_url': imageUrl,
     };

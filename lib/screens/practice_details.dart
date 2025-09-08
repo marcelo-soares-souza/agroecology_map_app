@@ -1,6 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:agroecology_map_app/models/gallery_item.dart';
 import 'package:agroecology_map_app/models/location.dart';
 import 'package:agroecology_map_app/models/practice/practice.dart';
@@ -9,6 +6,9 @@ import 'package:agroecology_map_app/services/practice_service.dart';
 import 'package:agroecology_map_app/widgets/new_media_widget.dart';
 import 'package:agroecology_map_app/widgets/practices/new_characterises_widget.dart';
 import 'package:agroecology_map_app/widgets/text_block_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PracticeDetailsScreen extends StatefulWidget {
   final Practice practice;

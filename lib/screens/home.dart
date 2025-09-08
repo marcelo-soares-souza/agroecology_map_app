@@ -1,6 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import 'package:agroecology_map_app/screens/about.dart';
 import 'package:agroecology_map_app/screens/locations.dart';
 import 'package:agroecology_map_app/screens/login.dart';
@@ -9,6 +6,8 @@ import 'package:agroecology_map_app/screens/practices.dart';
 import 'package:agroecology_map_app/widgets/drawer_widget.dart';
 import 'package:agroecology_map_app/widgets/locations/new_location_widget.dart';
 import 'package:agroecology_map_app/widgets/practices/new_practice_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   final Widget activePage;

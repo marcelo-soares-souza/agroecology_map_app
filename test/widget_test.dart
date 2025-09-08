@@ -1,5 +1,5 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:agroecology_map_app/main.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('App renders Home with Locations search', (tester) async {

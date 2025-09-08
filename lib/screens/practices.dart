@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-
 import 'package:agroecology_map_app/widgets/practices/practices_widget.dart';
+import 'package:flutter/material.dart';
 
 class PracticesScreen extends StatelessWidget {
   final String filter;

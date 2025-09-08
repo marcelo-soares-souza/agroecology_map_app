@@ -1,13 +1,12 @@
 import 'package:agroecology_map_app/configs/config.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:agroecology_map_app/helpers/form_helper.dart';
-
 import 'package:agroecology_map_app/models/practice/practice.dart';
 import 'package:agroecology_map_app/screens/practice_details.dart';
 import 'package:agroecology_map_app/services/practice_service.dart';
 import 'package:agroecology_map_app/widgets/practices/practice_item_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class PracticesWidget extends StatefulWidget {
@@ -80,7 +79,7 @@ class _PracticesWidget extends State<PracticesWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Widget content = RefreshIndicator(
+    final Widget content = RefreshIndicator(
         onRefresh: () => Future.sync(() => _pagingController.refresh()),
         child: PagedListView<int, Practice>(
           pagingController: _pagingController,

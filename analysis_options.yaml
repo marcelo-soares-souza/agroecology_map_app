@@ -29,6 +29,10 @@ linter:
     use_key_in_widget_constructors: true
     # Prefer single quotes for strings.
     prefer_single_quotes: true
+    # Re-enable stricter hygiene rules for the codebase.
+    directives_ordering: true
+    prefer_final_locals: true
+    sort_pub_dependencies: true
     # directives_ordering: true
     # sort_pub_dependencies: true
     # prefer_final_locals: true

@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:agroecology_map_app/helpers/form_helper.dart';
 import 'package:agroecology_map_app/helpers/practice_helper.dart';
-import 'package:agroecology_map_app/models/practice/practice.dart';
 import 'package:agroecology_map_app/models/practice/characterises.dart';
+import 'package:agroecology_map_app/models/practice/practice.dart';
 import 'package:agroecology_map_app/screens/practice_details.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/practice_service.dart';
+import 'package:flutter/material.dart';
 
 class NewCharacterises extends StatefulWidget {
   final Practice practice;
@@ -43,14 +43,14 @@ class _NewCharacterises extends State<NewCharacterises> {
       _characterises.foodSystemComponentsAddressed = _practice.foodSystemComponentsAddressed;
 
       _practice.agroecologyPrinciplesAddressed.split(',').forEach((element) {
-        String key = element.trim();
+        final String key = element.trim();
         if (key.isNotEmpty) {
           _practiceHelper.agroecologyPrinciplesAddressedValues[key] = true;
         }
       });
 
       _practice.foodSystemComponentsAddressed.split(',').forEach((element) {
-        String key = element.trim();
+        final String key = element.trim();
         if (key.isNotEmpty) {
           _practiceHelper.foodSystemComponentsAddressedValues[element.trim()] = true;
         }
@@ -80,8 +80,8 @@ class _NewCharacterises extends State<NewCharacterises> {
 
       final Map<String, String> response = await PracticeService.updateCharacterises(_characterises);
 
-      String status = response['status'].toString();
-      String message = response['message'].toString();
+      final String status = response['status'].toString();
+      final String message = response['message'].toString();
 
       if (!mounted) return;
 

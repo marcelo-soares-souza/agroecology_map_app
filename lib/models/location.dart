@@ -105,7 +105,7 @@ class Location {
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = {
+    final Map<String, dynamic> json = {
       'id': id,
       'name': name,
       'country': country,

@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:agroecology_map_app/widgets/locations/locations_widget.dart';
+import 'package:flutter/material.dart';
 
 class LocationsScreen extends StatelessWidget {
   final String filter;

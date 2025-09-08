@@ -1,14 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map_marker_cluster_plus/flutter_map_marker_cluster_plus.dart';
-
-import 'package:latlong2/latlong.dart';
 import 'package:agroecology_map_app/configs/config.dart';
 import 'package:agroecology_map_app/helpers/location_helper.dart';
-
 import 'package:agroecology_map_app/models/location.dart';
 import 'package:agroecology_map_app/screens/location_details.dart';
 import 'package:agroecology_map_app/services/location_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_marker_cluster_plus/flutter_map_marker_cluster_plus.dart';
+import 'package:latlong2/latlong.dart';
 
 class MapWidget extends StatefulWidget {
   const MapWidget({super.key});

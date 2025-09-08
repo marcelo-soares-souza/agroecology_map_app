@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:agroecology_map_app/helpers/form_helper.dart';
 import 'package:agroecology_map_app/models/location.dart';
 import 'package:agroecology_map_app/models/practice/practice.dart';
@@ -11,6 +10,7 @@ import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/location_service.dart';
 import 'package:agroecology_map_app/services/practice_service.dart';
 import 'package:agroecology_map_app/widgets/image_input.dart';
+import 'package:flutter/material.dart';
 
 class NewPractice extends StatefulWidget {
   const NewPractice({super.key});
@@ -39,14 +39,14 @@ class _NewPractice extends State<NewPractice> {
   }
 
   void _retrieveLocations() async {
-    String accountId = await AuthService.getCurrentAccountId();
+    final String accountId = await AuthService.getCurrentAccountId();
 
     if (accountId.isEmpty || accountId == '0') {
       setState(() => _isLoading = false);
       return;
     }
 
-    List<Location> locations = await LocationService.retrieveAllLocationsByAccount(accountId);
+    final List<Location> locations = await LocationService.retrieveAllLocationsByAccount(accountId);
 
     setState(() {
       _locations = locations;
@@ -69,7 +69,7 @@ class _NewPractice extends State<NewPractice> {
   }
 
   List<DropdownMenuItem<String>> get dropDownLocations {
-    List<DropdownMenuItem<String>> locationItems = [];
+    final List<DropdownMenuItem<String>> locationItems = [];
     for (Location location in _locations) {
       locationItems.add(
         DropdownMenuItem(
@@ -100,8 +100,8 @@ class _NewPractice extends State<NewPractice> {
 
       final Map<String, String> response = await PracticeService.sendPractice(_practice);
 
-      String status = response['status'].toString();
-      String message = response['message'].toString();
+      final String status = response['status'].toString();
+      final String message = response['message'].toString();
 
       if (!mounted) return;
 

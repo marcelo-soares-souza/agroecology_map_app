@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:agroecology_map_app/widgets/map_widget.dart';
+import 'package:flutter/material.dart';
 
 class MapScreen extends StatelessWidget {
   const MapScreen({super.key});
