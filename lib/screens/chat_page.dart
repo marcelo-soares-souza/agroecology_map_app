@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:agroecology_map_app/models/chat/message.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
+import 'package:agroecology_map_app/services/action_cable_service.dart';
+import 'package:agroecology_map_app/configs/config.dart';
 import 'package:agroecology_map_app/services/chat_service.dart';
 import 'package:flutter/material.dart';
 
@@ -30,6 +32,7 @@ class _ChatPageState extends State<ChatPage> {
   final Set<int> _messageIds = <int>{};
   late Future<bool> _loggedInFuture;
   bool _isLoggedIn = false;
+  Map<String, dynamic>? _cableId;
 
   @override
   void initState() {
@@ -46,14 +49,42 @@ class _ChatPageState extends State<ChatPage> {
     _myAccountId = int.tryParse(idStr);
     await _load(initial: true);
     _startPolling();
+    _subscribeCable();
   }
 
   @override
   void dispose() {
+    _unsubscribeCable();
     _poll?.cancel();
     _controller.dispose();
     _scroll.dispose();
     super.dispose();
+  }
+
+  void _subscribeCable() {
+    final identifier = {
+      'channel': Config.chatChannelName,
+      'conversation_id': widget.conversationId,
+    };
+    _cableId = identifier;
+    ActionCableService.I.subscribe(identifier, (payload) {
+      try {
+        // Accept either {'message': {...}} or message fields directly
+        final dynamic raw = payload['message'] ?? payload;
+        if (raw is Map<String, dynamic>) {
+          final m = MessageDto.fromJson(raw);
+          _appendMessages([m]);
+          _markReadUpToLastReceived();
+        }
+      } catch (_) {
+        // ignore malformed payloads
+      }
+    });
+  }
+
+  void _unsubscribeCable() {
+    final id = _cableId;
+    if (id != null) ActionCableService.I.unsubscribe(id);
   }
 
   void _startPolling() {

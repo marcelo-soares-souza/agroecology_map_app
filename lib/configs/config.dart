@@ -9,6 +9,8 @@ class Config {
   static const String title = 'Agroecology Map';
   static const String siteUrl = debugMode ? '10.0.2.2:3000' : 'agroecologymap.org';
   static const String _scheme = debugMode ? 'http' : 'https';
+  // ActionCable path (standard Rails default)
+  static const String _cablePath = '/cable';
   static const String aboutPage = '$_scheme://$siteUrl';
   static const String privacyPolicyPage = '$_scheme://$siteUrl/privacy_policy';
   static const String osmURL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -27,6 +29,27 @@ class Config {
   static Uri getURI(String page) {
     return debugMode ? Uri.http(siteUrl, page) : Uri.https(siteUrl, page);
   }
+
+  /// Returns the WebSocket URI for ActionCable.
+  /// Pass an optional `token` to authorize via query param (works on web).
+  static Uri getCableURI({String? token, Map<String, String>? extraQuery}) {
+    final wsScheme = _scheme == 'https' ? 'wss' : 'ws';
+    final qp = <String, String>{
+      if (token != null && token.isNotEmpty) 'token': token,
+      if (extraQuery != null) ...extraQuery,
+    };
+    return Uri(
+      scheme: wsScheme,
+      host: siteUrl.split(':').first,
+      port: siteUrl.contains(':') ? int.tryParse(siteUrl.split(':').last) : null,
+      path: _cablePath,
+      queryParameters: qp.isEmpty ? null : qp,
+    );
+  }
+
+  /// Name of the ActionCable channel used for per-conversation messages.
+  /// Adjust to match your Rails channel (e.g., 'MessagesChannel' or 'ChatChannel').
+  static const String chatChannelName = 'MessagesChannel';
 
   static final _colorScheme = ColorScheme.fromSeed(
     brightness: Brightness.dark,

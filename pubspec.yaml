@@ -36,6 +36,7 @@ dependencies:
   infinite_scroll_pagination: ^4.0.0
   latlong2: ^0.9.1
   url_launcher: ^6.3.2
+  web_socket_channel: ^2.4.0
 
 dev_dependencies:
   flutter_lints: ^6.0.0
