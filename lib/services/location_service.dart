@@ -1,3 +1,5 @@
+// ignore_for_file: strict_top_level_inference
+
 import 'package:flutter/foundation.dart';
 import 'package:http_interceptor/http/intercepted_client.dart';
 import 'package:latlong2/latlong.dart';

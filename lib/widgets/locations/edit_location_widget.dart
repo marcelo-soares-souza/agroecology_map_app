@@ -255,7 +255,10 @@ class _EditLocation extends State<EditLocation> {
                         },
                       ),
                       children: [
-                        TileLayer(urlTemplate: Config.osmURL),
+                        TileLayer(
+                          urlTemplate: Config.osmURL,
+                          userAgentPackageName: 'org.agroecologymap.app',
+                        ),
                         MarkerLayer(markers: [_marker])
                       ],
                     ),

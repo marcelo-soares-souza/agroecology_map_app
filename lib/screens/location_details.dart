@@ -317,7 +317,10 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                           interactionOptions: Config.interactionOptions,
                         ),
                         children: [
-                          TileLayer(urlTemplate: Config.osmURL),
+                          TileLayer(
+                            urlTemplate: Config.osmURL,
+                            userAgentPackageName: 'org.agroecologymap.app',
+                          ),
                           MarkerLayer(markers: [_marker!])
                         ],
                       ),

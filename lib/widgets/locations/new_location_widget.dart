@@ -262,7 +262,10 @@ class _NewLocation extends State<NewLocation> {
                         },
                       ),
                       children: [
-                        TileLayer(urlTemplate: Config.osmURL),
+                        TileLayer(
+                          urlTemplate: Config.osmURL,
+                          userAgentPackageName: 'org.agroecologymap.app',
+                        ),
                         MarkerLayer(markers: [_marker])
                       ],
                     ),
