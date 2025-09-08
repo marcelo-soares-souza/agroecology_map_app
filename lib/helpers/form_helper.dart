@@ -28,21 +28,21 @@ class FormHelper {
     return yesNoBoolItems;
   }
 
-  static successMessage(context, message) {
+  static void successMessage(context, message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(message),
       backgroundColor: Colors.green,
     ));
   }
 
-  static infoMessage(context, message) {
+  static void infoMessage(context, message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(message),
       backgroundColor: Colors.blue,
     ));
   }
 
-  static errorMessage(context, message) {
+  static void errorMessage(context, message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(message),
       backgroundColor: Colors.red,
