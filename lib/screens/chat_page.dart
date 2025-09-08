@@ -28,11 +28,17 @@ class _ChatPageState extends State<ChatPage> {
   int? _myAccountId;
   Timer? _poll;
   final Set<int> _messageIds = <int>{};
+  late Future<bool> _loggedInFuture;
+  bool _isLoggedIn = false;
 
   @override
   void initState() {
     super.initState();
-    _init();
+    _loggedInFuture = AuthService.isLoggedIn().then((v) {
+      _isLoggedIn = v;
+      if (v) _init();
+      return v;
+    });
   }
 
   Future<void> _init() async {
@@ -170,107 +176,126 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(widget.otherName)),
-      body: Column(
-        children: [
-          if (_loading) const LinearProgressIndicator(minHeight: 2),
-          Expanded(
-            child: ListView.builder(
-              controller: _scroll,
-              itemCount: _messages.length,
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-              itemBuilder: (ctx, i) {
-                final m = _messages[i];
-                final isMine = _myAccountId != null && m.senderId == _myAccountId;
-                return Align(
-                  alignment: isMine ? Alignment.centerRight : Alignment.centerLeft,
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 4),
-                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                    decoration: BoxDecoration(
-                      color: isMine
-                          ? Theme.of(context).colorScheme.primaryContainer
-                          : Theme.of(context).colorScheme.surfaceContainerHighest,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          m.body,
-                          style: TextStyle(
-                            color: isMine
-                                ? Theme.of(context).colorScheme.onPrimaryContainer
-                                : Theme.of(context).colorScheme.onSurface,
-                          ),
+    return FutureBuilder<bool>(
+      future: _loggedInFuture,
+      builder: (context, snapshot) {
+        final waiting = snapshot.connectionState != ConnectionState.done;
+        final loggedIn = snapshot.data == true;
+        if (waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+        if (!loggedIn) {
+          return Scaffold(
+            appBar: AppBar(title: Text(widget.otherName)),
+            body: const Center(child: Text('Please login to use chat')),
+          );
+        }
+
+        return Scaffold(
+          appBar: AppBar(title: Text(widget.otherName)),
+          body: Column(
+            children: [
+              if (_loading) const LinearProgressIndicator(minHeight: 2),
+              Expanded(
+                child: ListView.builder(
+                  controller: _scroll,
+                  itemCount: _messages.length,
+                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  itemBuilder: (ctx, i) {
+                    final m = _messages[i];
+                    final isMine = _myAccountId != null && m.senderId == _myAccountId;
+                    return Align(
+                      alignment: isMine ? Alignment.centerRight : Alignment.centerLeft,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 4),
+                        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: isMine
+                              ? Theme.of(context).colorScheme.primaryContainer
+                              : Theme.of(context).colorScheme.surfaceContainerHighest,
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          timeOfDay(m.createdAt),
-                          style: TextStyle(
-                            fontSize: 11,
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          SafeArea(
-            top: false,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _controller,
-                      minLines: 1,
-                      maxLines: 4,
-                      cursorColor: Theme.of(context).colorScheme.primary,
-                      style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-                      decoration: InputDecoration(
-                        hintText: 'Type a message',
-                        hintStyle: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                        ),
-                        isDense: true,
-                        filled: true,
-                        fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-                        contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 14),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24),
-                          borderSide: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24),
-                          borderSide: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24),
-                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              m.body,
+                              style: TextStyle(
+                                color: isMine
+                                    ? Theme.of(context).colorScheme.onPrimaryContainer
+                                    : Theme.of(context).colorScheme.onSurface,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              timeOfDay(m.createdAt),
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      onSubmitted: (_) => _send(),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  IconButton(
-                    color: Theme.of(context).colorScheme.primary,
-                    icon: const Icon(Icons.send),
-                    onPressed: _send,
-                  ),
-                ],
+                    );
+                  },
+                ),
               ),
-            ),
+              SafeArea(
+                top: false,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _controller,
+                          minLines: 1,
+                          maxLines: 4,
+                          cursorColor: Theme.of(context).colorScheme.primary,
+                          style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                          decoration: InputDecoration(
+                            hintText: 'Type a message',
+                            hintStyle: TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            ),
+                            isDense: true,
+                            filled: true,
+                            fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                            contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 14),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(24),
+                              borderSide: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(24),
+                              borderSide: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(24),
+                              borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
+                            ),
+                          ),
+                          onSubmitted: (_) => _send(),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      IconButton(
+                        color: Theme.of(context).colorScheme.primary,
+                        icon: const Icon(Icons.send),
+                        onPressed: _send,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
