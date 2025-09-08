@@ -58,7 +58,7 @@ class _LocationsWidget extends State<LocationsWidget> {
         _pagingController.appendPage(locationList, nextPageKey);
       }
     } catch (e) {
-      debugPrint("[DEBUG] _fetchPage error --> $e");
+      debugPrint('[DEBUG] _fetchPage error --> $e');
       _pagingController.error = e;
     }
   }

@@ -115,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
         cursorColor: Colors.white,
         onChanged: (value) => _searchQuery = value,
         decoration: InputDecoration(
-            hintText: "Search Location...",
+            hintText: 'Search Location...',
             hintStyle: TextStyle(
               color: Colors.grey.withValues(alpha: 0.3),
               fontSize: 21,
@@ -151,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
         cursorColor: Colors.white,
         onChanged: (value) => _searchQuery = value,
         decoration: InputDecoration(
-            hintText: "Search Practice...",
+            hintText: 'Search Practice...',
             hintStyle: TextStyle(
               color: Colors.grey.withValues(alpha: 0.3),
               fontSize: 21,

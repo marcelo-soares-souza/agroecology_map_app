@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class PracticeHelper {
   static List<DropdownMenuItem<String>> get dropDownWhereItIsRealizedOptions {
     Map<String, String> options = {
-      "On-farm": "On-farm",
-      "Off-farm": "Off-farm",
-      "Other": "Other",
-      "": "None of above",
+      'On-farm': 'On-farm',
+      'Off-farm': 'Off-farm',
+      'Other': 'Other',
+      '': 'None of above',
     };
 
     List<DropdownMenuItem<String>> whereItIsRealizedItems = [];
@@ -59,14 +59,14 @@ class PracticeHelper {
 
   static List<DropdownMenuItem<String>> get dropDownEffectiveOptions {
     Map<String, String> options = {
-      "Very effective": "Very effective",
-      "Rather effective": "Rather effective",
-      "Neither effective nor uneffective": "Neither effective nor uneffective",
-      "Rather uneffective": "Rather uneffective",
-      "Very uneffective": "Very uneffective",
-      "I am not sure": "I am not sure",
-      "Not applicable": "Not applicable",
-      "": "None of above",
+      'Very effective': 'Very effective',
+      'Rather effective': 'Rather effective',
+      'Neither effective nor uneffective': 'Neither effective nor uneffective',
+      'Rather uneffective': 'Rather uneffective',
+      'Very uneffective': 'Very uneffective',
+      'I am not sure': 'I am not sure',
+      'Not applicable': 'Not applicable',
+      '': 'None of above',
     };
 
     List<DropdownMenuItem<String>> effectiveItems = [];
@@ -84,14 +84,14 @@ class PracticeHelper {
 
   static List<DropdownMenuItem<String>> get dropDownKnowledgeAndSkillsOptions {
     Map<String, String> options = {
-      "High specialised knowledge required": "High specialised knowledge required",
-      "Rather high specialised knowledge required": "Rather high specialised knowledge required",
-      "Specialised knowledge required neither high nor low": "Specialised knowledge required neither high nor low",
-      "Rather low specialised knowledge required": "Rather low specialised knowledge required",
-      "No specialised knowledge required": "No specialised knowledge required",
-      "I am not sure": "I am not sure",
-      "Not applicable": "Not applicable",
-      "": "None of above",
+      'High specialised knowledge required': 'High specialised knowledge required',
+      'Rather high specialised knowledge required': 'Rather high specialised knowledge required',
+      'Specialised knowledge required neither high nor low': 'Specialised knowledge required neither high nor low',
+      'Rather low specialised knowledge required': 'Rather low specialised knowledge required',
+      'No specialised knowledge required': 'No specialised knowledge required',
+      'I am not sure': 'I am not sure',
+      'Not applicable': 'Not applicable',
+      '': 'None of above',
     };
 
     List<DropdownMenuItem<String>> knowledgeAndSkillsItems = [];
@@ -109,14 +109,14 @@ class PracticeHelper {
 
   static List<DropdownMenuItem<String>> get dropDownLabourOptions {
     Map<String, String> options = {
-      "High labour required": "High labour required",
-      "Rather high labour required": "Rather high labour required",
-      "Neither high nor low labout required": "Neither high nor low labout required",
-      "Rather low labour required": "Rather low labour required",
-      "Low labour required": "Low labour required",
-      "I am not sure": "I am not sure",
-      "Not applicable": "Not applicable",
-      "": "None of above",
+      'High labour required': 'High labour required',
+      'Rather high labour required': 'Rather high labour required',
+      'Neither high nor low labout required': 'Neither high nor low labout required',
+      'Rather low labour required': 'Rather low labour required',
+      'Low labour required': 'Low labour required',
+      'I am not sure': 'I am not sure',
+      'Not applicable': 'Not applicable',
+      '': 'None of above',
     };
 
     List<DropdownMenuItem<String>> labourItems = [];
@@ -134,14 +134,14 @@ class PracticeHelper {
 
   static List<DropdownMenuItem<String>> get dropDownCostsOptions {
     Map<String, String> options = {
-      "High costs": "High costs",
-      "Rather high costs": "Rather high costs",
-      "Neither high nor low costs": "Neither high nor low costs",
-      "Rather low costs": "Rather low costs",
-      "Low costs": "Low costs",
-      "I am not sure": "I am not sure",
-      "Not applicable": "Not applicable",
-      "": "None of above",
+      'High costs': 'High costs',
+      'Rather high costs': 'Rather high costs',
+      'Neither high nor low costs': 'Neither high nor low costs',
+      'Rather low costs': 'Rather low costs',
+      'Low costs': 'Low costs',
+      'I am not sure': 'I am not sure',
+      'Not applicable': 'Not applicable',
+      '': 'None of above',
     };
 
     List<DropdownMenuItem<String>> costsItems = [];
@@ -159,14 +159,14 @@ class PracticeHelper {
 
   static List<DropdownMenuItem<String>> get dropDownDegradedOptions {
     Map<String, String> options = {
-      "Works well in depleted environment": "Works well in depleted environment",
-      "Works rather well in depleted environment": "Works rather well in depleted environment",
-      "Neither works well nor poorly in depleted environment": "Neither works well nor poorly in depleted environment",
-      "Does rather not work in depleted environment": "Does rather not work in depleted environment",
-      "Does not work at all in depleted environment": "Does not work at all in depleted environment",
-      "I am not sure": "I am not sure",
-      "Not applicable": "Not applicable",
-      "": "None of above",
+      'Works well in depleted environment': 'Works well in depleted environment',
+      'Works rather well in depleted environment': 'Works rather well in depleted environment',
+      'Neither works well nor poorly in depleted environment': 'Neither works well nor poorly in depleted environment',
+      'Does rather not work in depleted environment': 'Does rather not work in depleted environment',
+      'Does not work at all in depleted environment': 'Does not work at all in depleted environment',
+      'I am not sure': 'I am not sure',
+      'Not applicable': 'Not applicable',
+      '': 'None of above',
     };
 
     List<DropdownMenuItem<String>> degradedItems = [];
@@ -184,14 +184,14 @@ class PracticeHelper {
 
   static List<DropdownMenuItem<String>> get dropDownTimeOptions {
     Map<String, String> options = {
-      "Works instantly": "Works instantly",
-      "Works rather rapidly": "Works rather rapidly",
-      "Works neither rapidly nor slowly": "Works neither rapidly nor slowly",
-      "Takes rather long to work": "Takes rather long to work",
-      "Takes very long to work": "Takes very long to work",
-      "I am not sure": "I am not sure",
-      "Not applicable": "Not applicable",
-      "": "None of above",
+      'Works instantly': 'Works instantly',
+      'Works rather rapidly': 'Works rather rapidly',
+      'Works neither rapidly nor slowly': 'Works neither rapidly nor slowly',
+      'Takes rather long to work': 'Takes rather long to work',
+      'Takes very long to work': 'Takes very long to work',
+      'I am not sure': 'I am not sure',
+      'Not applicable': 'Not applicable',
+      '': 'None of above',
     };
 
     List<DropdownMenuItem<String>> timeItems = [];
@@ -218,11 +218,11 @@ class PracticeHelper {
 
   static List<DropdownMenuItem<String>> get dropDownKnowledgeTimingOptions {
     Map<String, String> options = {
-      "A long time ago": "A long time ago",
-      "Some time ago": "Some time ago",
-      "Recently": "Recently",
-      "I am not sure": "I am not sure",
-      "": "None of above",
+      'A long time ago': 'A long time ago',
+      'Some time ago': 'Some time ago',
+      'Recently': 'Recently',
+      'I am not sure': 'I am not sure',
+      '': 'None of above',
     };
 
     List<DropdownMenuItem<String>> knowledgeTimingItems = [];

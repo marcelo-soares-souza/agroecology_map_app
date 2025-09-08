@@ -31,12 +31,12 @@ class LocationHelper {
 
   static List<DropdownMenuItem<String>> get dropDownFarmAndFarmingSystemOptions {
     Map<String, String> options = {
-      "Mainly Home Consumption": "Mainly Home Consumption",
-      "Mixed Home Consumption and Commercial": "Mixed Home Consumption and Commercial",
-      "Mainly commercial": "Mainly commercial",
-      "Other": "Other",
-      "I am not sure": "I am not sure",
-      "": "None of above",
+      'Mainly Home Consumption': 'Mainly Home Consumption',
+      'Mixed Home Consumption and Commercial': 'Mixed Home Consumption and Commercial',
+      'Mainly commercial': 'Mainly commercial',
+      'Other': 'Other',
+      'I am not sure': 'I am not sure',
+      '': 'None of above',
     };
 
     List<DropdownMenuItem<String>> farmAndFarmingSystemItems = [];

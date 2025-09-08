@@ -107,9 +107,9 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
         final nextPageKey = page + 1;
         _pagingController.appendPage(gallery, nextPageKey);
       }
-      debugPrint("[DEBUG] _fetchPage Gallery Length --> ${gallery.length}");
+      debugPrint('[DEBUG] _fetchPage Gallery Length --> ${gallery.length}');
     } catch (e) {
-      debugPrint("[DEBUG] _fetchPage error --> $e");
+      debugPrint('[DEBUG] _fetchPage error --> $e');
       _pagingController.error = e;
     }
   }

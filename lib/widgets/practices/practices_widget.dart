@@ -64,7 +64,7 @@ class _PracticesWidget extends State<PracticesWidget> {
         _pagingController.appendPage(practiceList, nextPageKey);
       }
     } catch (e) {
-      debugPrint("[DEBUG] _fetchPage error --> $e");
+      debugPrint('[DEBUG] _fetchPage error --> $e');
       _pagingController.error = e;
     }
   }

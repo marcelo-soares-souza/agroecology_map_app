@@ -20,7 +20,7 @@ class CustomInterceptor implements InterceptorContract {
       }
 
       request.headers['Authorization'] = 'Bearer $token';
-      request.headers['Content-Type'] = "application/json";
+      request.headers['Content-Type'] = 'application/json';
     } catch (e) {
       debugPrint('[DEBUG]: interceptRequest ERROR $e');
     }
@@ -30,7 +30,7 @@ class CustomInterceptor implements InterceptorContract {
 
   @override
   Future<BaseResponse> interceptResponse({required BaseResponse response}) async {
-    response.headers['Content-Type'] = "application/json";
+    response.headers['Content-Type'] = 'application/json';
 
     return response;
   }
