@@ -48,7 +48,8 @@ class Config {
       ),
       bodyMedium: TextStyle(
         fontSize: 16,
-        color: _colorScheme.surface,
+        // Use onSurface for readable default text on dark surfaces
+        color: _colorScheme.onSurface,
       ),
     ),
   );

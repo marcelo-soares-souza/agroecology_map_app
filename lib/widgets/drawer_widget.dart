@@ -138,6 +138,21 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           ListTile(
             leading: Icon(
+              FontAwesomeIcons.solidComments,
+              size: 26,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            title: Text('Chat',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall!
+                    .copyWith(color: Theme.of(context).colorScheme.secondary, fontSize: 24)),
+            onTap: () {
+              widget.onSelectScreen('chat');
+            },
+          ),
+          ListTile(
+            leading: Icon(
               isLoggedIn ? FontAwesomeIcons.rightFromBracket : FontAwesomeIcons.rightToBracket,
               size: 26,
               color: Theme.of(context).colorScheme.secondary,
