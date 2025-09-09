@@ -91,6 +91,23 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           ListTile(
             leading: Icon(
+              FontAwesomeIcons.userGroup,
+              size: 26,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            title: Text(
+              'Accounts',
+              style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: 24,
+                  ),
+            ),
+            onTap: () {
+              widget.onSelectScreen('accounts');
+            },
+          ),
+          ListTile(
+            leading: Icon(
               FontAwesomeIcons.locationDot,
               size: 26,
               color: Theme.of(context).colorScheme.secondary,
