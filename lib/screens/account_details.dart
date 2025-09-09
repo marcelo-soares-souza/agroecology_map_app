@@ -1,5 +1,9 @@
 import 'package:agroecology_map_app/models/account.dart';
 import 'package:agroecology_map_app/services/account_service.dart';
+import 'package:agroecology_map_app/services/chat_service.dart';
+import 'package:agroecology_map_app/services/auth_service.dart';
+import 'package:agroecology_map_app/helpers/form_helper.dart';
+import 'package:agroecology_map_app/screens/chat_page.dart';
 import 'package:agroecology_map_app/widgets/text_block_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +21,8 @@ class AccountDetailsScreen extends StatefulWidget {
 class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
   bool _loading = true;
   late Account _details;
+  bool _isLoggedIn = false;
+  int? _myAccountId;
 
   @override
   void initState() {
@@ -26,6 +32,13 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
 
   Future<void> _load() async {
     try {
+      _isLoggedIn = await AuthService.isLoggedIn();
+      if (_isLoggedIn) {
+        final idStr = await AuthService.getCurrentAccountId();
+        _myAccountId = int.tryParse(idStr);
+      } else {
+        _myAccountId = null;
+      }
       final account = await AccountService.retrieveAccountDetails(widget.account.id);
       setState(() {
         _details = account;
@@ -33,6 +46,34 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
       });
     } catch (e) {
       setState(() => _loading = false);
+    }
+  }
+
+  Future<void> _startConversation() async {
+    if (!_isLoggedIn) {
+      if (!mounted) return;
+      FormHelper.infoMessage(context, 'Please login to start a conversation');
+      return;
+    }
+    if (_myAccountId != null && _myAccountId == widget.account.id) {
+      if (!mounted) return;
+      FormHelper.infoMessage(context, 'You cannot start a conversation with yourself');
+      return;
+    }
+    try {
+      final conv = await const ChatService().createOrFindChat(widget.account.id);
+      if (!mounted) return;
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (ctx) => ChatPage(
+            conversationId: conv.id,
+            otherName: conv.other.name.isNotEmpty ? conv.other.name : widget.account.name,
+          ),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      FormHelper.errorMessage(context, 'Failed to start conversation');
     }
   }
 
@@ -83,6 +124,19 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                   ],
                 ),
               ),
+              const SizedBox(height: 12),
+              if (_isLoggedIn && (_myAccountId == null || _myAccountId != widget.account.id))
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: FilledButton.icon(
+                      onPressed: _startConversation,
+                      icon: const Icon(FontAwesomeIcons.solidComments),
+                      label: const Text('Start conversation'),
+                    ),
+                  ),
+                ),
               if (_details.locations.isNotEmpty) ...[
                 const SizedBox(height: 12),
                 Text(
@@ -117,7 +171,9 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(widget.account.name)),
+      appBar: AppBar(
+        title: Text(widget.account.name),
+      ),
       body: body,
     );
   }
