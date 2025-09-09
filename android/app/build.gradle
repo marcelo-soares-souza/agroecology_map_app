@@ -14,7 +14,7 @@ if (localPropertiesFile.exists()) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '14'
+    flutterVersionCode = '15'
 }
 print("flutterVersionCode: ${flutterVersionCode}\n")
 
@@ -34,7 +34,7 @@ android {
     namespace "org.agroecologymap"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion '28.0.12674087'
-    compileSdk 35
+    compileSdk 36
 
     compileOptions {
         sourceCompatibility=17
