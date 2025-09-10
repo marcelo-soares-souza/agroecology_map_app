@@ -19,7 +19,11 @@ class CustomInterceptor implements InterceptorContract {
         token = await storage.read(key: 'token');
       }
 
-      request.headers['Authorization'] = 'Bearer $token';
+      if (token != null && token.isNotEmpty) {
+        request.headers['Authorization'] = 'Bearer $token';
+      } else {
+        request.headers.remove('Authorization');
+      }
       request.headers['Content-Type'] = 'application/json';
     } catch (e) {
       debugPrint('[DEBUG]: interceptRequest ERROR $e');

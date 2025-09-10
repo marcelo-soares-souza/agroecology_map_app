@@ -1,0 +1,70 @@
+import 'package:agroecology_map_app/configs/config.dart';
+import 'package:agroecology_map_app/models/account.dart';
+import 'package:agroecology_map_app/screens/account_details.dart';
+import 'package:agroecology_map_app/services/account_service.dart';
+import 'package:agroecology_map_app/widgets/accounts/account_item_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+
+class AccountsWidget extends StatefulWidget {
+  const AccountsWidget({super.key});
+
+  @override
+  State<AccountsWidget> createState() => _AccountsWidgetState();
+}
+
+class _AccountsWidgetState extends State<AccountsWidget> {
+  final _numberOfItemsPerRequest = Config.maxNumberOfItemsPerRequest;
+  final PagingController<int, Account> _pagingController = PagingController(firstPageKey: 1);
+
+  @override
+  void initState() {
+    super.initState();
+    _pagingController.addPageRequestListener((pageKey) => _fetchPage(pageKey));
+  }
+
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
+  }
+
+  void _selectAccount(BuildContext context, Account account) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => AccountDetailsScreen(account: account),
+      ),
+    );
+  }
+
+  Future<void> _fetchPage(int page) async {
+    try {
+      final accounts = await AccountService.retrieveAccountsPerPage(page);
+      final isLastPage = accounts.length < _numberOfItemsPerRequest;
+      if (isLastPage) {
+        _pagingController.appendLastPage(accounts);
+      } else {
+        _pagingController.appendPage(accounts, page + 1);
+      }
+    } catch (e) {
+      _pagingController.error = e;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return RefreshIndicator(
+      onRefresh: () => Future.sync(() => _pagingController.refresh()),
+      child: PagedListView<int, Account>(
+        pagingController: _pagingController,
+        builderDelegate: PagedChildBuilderDelegate<Account>(
+          itemBuilder: (ctx, item, index) => AccountItemWidget(
+            key: ObjectKey(item.id),
+            account: item,
+            onSelectAccount: _selectAccount,
+          ),
+        ),
+      ),
+    );
+  }
+}
