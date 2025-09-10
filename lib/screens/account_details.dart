@@ -1,9 +1,9 @@
-import 'package:agroecology_map_app/models/account.dart';
-import 'package:agroecology_map_app/services/account_service.dart';
-import 'package:agroecology_map_app/services/chat_service.dart';
-import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/helpers/form_helper.dart';
+import 'package:agroecology_map_app/models/account.dart';
 import 'package:agroecology_map_app/screens/chat_page.dart';
+import 'package:agroecology_map_app/services/account_service.dart';
+import 'package:agroecology_map_app/services/auth_service.dart';
+import 'package:agroecology_map_app/services/chat_service.dart';
 import 'package:agroecology_map_app/widgets/text_block_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -130,10 +130,11 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: SizedBox(
                     width: double.infinity,
+                    height: 50,
                     child: FilledButton.icon(
                       onPressed: _startConversation,
                       icon: const Icon(FontAwesomeIcons.solidComments),
-                      label: const Text('Start conversation'),
+                      label: const Text('Start conversation', style: TextStyle(color: Colors.black, fontSize: 21)),
                     ),
                   ),
                 ),
@@ -188,8 +189,12 @@ class _CounterChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Chip(
-      label: Text('$label: $value'),
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+      label: Text(
+        '$label: $value',
+        style: const TextStyle(color: Colors.grey, fontSize: 21),
+      ),
+      backgroundColor: Theme.of(context).colorScheme.onSecondary,
+      shape: const StadiumBorder(side: BorderSide(color: Color.fromRGBO(0, 0, 0, 0.0))),
     );
   }
 }

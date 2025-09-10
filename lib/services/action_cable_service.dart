@@ -34,7 +34,9 @@ class ActionCableService {
     try {
       final token = await AuthService.storage.read(key: 'token');
       final uri = Config.getCableURI(token: token);
-      debugPrint('[Cable] connecting to: $uri');
+      // Avoid leaking the token in logs
+      final uriStr = uri.toString().replaceAll(RegExp(r'(token=)[^&]+'), r'$1REDACTED');
+      debugPrint('[Cable] connecting to: $uriStr');
       final chan = WebSocketChannel.connect(uri);
       _channel = chan;
       _welcomed = false;
@@ -141,4 +143,3 @@ class ActionCableService {
     _send({'command': 'unsubscribe', 'identifier': idStr});
   }
 }
-

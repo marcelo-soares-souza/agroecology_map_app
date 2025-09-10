@@ -46,3 +46,11 @@ app.*.map.json
 
 # AI
 AGENTS.md
+
+# Sensitive local Android config (should not be committed)
+android/local.properties
+android/key.properties
+
+# Common keystore patterns (defense-in-depth)
+*.jks
+*.keystore

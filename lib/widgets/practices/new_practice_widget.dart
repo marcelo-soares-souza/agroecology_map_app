@@ -148,10 +148,10 @@ class _NewPractice extends State<NewPractice> {
                     const Text('Location', style: TextStyle(color: Colors.grey, fontSize: 18)),
                     DropdownButtonFormField(
                       items: dropDownLocations,
-                      value: _locations.isNotEmpty ? _locations[0].id.toString() : null,
-                      onChanged: (value) {
+                      initialValue: _locations.isNotEmpty ? _locations[0].id.toString() : null,
+                      onChanged: (initialValue) {
                         setState(() {
-                          _practice.locationId = value!;
+                          _practice.locationId = initialValue!;
                         });
                       },
                       decoration: const InputDecoration(

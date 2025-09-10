@@ -98,7 +98,7 @@ class _LoginScreen extends State<LoginScreen> {
                 return null;
               },
               keyName: 'name',
-              icon: const Icon(FontAwesomeIcons.userLarge),
+              icon: const Icon(FontAwesomeIcons.user),
               displayName: 'Your Name',
             ),
           ],
