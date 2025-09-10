@@ -191,7 +191,7 @@ class _CounterChip extends StatelessWidget {
     return Chip(
       label: Text(
         '$label: $value',
-        style: const TextStyle(color: Colors.grey, fontSize: 21),
+        style: const TextStyle(color: Colors.grey, fontSize: 19),
       ),
       backgroundColor: Theme.of(context).colorScheme.onSecondary,
       shape: const StadiumBorder(side: BorderSide(color: Color.fromRGBO(0, 0, 0, 0.0))),

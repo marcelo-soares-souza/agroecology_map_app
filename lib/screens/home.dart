@@ -185,6 +185,42 @@ class _HomeScreenState extends State<HomeScreen> {
             )),
         style: const TextStyle(color: Colors.white, fontSize: 15.0),
       );
+    } else if (activePageTitle == 'Accounts') {
+      title = TextField(
+        onSubmitted: (value) {
+          Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  HomeScreen(activePage: AccountsScreen(filter: _searchQuery), activePageTitle: 'Accounts'),
+            ),
+          );
+        },
+        cursorColor: Colors.white,
+        onChanged: (value) => _searchQuery = value,
+        decoration: InputDecoration(
+            hintText: 'Search Account...',
+            hintStyle: TextStyle(
+              color: Colors.grey.withValues(alpha: 0.3),
+              fontSize: 21,
+            ),
+            border: InputBorder.none,
+            suffixIcon: IconButton(
+              icon: const Icon(FontAwesomeIcons.magnifyingGlass),
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        HomeScreen(activePage: AccountsScreen(filter: _searchQuery), activePageTitle: 'Accounts'),
+                  ),
+                );
+              },
+            )),
+        style: const TextStyle(color: Colors.white, fontSize: 15.0),
+      );
     }
 
     return title;

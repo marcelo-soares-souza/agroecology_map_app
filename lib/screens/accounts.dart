@@ -2,11 +2,10 @@ import 'package:agroecology_map_app/widgets/accounts/accounts_widget.dart';
 import 'package:flutter/material.dart';
 
 class AccountsScreen extends StatelessWidget {
-  const AccountsScreen({super.key});
+  final String filter;
+
+  const AccountsScreen({super.key, this.filter = ''});
 
   @override
-  Widget build(BuildContext context) {
-    return const Scaffold(body: AccountsWidget());
-  }
+  Widget build(BuildContext context) => Scaffold(body: AccountsWidget(filter: filter));
 }
-

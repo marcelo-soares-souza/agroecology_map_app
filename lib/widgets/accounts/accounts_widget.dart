@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class AccountsWidget extends StatefulWidget {
-  const AccountsWidget({super.key});
+  final String filter;
+
+  const AccountsWidget({super.key, this.filter = ''});
 
   @override
   State<AccountsWidget> createState() => _AccountsWidgetState();
@@ -39,7 +41,14 @@ class _AccountsWidgetState extends State<AccountsWidget> {
 
   Future<void> _fetchPage(int page) async {
     try {
-      final accounts = await AccountService.retrieveAccountsPerPage(page);
+      List<Account> accounts = [];
+
+      if (widget.filter.isNotEmpty) {
+        accounts = await AccountService.retrieveAccountsByFilter(widget.filter);
+      } else {
+        accounts = await AccountService.retrieveAccountsPerPage(page);
+      }
+
       final isLastPage = accounts.length < _numberOfItemsPerRequest;
       if (isLastPage) {
         _pagingController.appendLastPage(accounts);

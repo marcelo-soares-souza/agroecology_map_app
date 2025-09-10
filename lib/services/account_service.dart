@@ -33,6 +33,23 @@ class AccountService {
     return accounts;
   }
 
+  static Future<List<Account>> retrieveAccountsByFilter(String filter) async {
+    final List<Account> accounts = [];
+
+    final res = await httpClient.get(
+      Config.getURI('accounts.json'),
+      params: {'filter': 'true', 'name': filter},
+    );
+
+    final dynamic data = json.decode(res.body.toString());
+    if (data is List) {
+      for (final item in data) {
+        if (item is Map<String, dynamic>) accounts.add(Account.fromJson(item));
+      }
+    }
+    return accounts;
+  }
+
   static Future<Account> retrieveAccountDetails(int accountId) async {
     final res = await httpClient.get(Config.getURI('/accounts/$accountId.json'));
     final dynamic data = json.decode(res.body.toString());
