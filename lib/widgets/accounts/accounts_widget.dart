@@ -39,12 +39,17 @@ class _AccountsWidgetState extends State<AccountsWidget> {
 
   Future<void> _fetchPage(int page) async {
     try {
-      final accounts = await AccountService.retrieveAccountsPerPage(page);
-      final isLastPage = accounts.length < _numberOfItemsPerRequest;
-      if (isLastPage) {
+      final response = await AccountService.retrieveAccountsPerPage(
+        page,
+        perPage: _numberOfItemsPerRequest,
+      );
+      final accounts = response.data;
+      final nextPage = response.metadata?.nextPage;
+
+      if (nextPage == null || nextPage <= page || accounts.isEmpty) {
         _pagingController.appendLastPage(accounts);
       } else {
-        _pagingController.appendPage(accounts, page + 1);
+        _pagingController.appendPage(accounts, nextPage);
       }
     } catch (e) {
       _pagingController.error = e;

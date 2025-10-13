@@ -40,21 +40,24 @@ class _LocationsWidget extends State<LocationsWidget> {
 
   Future<void> _fetchPage(int page) async {
     try {
-      List<Location> locationList = [];
-
       if (widget.filter.isNotEmpty) {
-        locationList = await LocationService.retrieveLocationsByFilter(widget.filter);
-      } else {
-        locationList = await LocationService.retrieveLocationsPerPage(page);
+        final filteredLocations = await LocationService.retrieveLocationsByFilter(widget.filter);
+        _pagingController.appendLastPage(filteredLocations);
+        return;
       }
 
-      final isLastPage = locationList.length < _numberOfItemsPerRequest;
+      final response = await LocationService.retrieveLocationsPerPage(
+        page,
+        perPage: _numberOfItemsPerRequest,
+      );
 
-      if (isLastPage) {
-        _pagingController.appendLastPage(locationList);
+      final locations = response.data;
+      final nextPage = response.metadata?.nextPage;
+
+      if (nextPage == null || nextPage <= page || locations.isEmpty) {
+        _pagingController.appendLastPage(locations);
       } else {
-        final nextPageKey = page + 1;
-        _pagingController.appendPage(locationList, nextPageKey);
+        _pagingController.appendPage(locations, nextPage);
       }
     } catch (e) {
       debugPrint('[DEBUG] _fetchPage error --> $e');

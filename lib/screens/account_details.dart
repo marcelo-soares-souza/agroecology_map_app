@@ -1,9 +1,9 @@
-import 'package:agroecology_map_app/models/account.dart';
-import 'package:agroecology_map_app/services/account_service.dart';
-import 'package:agroecology_map_app/services/chat_service.dart';
-import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/helpers/form_helper.dart';
+import 'package:agroecology_map_app/models/account.dart';
 import 'package:agroecology_map_app/screens/chat_page.dart';
+import 'package:agroecology_map_app/services/account_service.dart';
+import 'package:agroecology_map_app/services/auth_service.dart';
+import 'package:agroecology_map_app/services/chat_service.dart';
 import 'package:agroecology_map_app/widgets/text_block_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';

@@ -14,7 +14,7 @@ class Config {
   static const String aboutPage = '$_scheme://$siteUrl';
   static const String privacyPolicyPage = '$_scheme://$siteUrl/privacy_policy';
   static const String osmURL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
-  static const int maxNumberOfItemsPerRequest = 6;
+  static const int maxNumberOfItemsPerRequest = 5;
 
   static const InteractionOptions interactionOptions = InteractionOptions(
     enableMultiFingerGestureRace: true,

@@ -46,21 +46,23 @@ class _PracticesWidget extends State<PracticesWidget> {
 
   Future<void> _fetchPage(int page) async {
     try {
-      List<Practice> practiceList = [];
-
       if (widget.filter.isNotEmpty) {
-        practiceList = await PracticeService.retrievePracticesByFilter(widget.filter);
-      } else {
-        practiceList = await PracticeService.retrievePracticesPerPage(page);
+        final practiceList = await PracticeService.retrievePracticesByFilter(widget.filter);
+        _pagingController.appendLastPage(practiceList);
+        return;
       }
 
-      final isLastPage = practiceList.length < _numberOfItemsPerRequest;
+      final response = await PracticeService.retrievePracticesPerPage(
+        page,
+        perPage: _numberOfItemsPerRequest,
+      );
+      final practiceList = response.data;
+      final nextPage = response.metadata?.nextPage;
 
-      if (isLastPage) {
+      if (nextPage == null || nextPage <= page || practiceList.isEmpty) {
         _pagingController.appendLastPage(practiceList);
       } else {
-        final nextPageKey = page + 1;
-        _pagingController.appendPage(practiceList, nextPageKey);
+        _pagingController.appendPage(practiceList, nextPage);
       }
     } catch (e) {
       debugPrint('[DEBUG] _fetchPage error --> $e');

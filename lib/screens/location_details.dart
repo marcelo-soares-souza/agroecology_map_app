@@ -94,17 +94,19 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
 
   Future<void> _fetchPage(int page) async {
     try {
-      List<GalleryItem> gallery = [];
+      final response = await LocationService.retrieveLocationGalleryPerPage(
+        widget.location.id.toString(),
+        page,
+        perPage: _numberOfItemsPerRequest,
+      );
 
-      gallery = await LocationService.retrieveLocationGalleryPerPage(widget.location.id.toString(), page);
+      final gallery = response.data;
+      final nextPage = response.metadata?.nextPage;
 
-      final isLastPage = gallery.length < _numberOfItemsPerRequest;
-
-      if (isLastPage) {
+      if (nextPage == null || nextPage <= page || gallery.isEmpty) {
         _pagingController.appendLastPage(gallery);
       } else {
-        final nextPageKey = page + 1;
-        _pagingController.appendPage(gallery, nextPageKey);
+        _pagingController.appendPage(gallery, nextPage);
       }
       debugPrint('[DEBUG] _fetchPage Gallery Length --> ${gallery.length}');
     } catch (e) {

@@ -6,6 +6,7 @@ import 'package:agroecology_map_app/configs/config.dart';
 import 'package:agroecology_map_app/helpers/custom_interceptor.dart';
 import 'package:agroecology_map_app/models/gallery_item.dart';
 import 'package:agroecology_map_app/models/location.dart';
+import 'package:agroecology_map_app/models/pagination.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http_interceptor/http/intercepted_client.dart';
@@ -46,18 +47,32 @@ class LocationService {
     return locations;
   }
 
-  static Future<List<Location>> retrieveLocationsPerPage(page) async {
+  static Future<PaginatedResponse<Location>> retrieveLocationsPerPage(
+    int page, {
+    int perPage = 5,
+  }) async {
+    final res = await httpClient.get(
+      Config.getURI('locations.json'),
+      params: {
+        'page': page,
+        'per_page': perPage,
+      },
+    );
+
     final List<Location> locations = [];
-
-    final res = await httpClient.get(Config.getURI('locations.json'), params: {'page': page});
-
-    for (final location in json.decode(res.body.toString())) {
-      final Location l = Location.fromJson(location);
-      l.hasPermission = await AuthService.hasPermission(l.accountId);
-      locations.add(l);
+    final dynamic decoded = json.decode(res.body.toString());
+    if (decoded is List) {
+      for (final location in decoded) {
+        final Location l = Location.fromJson(location);
+        l.hasPermission = await AuthService.hasPermission(l.accountId);
+        locations.add(l);
+      }
     }
 
-    return locations;
+    return PaginatedResponse<Location>(
+      data: locations,
+      metadata: PaginationMetadata.fromHeaders(res.headers),
+    );
   }
 
   static Future<List<Location>> retrieveLocationsByFilter(String filter) async {
@@ -99,22 +114,43 @@ class LocationService {
     return gallery;
   }
 
-  static Future<List<GalleryItem>> retrieveLocationGalleryPerPage(String locationId, page) async {
-    final List<GalleryItem> gallery = [];
-
-    final res = await httpClient.get(Config.getURI('/locations/$locationId/gallery.json'), params: {'page': page});
+  static Future<PaginatedResponse<GalleryItem>> retrieveLocationGalleryPerPage(
+    String locationId,
+    int page, {
+    int perPage = 5,
+  }) async {
+    final res = await httpClient.get(
+      Config.getURI('/locations/$locationId/gallery.json'),
+      params: {
+        'page': page,
+        'per_page': perPage,
+      },
+    );
 
     debugPrint('[DEBUG]: statusCode ${res.statusCode}');
     debugPrint('[DEBUG]: body ${res.body}');
 
+    final List<GalleryItem> gallery = [];
     final dynamic data = json.decode(res.body.toString());
 
-    if (res.body.length > 14) {
-      for (final item in data['gallery']) {
+    if (data is Map<String, dynamic>) {
+      final dynamic galleryData = data['gallery'];
+      if (galleryData is List) {
+        for (final item in galleryData) {
+          gallery.add(GalleryItem.fromJson(item));
+        }
+      }
+    } else if (data is List) {
+      // Some endpoints may return a bare array.
+      for (final item in data) {
         gallery.add(GalleryItem.fromJson(item));
       }
     }
-    return gallery;
+
+    return PaginatedResponse<GalleryItem>(
+      data: gallery,
+      metadata: PaginationMetadata.fromHeaders(res.headers),
+    );
   }
 
   static Future<List<Location>> retrieveAllLocationsByAccount(String accountId) async {

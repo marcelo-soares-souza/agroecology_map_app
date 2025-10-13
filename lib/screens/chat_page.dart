@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:agroecology_map_app/models/chat/message.dart';
-import 'package:agroecology_map_app/services/auth_service.dart';
-import 'package:agroecology_map_app/services/action_cable_service.dart';
 import 'package:agroecology_map_app/configs/config.dart';
+import 'package:agroecology_map_app/models/chat/message.dart';
+import 'package:agroecology_map_app/services/action_cable_service.dart';
+import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/chat_service.dart';
 import 'package:flutter/material.dart';
 
@@ -31,14 +31,12 @@ class _ChatPageState extends State<ChatPage> {
   Timer? _poll;
   final Set<int> _messageIds = <int>{};
   late Future<bool> _loggedInFuture;
-  bool _isLoggedIn = false;
   Map<String, dynamic>? _cableId;
 
   @override
   void initState() {
     super.initState();
     _loggedInFuture = AuthService.isLoggedIn().then((v) {
-      _isLoggedIn = v;
       if (v) _init();
       return v;
     });
