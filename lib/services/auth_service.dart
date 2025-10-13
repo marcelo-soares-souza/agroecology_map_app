@@ -8,6 +8,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http_interceptor/http/intercepted_client.dart';
 
+enum AuthStatus { unknown, loading, authenticated, unauthenticated }
+
 class AuthService {
   static const storage = FlutterSecureStorage(
     aOptions: AndroidOptions(
@@ -23,6 +25,30 @@ class AuthService {
       CustomInterceptor(),
     ],
   );
+
+  static final ValueNotifier<AuthStatus> authStatus = ValueNotifier<AuthStatus>(AuthStatus.unknown);
+
+  static Future<void> bootstrapAuthStatus() async {
+    authStatus.value = AuthStatus.loading;
+    try {
+      final loggedIn = await isLoggedIn();
+      if (!loggedIn) {
+        authStatus.value = AuthStatus.unauthenticated;
+        return;
+      }
+
+      final valid = await validateToken();
+      if (valid) {
+        authStatus.value = AuthStatus.authenticated;
+      } else {
+        await logout();
+        authStatus.value = AuthStatus.unauthenticated;
+      }
+    } catch (e) {
+      debugPrint('[DEBUG]: bootstrapAuthStatus ERROR $e');
+      authStatus.value = AuthStatus.unauthenticated;
+    }
+  }
 
   static Future<bool> login(email, password) async {
     final res = await httpClient.post(
@@ -41,6 +67,8 @@ class AuthService {
     await storage.write(key: 'token', value: data['token'].toString());
     await storage.write(key: 'email', value: email);
     await storage.write(key: 'account_id', value: data['account_id'].toString());
+
+    authStatus.value = AuthStatus.authenticated;
 
     return true;
   }
@@ -74,6 +102,8 @@ class AuthService {
       await storage.delete(key: 'account_id');
 
       debugPrint('[DEBUG]: Cleared secure storage keys (email/token/account_id)');
+
+      authStatus.value = AuthStatus.unauthenticated;
 
       return true;
     } catch (e) {

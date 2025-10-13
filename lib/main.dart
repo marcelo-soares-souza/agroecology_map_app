@@ -1,8 +1,11 @@
 import 'package:agroecology_map_app/configs/config.dart';
 import 'package:agroecology_map_app/screens/home.dart';
+import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AuthService.bootstrapAuthStatus();
   runApp(const AgroecologyMapApp());
 }
 

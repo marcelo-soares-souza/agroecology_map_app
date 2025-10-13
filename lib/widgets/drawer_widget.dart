@@ -15,41 +15,10 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
-  bool isLoggedIn = false;
-
-  void _checkIfLoggedIn() async {
-    try {
-      final loggedIn = await AuthService.isLoggedIn();
-      bool nextStatus = false;
-
-      if (loggedIn) {
-        final valid = await AuthService.validateToken();
-        nextStatus = valid;
-        if (!valid) {
-          await AuthService.logout();
-        }
-      } else {
-        await AuthService.logout();
-      }
-
-      setState(() {
-        isLoggedIn = nextStatus;
-      });
-    } catch (e) {
-      debugPrint('[DEBUG]: _checkIfLoggedIn ERROR $e');
-    }
-
-    // debugPrint('[DEBUG]: _checkIfLoggedIn $isLoggedIn');
-  }
-
   void _logout() async {
     final bool logoutSuccess = await AuthService.logout();
 
     if (logoutSuccess) {
-      setState(() {
-        isLoggedIn = false;
-      });
-
       debugPrint('[DEBUG]: _logout $logoutSuccess');
       widget.onSelectScreen('map');
     } else {
@@ -57,10 +26,46 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _checkIfLoggedIn();
+  Widget _buildAuthTile(BuildContext context) {
+    return ValueListenableBuilder<AuthStatus>(
+      valueListenable: AuthService.authStatus,
+      builder: (context, status, _) {
+        final textStyle = Theme.of(context)
+            .textTheme
+            .titleSmall!
+            .copyWith(color: Theme.of(context).colorScheme.secondary, fontSize: 24);
+
+        if (status == AuthStatus.loading || status == AuthStatus.unknown) {
+          return ListTile(
+            leading: const SizedBox(
+              height: 24,
+              width: 24,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
+            title: Text('Checking session...', style: textStyle),
+            enabled: false,
+          );
+        }
+
+        final isLoggedIn = status == AuthStatus.authenticated;
+
+        return ListTile(
+          leading: Icon(
+            isLoggedIn ? FontAwesomeIcons.rightFromBracket : FontAwesomeIcons.rightToBracket,
+            size: 26,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+          title: Text(isLoggedIn ? 'Logout' : 'Login', style: textStyle),
+          onTap: () {
+            if (isLoggedIn) {
+              _logout();
+            } else {
+              widget.onSelectScreen('login');
+            }
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -168,21 +173,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               widget.onSelectScreen('chat');
             },
           ),
-          ListTile(
-            leading: Icon(
-              isLoggedIn ? FontAwesomeIcons.rightFromBracket : FontAwesomeIcons.rightToBracket,
-              size: 26,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            title: Text(isLoggedIn ? 'Logout' : 'Login',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall!
-                    .copyWith(color: Theme.of(context).colorScheme.secondary, fontSize: 24)),
-            onTap: () {
-              isLoggedIn ? _logout() : widget.onSelectScreen('login');
-            },
-          ),
+          _buildAuthTile(context),
           ListTile(
             leading: Icon(
               FontAwesomeIcons.info,
