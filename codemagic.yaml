@@ -1,0 +1,39 @@
+workflows:
+  flutter-ci:
+    name: Flutter CI (Android & iOS)
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    environment:
+      flutter: 3.35.6
+      xcode: 16.2
+    cache:
+      cache_paths:
+        - ~/.pub-cache
+        - ~/.gradle/caches
+        - ~/.gradle/wrapper
+        - build
+        - ios/Pods
+        - ~/Library/Caches/CocoaPods
+    scripts:
+      - name: Install dependencies
+        script: |
+          flutter pub get
+      - name: Analyze
+        script: |
+          flutter analyze
+      - name: Unit tests
+        script: |
+          flutter test
+      - name: Build Android APK
+        script: |
+          flutter build apk --release
+      - name: Build Android AppBundle
+        script: |
+          flutter build appbundle --release
+      - name: Build iOS IPA (no code signing)
+        script: |
+          flutter build ipa --no-codesign
+    artifacts:
+      - build/app/outputs/**/*.apk
+      - build/app/outputs/**/*.aab
+      - build/ios/ipa/*.ipa
