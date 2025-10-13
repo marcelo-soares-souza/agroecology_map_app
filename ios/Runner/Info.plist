@@ -43,6 +43,8 @@
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Allow Agroecology Map to access your location to suggest nearby agroecology initiatives.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Allow Agroecology Map to access your location even in the background so nearby agroecology initiatives stay up to date.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Allow Agroecology Map to use the camera so you can capture photos for new initiatives.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
