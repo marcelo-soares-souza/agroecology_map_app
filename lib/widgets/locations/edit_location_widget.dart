@@ -156,7 +156,7 @@ class _EditLocation extends State<EditLocation> {
                   const Text('Country', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   DropdownButtonFormField(
                     items: LocationHelper.dropDownCountries,
-                    initialValue: _location.countryCode,
+                    value: _location.countryCode,
                     onChanged: (value) {
                       setState(() {
                         _location.country = value!;
@@ -174,7 +174,7 @@ class _EditLocation extends State<EditLocation> {
                   const Text('Is it a farm?', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   DropdownButtonFormField(
                     items: FormHelper.dropDownYesNoBool,
-                    initialValue: _location.isItAFarm,
+                    value: _location.isItAFarm,
                     onChanged: (value) => _location.isItAFarm = value!,
                     decoration: const InputDecoration(
                       filled: false,
@@ -196,7 +196,7 @@ class _EditLocation extends State<EditLocation> {
                   const Text('What\'s the main purpose?', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   DropdownButtonFormField(
                     items: LocationHelper.dropDownFarmAndFarmingSystemOptions,
-                    initialValue: _location.farmAndFarmingSystem,
+                    value: _location.farmAndFarmingSystem,
                     onChanged: (value) => _location.farmAndFarmingSystem = value!,
                     decoration: const InputDecoration(
                       filled: false,
