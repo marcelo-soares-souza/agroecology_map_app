@@ -5,7 +5,7 @@ workflows:
     instance_type: mac_mini_m2
     environment:
       flutter: 3.27.4
-      xcode: 16.2
+      xcode: 16.4
     cache:
       cache_paths:
         - ~/.pub-cache
