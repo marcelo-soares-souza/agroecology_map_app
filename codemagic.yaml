@@ -1,7 +1,7 @@
 workflows:
   flutter-ios:
     name: Flutter CI (iOS)
-    max_build_duration: 60
+    max_build_duration: 30
     instance_type: mac_mini_m2
     environment:
       flutter: 3.27.4
