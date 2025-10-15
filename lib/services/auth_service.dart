@@ -153,4 +153,21 @@ class AuthService {
       return false;
     }
   }
+
+  static Future<bool> deleteAccount() async {
+    try {
+      final res = await httpClient.delete(Config.getURI('/account.json'));
+
+      debugPrint('[DEBUG]: deleteAccount statusCode ${res.statusCode}');
+      debugPrint('[DEBUG]: deleteAccount body ${res.body}');
+
+      if (res.statusCode != 200) return false;
+
+      await logout();
+      return true;
+    } catch (e) {
+      debugPrint('[DEBUG]: deleteAccount ERROR $e');
+      return false;
+    }
+  }
 }

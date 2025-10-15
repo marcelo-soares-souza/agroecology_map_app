@@ -26,6 +26,61 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     }
   }
 
+  void _deleteAccount() async {
+    final bool? confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Account'),
+        content: const Text(
+          'Are you sure you want to delete your account? This action cannot be undone.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.red,
+            ),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+
+    final bool deleteSuccess = await AuthService.deleteAccount();
+
+    if (!mounted) return;
+
+    if (deleteSuccess) {
+      widget.onSelectScreen('locations');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Account successfully deleted'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Error'),
+          content: const Text('Failed to delete account. Please try again later.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
   Widget _buildAuthTile(BuildContext context) {
     return ValueListenableBuilder<AuthStatus>(
       valueListenable: AuthService.authStatus,
@@ -63,6 +118,36 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               widget.onSelectScreen('login');
             }
           },
+        );
+      },
+    );
+  }
+
+  Widget _buildDeleteButton(BuildContext context) {
+    return ValueListenableBuilder<AuthStatus>(
+      valueListenable: AuthService.authStatus,
+      builder: (context, status, _) {
+        if (status != AuthStatus.authenticated) {
+          return const SizedBox.shrink();
+        }
+
+        return Padding(
+          padding: const EdgeInsets.only(
+            left: 16,
+            right: 16,
+            bottom: 130, // Account for bottom navigation bar
+            top: 8,
+          ),
+          child: TextButton(
+            onPressed: _deleteAccount,
+            child: const Text(
+              'Delete my account',
+              style: TextStyle(
+                color: Colors.red,
+                fontSize: 14,
+              ),
+            ),
+          ),
         );
       },
     );
@@ -189,6 +274,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               widget.onSelectScreen('about');
             },
           ),
+          const Spacer(),
+          _buildDeleteButton(context),
         ],
       ),
     );
