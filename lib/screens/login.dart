@@ -44,7 +44,7 @@ class _LoginScreen extends State<LoginScreen> {
 
     return Future.delayed(singupTime).then((_) {
       if (status == 'failed') {
-        return 'Something is wrong. $message';
+        return 'Something is wrong $message';
       }
 
       return null;
@@ -59,10 +59,9 @@ class _LoginScreen extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
-        Expanded(
-            child: FlutterLogin(
+        FlutterLogin(
           hideForgotPasswordButton: true,
           hideProvidersTitle: true,
           theme: LoginTheme(
@@ -81,7 +80,7 @@ class _LoginScreen extends State<LoginScreen> {
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.black),
               ),
-              labelStyle: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+              labelStyle: TextStyle(color: Colors.white, fontSize: 21, fontWeight: FontWeight.bold),
             ),
           ),
           logo: const AssetImage('assets/images/logo.png'),
@@ -110,20 +109,21 @@ class _LoginScreen extends State<LoginScreen> {
             );
           },
           onRecoverPassword: _recoverPassword,
-        )),
-        const SizedBox(
-          height: 10,
         ),
-        InkWell(
-          child: Text('Read our Privacy Policy',
-              style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                    color: Theme.of(context).colorScheme.secondary,
-                  )),
-          onTap: () => launchUrl(Uri.parse(Config.privacyPolicyPage)),
+        Positioned(
+          bottom: 120,
+          left: 0,
+          right: 0,
+          child: Center(
+            child: InkWell(
+              child: const Text(
+                'Read our Privacy Policy',
+                style: TextStyle(color: Colors.red, fontSize: 21, fontWeight: FontWeight.bold),
+              ),
+              onTap: () => launchUrl(Uri.parse(Config.privacyPolicyPage)),
+            ),
+          ),
         ),
-        const SizedBox(
-          height: 10,
-        )
       ],
     );
   }
