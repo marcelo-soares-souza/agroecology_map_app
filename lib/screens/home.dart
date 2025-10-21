@@ -148,7 +148,8 @@ class _HomeScreenState extends State<HomeScreen> {
         onSubmitted: (value) {
           setState(() {
             _searchQuery = value;
-            _locationFilters = _locationFilters.copyWith(name: value);
+            // Reset all filters and only keep the search query
+            _locationFilters = LocationFilters(name: value);
             activePage = LocationsScreen(filters: _locationFilters);
           });
         },
@@ -165,7 +166,8 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: const Icon(FontAwesomeIcons.magnifyingGlass),
               onPressed: () {
                 setState(() {
-                  _locationFilters = _locationFilters.copyWith(name: _searchQuery);
+                  // Reset all filters and only keep the search query
+                  _locationFilters = LocationFilters(name: _searchQuery);
                   activePage = LocationsScreen(filters: _locationFilters);
                 });
               },
