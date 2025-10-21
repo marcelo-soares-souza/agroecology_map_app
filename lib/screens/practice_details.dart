@@ -38,8 +38,11 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
   Future<void> _retrieveFullPractice() async {
     _practice = await PracticeService.retrievePractice(widget.practice.id.toString());
 
+    if (!mounted) return;
+    final l10n = AppLocalizations.of(context)!;
+
     mainBlock = <Widget>[
-      for (final i in _practice.main.entries)
+      for (final i in _practice.getMainLabels(l10n).entries)
         if (_practice.getFieldByName(i.value).length > 0)
           TextBlockWidget(
             label: i.key,
@@ -48,7 +51,7 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
     ];
 
     characteriseBlock = <Widget>[
-      for (final i in _practice.characterises.entries)
+      for (final i in _practice.getCharacterisesLabels(l10n).entries)
         if (_practice.getFieldByName(i.value).length > 0)
           TextBlockWidget(
             label: i.key,

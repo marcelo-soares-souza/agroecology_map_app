@@ -135,7 +135,7 @@ class _NewPractice extends State<NewPractice> {
       if (!_isLoggedIn) {
         content = Center(
           child: Text(
-            l10n.pleaseLoginToChat, // Using existing key - TODO: add specific key
+            l10n.needLoginToAdd,
             style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).colorScheme.secondary),
           ),
         );

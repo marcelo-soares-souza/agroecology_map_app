@@ -111,7 +111,7 @@ class _NewCharacterises extends State<NewCharacterises> {
     if (!_isLoading) {
       content = Center(
         child: Text(
-          l10n.pleaseLoginToChat, // Using existing key - TODO: add specific key
+          l10n.needLoginToAdd,
           style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).colorScheme.secondary),
         ),
       );
@@ -135,7 +135,7 @@ class _NewCharacterises extends State<NewCharacterises> {
                     )
                   ],
                   const SizedBox(height: 21),
-                  const Text('Food system components addressed?', style: TextStyle(color: Colors.grey, fontSize: 18)), // TODO: add l10n key
+                  Text(l10n.foodSystemComponents, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                   for (final key in _practiceHelper.foodSystemComponentsAddressedValues.keys) ...[
                     CheckboxListTile(
                       title: Text(key),

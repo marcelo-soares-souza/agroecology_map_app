@@ -572,5 +572,25 @@
   "accountCreated": "Account created",
   "@accountCreated": {
     "description": "Success message when account is created"
+  },
+
+  "summaryDescription": "Summary Description",
+  "@summaryDescription": {
+    "description": "Practice summary description label"
+  },
+
+  "whereIsRealized": "Where it is realized?",
+  "@whereIsRealized": {
+    "description": "Practice location question label"
+  },
+
+  "agroecologyPrinciplesAddressed": "Agroecology principles addressed",
+  "@agroecologyPrinciplesAddressed": {
+    "description": "Agroecology principles field label"
+  },
+
+  "foodSystemComponentsAddressed": "Food system components addressed",
+  "@foodSystemComponentsAddressed": {
+    "description": "Food system components field label"
   }
 }

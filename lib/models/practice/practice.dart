@@ -53,6 +53,7 @@ class Practice {
   String createdAt;
   String updatedAt;
 
+  // Note: These are kept for backward compatibility but should use getMainLabels() and getCharacterisesLabels() instead
   final main = {
     'Summary Description': 'summaryDescription',
     'Where it is realized?': 'whereItIsRealized',
@@ -64,6 +65,23 @@ class Practice {
     'Agroecology principles addressed': 'agroecologyPrinciplesAddressed',
     'Food system components addressed': 'foodSystemComponentsAddressed'
   };
+
+  // Helper methods to get translated labels - requires AppLocalizations
+  Map<String, String> getMainLabels(dynamic l10n) {
+    return {
+      l10n.summaryDescription: 'summaryDescription',
+      l10n.whereIsRealized: 'whereItIsRealized',
+      l10n.location: 'location',
+      l10n.responsibleForInfo: 'responsibleForInformation',
+    };
+  }
+
+  Map<String, String> getCharacterisesLabels(dynamic l10n) {
+    return {
+      l10n.agroecologyPrinciplesAddressed: 'agroecologyPrinciplesAddressed',
+      l10n.foodSystemComponentsAddressed: 'foodSystemComponentsAddressed',
+    };
+  }
 
   Practice({
     required this.id,

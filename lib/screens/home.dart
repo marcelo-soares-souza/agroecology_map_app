@@ -9,6 +9,7 @@ import 'package:agroecology_map_app/widgets/drawer_widget.dart';
 import 'package:agroecology_map_app/widgets/locations/new_location_widget.dart';
 import 'package:agroecology_map_app/widgets/practices/new_practice_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -27,73 +28,78 @@ class _HomeScreenState extends State<HomeScreen> {
   String _searchQuery = '';
 
   void _addLocation() async {
+    final l10n = AppLocalizations.of(context)!;
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => const NewLocation(),
       ),
     );
 
+    if (!mounted) return;
     setState(() {
       activePage = const LocationsScreen();
-      activePageTitle = 'Locations';
+      activePageTitle = l10n.locations;
     });
   }
 
   void _addPractice() async {
+    final l10n = AppLocalizations.of(context)!;
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => const NewPractice(),
       ),
     );
 
+    if (!mounted) return;
     setState(() {
       activePage = const PracticesScreen();
-      activePageTitle = 'Practices';
+      activePageTitle = l10n.practices;
     });
   }
 
   void _setScreen(String screen) {
+    final l10n = AppLocalizations.of(context)!;
     switch (screen) {
       case 'locations':
         setState(() {
           activePage = const LocationsScreen();
-          activePageTitle = 'Locations';
+          activePageTitle = l10n.locations;
         });
         break;
       case 'practices':
         setState(() {
           activePage = const PracticesScreen();
-          activePageTitle = 'Practices';
+          activePageTitle = l10n.practices;
         });
         break;
       case 'accounts':
         setState(() {
           activePage = const AccountsScreen();
-          activePageTitle = 'Accounts';
+          activePageTitle = l10n.accounts;
         });
         break;
       case 'about':
         setState(() {
           activePage = const AboutScreen();
-          activePageTitle = 'About';
+          activePageTitle = l10n.about;
         });
         break;
       case 'chat':
         setState(() {
           activePage = const ChatListScreen();
-          activePageTitle = 'Chat';
+          activePageTitle = l10n.chat;
         });
         break;
       case 'login':
         setState(() {
           activePage = const LoginScreen();
-          activePageTitle = 'Login';
+          activePageTitle = l10n.login;
         });
         break;
       default:
         setState(() {
           activePage = const MapScreen();
-          activePageTitle = 'Map';
+          activePageTitle = l10n.map;
         });
         break;
     }
@@ -108,12 +114,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget getTitle() {
+    final l10n = AppLocalizations.of(context)!;
     Widget title = Text(
       activePageTitle,
       style: Theme.of(context).textTheme.titleLarge,
     );
 
-    if (activePageTitle == 'Locations') {
+    // Check if current page is Locations (by comparing with localized string)
+    if (activePageTitle == l10n.locations || activePage is LocationsScreen) {
       title = TextField(
         onSubmitted: (value) {
           Navigator.pop(context);
@@ -121,14 +129,14 @@ class _HomeScreenState extends State<HomeScreen> {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  HomeScreen(activePage: LocationsScreen(filter: _searchQuery), activePageTitle: 'Locations'),
+                  HomeScreen(activePage: LocationsScreen(filter: _searchQuery), activePageTitle: l10n.locations),
             ),
           );
         },
         cursorColor: Colors.white,
         onChanged: (value) => _searchQuery = value,
         decoration: InputDecoration(
-            hintText: 'Search Location...',
+            hintText: l10n.searchLocation,
             hintStyle: TextStyle(
               color: Colors.grey.withValues(alpha: 0.3),
               fontSize: 21,
@@ -142,14 +150,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        HomeScreen(activePage: LocationsScreen(filter: _searchQuery), activePageTitle: 'Locations'),
+                        HomeScreen(activePage: LocationsScreen(filter: _searchQuery), activePageTitle: l10n.locations),
                   ),
                 );
               },
             )),
         style: const TextStyle(color: Colors.white, fontSize: 15.0),
       );
-    } else if (activePageTitle == 'Practices') {
+    } else if (activePageTitle == l10n.practices || activePage is PracticesScreen) {
       title = TextField(
         onSubmitted: (value) {
           Navigator.pop(context);
@@ -157,14 +165,14 @@ class _HomeScreenState extends State<HomeScreen> {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  HomeScreen(activePage: PracticesScreen(filter: _searchQuery), activePageTitle: 'Practices'),
+                  HomeScreen(activePage: PracticesScreen(filter: _searchQuery), activePageTitle: l10n.practices),
             ),
           );
         },
         cursorColor: Colors.white,
         onChanged: (value) => _searchQuery = value,
         decoration: InputDecoration(
-            hintText: 'Search Practice...',
+            hintText: l10n.searchPractice,
             hintStyle: TextStyle(
               color: Colors.grey.withValues(alpha: 0.3),
               fontSize: 21,
@@ -178,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        HomeScreen(activePage: PracticesScreen(filter: _searchQuery), activePageTitle: 'Practices'),
+                        HomeScreen(activePage: PracticesScreen(filter: _searchQuery), activePageTitle: l10n.practices),
                   ),
                 );
               },
@@ -192,16 +200,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         title: getTitle(),
         actions: [
-          if (activePageTitle == 'Locations')
+          if (activePageTitle == l10n.locations || activePage is LocationsScreen)
             IconButton(
               onPressed: _addLocation,
               icon: const Icon(FontAwesomeIcons.plus),
             ),
-          if (activePageTitle == 'Practices')
+          if (activePageTitle == l10n.practices || activePage is PracticesScreen)
             IconButton(
               onPressed: _addPractice,
               icon: const Icon(FontAwesomeIcons.plus),

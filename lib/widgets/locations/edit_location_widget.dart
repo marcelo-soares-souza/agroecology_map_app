@@ -133,7 +133,7 @@ class _EditLocation extends State<EditLocation> {
     if (!_isLoading) {
       content = Center(
         child: Text(
-          l10n.pleaseLoginToChat, // Using existing key - TODO: add specific key
+          l10n.needLoginToEdit,
           style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).colorScheme.secondary),
         ),
       );

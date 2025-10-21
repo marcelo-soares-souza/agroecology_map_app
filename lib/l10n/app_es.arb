@@ -111,5 +111,10 @@
   "genericError": "Error genérico. Por favor, inténtalo de nuevo.",
   "practiceAdded": "Práctica agregada",
   "characteriseUpdated": "Caracterización actualizada",
-  "accountCreated": "Cuenta creada"
+  "accountCreated": "Cuenta creada",
+
+  "summaryDescription": "Descripción Resumida",
+  "whereIsRealized": "¿Dónde se realiza?",
+  "agroecologyPrinciplesAddressed": "Principios de agroecología abordados",
+  "foodSystemComponentsAddressed": "Componentes del sistema alimentario abordados"
 }
