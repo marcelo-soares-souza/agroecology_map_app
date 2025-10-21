@@ -517,5 +517,60 @@
   "noneOfAbove": "None of above",
   "@noneOfAbove": {
     "description": "Dropdown option"
+  },
+
+  "agroecologyPrinciplesInvoked": "Agroecology principles invoked?",
+  "@agroecologyPrinciplesInvoked": {
+    "description": "Label for agroecology principles field"
+  },
+
+  "foodSystemComponents": "Food system components addressed?",
+  "@foodSystemComponents": {
+    "description": "Label for food system components field"
+  },
+
+  "locationAdded": "Location added",
+  "@locationAdded": {
+    "description": "Success message when location is added"
+  },
+
+  "errorOccurredLoginAgain": "An error occurred. Please login again.",
+  "@errorOccurredLoginAgain": {
+    "description": "Error message requiring re-login"
+  },
+
+  "locationUpdated": "Location Updated",
+  "@locationUpdated": {
+    "description": "Success message when location is updated"
+  },
+
+  "mediaAdded": "Media added",
+  "@mediaAdded": {
+    "description": "Success message when media is added"
+  },
+
+  "mediaRemoved": "Media removed",
+  "@mediaRemoved": {
+    "description": "Success message when media is removed"
+  },
+
+  "genericError": "Generic Error. Please try again.",
+  "@genericError": {
+    "description": "Generic error message"
+  },
+
+  "practiceAdded": "Practice added",
+  "@practiceAdded": {
+    "description": "Success message when practice is added"
+  },
+
+  "characteriseUpdated": "Characterise Updated",
+  "@characteriseUpdated": {
+    "description": "Success message when characterise is updated"
+  },
+
+  "accountCreated": "Account created",
+  "@accountCreated": {
+    "description": "Success message when account is created"
   }
 }

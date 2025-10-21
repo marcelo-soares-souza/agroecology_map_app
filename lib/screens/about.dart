@@ -1,5 +1,6 @@
 import 'package:agroecology_map_app/configs/config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutScreen extends StatelessWidget {
@@ -7,6 +8,8 @@ class AboutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return SingleChildScrollView(
       child: Center(
         child: Column(
@@ -21,9 +24,7 @@ class AboutScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Text(
                 textAlign: TextAlign.justify,
-                '''
-Agroecology Map is an open source, citizen science and open data platform that since 2017 has been maintained by a group of volunteers who work to strengthen and create new collaboration networks that improve sharing knowledge about Agroecology.
-                ''',
+                l10n.aboutContent,
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
                       fontSize: 20,
@@ -31,7 +32,7 @@ Agroecology Map is an open source, citizen science and open data platform that s
               ),
             ),
             InkWell(
-              child: Text('Learn more about us',
+              child: Text(l10n.learnMoreAboutUs,
                   style: Theme.of(context)
                       .textTheme
                       .titleMedium!
@@ -42,7 +43,7 @@ Agroecology Map is an open source, citizen science and open data platform that s
               height: 16,
             ),
             InkWell(
-              child: Text('Read our privacy policy',
+              child: Text(l10n.privacyPolicyLink,
                   style: Theme.of(context)
                       .textTheme
                       .titleMedium!

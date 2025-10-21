@@ -11,6 +11,7 @@ import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/location_service.dart';
 import 'package:agroecology_map_app/widgets/image_input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
@@ -84,17 +85,19 @@ class _NewLocation extends State<NewLocation> {
 
       if (status == 'success') {
         FormHelper.successMessage(context, message);
+        final l10n = AppLocalizations.of(context)!;
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const HomeScreen(
-              activePage: LocationsScreen(),
-              activePageTitle: 'Locations',
+            builder: (context) => HomeScreen(
+              activePage: const LocationsScreen(),
+              activePageTitle: l10n.locations,
             ),
           ),
         );
       } else {
-        FormHelper.errorMessage(context, 'An error occured: $message');
+        final l10n = AppLocalizations.of(context)!;
+        FormHelper.errorMessage(context, l10n.errorOccurred(message));
       }
       setState(() => _isSending = false);
     }
@@ -113,13 +116,14 @@ class _NewLocation extends State<NewLocation> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     Widget content = const Center(child: CircularProgressIndicator());
 
     if (!_isLoading) {
       if (!_isLoggedIn) {
         content = Center(
           child: Text(
-            'You need to login to add a new record',
+            l10n.pleaseLoginToChat, // Using existing key - TODO: add specific key
             style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).colorScheme.secondary),
           ),
         );
@@ -132,7 +136,7 @@ class _NewLocation extends State<NewLocation> {
               child: Column(
                 children: [
                   const SizedBox(height: 10),
-                  const Text('Location Name', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  Text(l10n.locationName, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
                     textCapitalization: TextCapitalization.sentences,
                     keyboardType: TextInputType.text,
@@ -142,7 +146,7 @@ class _NewLocation extends State<NewLocation> {
                     validator: (value) => FormHelper.validateInputSize(value, 1, 64),
                     onSaved: (value) => _location.name = value!,
                     decoration: InputDecoration(
-                      hintText: 'How would you like to name the place where you practice agroecology?',
+                      hintText: l10n.locationNameHint,
                       hintStyle: TextStyle(
                         color: Colors.grey.withValues(alpha: 0.4),
                         fontSize: 12,
@@ -150,7 +154,7 @@ class _NewLocation extends State<NewLocation> {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  const Text('Country', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  Text(l10n.country, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                   DropdownButtonFormField(
                     items: LocationHelper.dropDownCountries,
                     value: _location.countryCode,
@@ -168,7 +172,7 @@ class _NewLocation extends State<NewLocation> {
                     dropdownColor: Theme.of(context).colorScheme.onSecondary,
                   ),
                   const SizedBox(height: 24),
-                  const Text('Is it a farm?', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  Text(l10n.isItAFarm, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                   DropdownButtonFormField(
                     items: FormHelper.dropDownYesNoBool,
                     value: 'true',
@@ -180,7 +184,7 @@ class _NewLocation extends State<NewLocation> {
                     dropdownColor: Theme.of(context).colorScheme.onSecondary,
                   ),
                   const SizedBox(height: 24),
-                  const Text('What do you have on your farm?', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  Text(l10n.whatDoYouHave, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                   for (final key in _locationHelper.farmAndFarmingSystemComplementValues.keys) ...[
                     CheckboxListTile(
                       title: Text(key),
@@ -190,7 +194,7 @@ class _NewLocation extends State<NewLocation> {
                     )
                   ],
                   const SizedBox(height: 24),
-                  const Text('What\'s the main purpose?', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  Text(l10n.mainPurpose, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                   DropdownButtonFormField(
                     items: LocationHelper.dropDownFarmAndFarmingSystemOptions,
                     value: 'Mainly Home Consumption',
@@ -202,7 +206,7 @@ class _NewLocation extends State<NewLocation> {
                     dropdownColor: Theme.of(context).colorScheme.onSecondary,
                   ),
                   const SizedBox(height: 24),
-                  const Text('What is your dream?', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  Text(l10n.whatIsYourDream, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
                     textCapitalization: TextCapitalization.sentences,
                     keyboardType: TextInputType.text,
@@ -211,7 +215,7 @@ class _NewLocation extends State<NewLocation> {
                     style: const TextStyle(color: Colors.white),
                     onSaved: (value) => _location.whatIsYourDream = value!,
                     decoration: InputDecoration(
-                      hintText: 'Do you have a dream of transforming your farm and/or location?',
+                      hintText: l10n.dreamHint,
                       hintStyle: TextStyle(
                         color: Colors.grey.withValues(alpha: 0.4),
                         fontSize: 12,
@@ -219,11 +223,11 @@ class _NewLocation extends State<NewLocation> {
                     ),
                   ),
                   const SizedBox(height: 21),
-                  const Text('Photo', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  Text(l10n.photo, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                   const SizedBox(height: 21),
                   ImageInput(onPickImage: (image) => _selectedImage = image),
                   const SizedBox(height: 20),
-                  const Text('Description', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  Text(l10n.description, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
                     textCapitalization: TextCapitalization.sentences,
                     keyboardType: TextInputType.text,
@@ -232,7 +236,7 @@ class _NewLocation extends State<NewLocation> {
                     style: const TextStyle(color: Colors.white),
                     onSaved: (value) => _location.description = value!,
                     decoration: InputDecoration(
-                      hintText: 'Tell us a bit about your place, what you do in the place you register',
+                      hintText: l10n.descriptionHint,
                       hintStyle: TextStyle(
                         color: Colors.grey.withValues(alpha: 0.4),
                         fontSize: 12,
@@ -240,7 +244,7 @@ class _NewLocation extends State<NewLocation> {
                     ),
                   ),
                   const SizedBox(height: 21),
-                  const Text('Location', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  Text(l10n.location, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                   const SizedBox(height: 21),
                   SizedBox(
                     width: double.infinity,
@@ -289,7 +293,7 @@ class _NewLocation extends State<NewLocation> {
                                 width: 16,
                                 child: CircularProgressIndicator(),
                               )
-                            : const Text('Save'),
+                            : Text(l10n.save),
                       ),
                     ],
                   ),
@@ -303,7 +307,7 @@ class _NewLocation extends State<NewLocation> {
     }
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Add a new Location'),
+          title: Text(l10n.addNewLocation),
         ),
         body: content);
   }
@@ -312,10 +316,11 @@ class _NewLocation extends State<NewLocation> {
     bool serviceEnabled;
     LocationPermission permission;
 
+    final l10n = AppLocalizations.of(context)!;
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       if (!mounted) return false;
-      FormHelper.infoMessage(context, 'Location services are disabled. Please enable the services');
+      FormHelper.infoMessage(context, l10n.locationServicesDisabled);
       return false;
     }
 
@@ -324,14 +329,14 @@ class _NewLocation extends State<NewLocation> {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         if (!mounted) return false;
-        FormHelper.errorMessage(context, 'Location permissions are denied');
+        FormHelper.errorMessage(context, l10n.locationPermissionsDenied);
         return false;
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
       if (!mounted) return false;
-      FormHelper.errorMessage(context, 'Location permissions are permanently denied, we cannot request permissions.');
+      FormHelper.errorMessage(context, l10n.locationPermissionsPermanentlyDenied);
       return false;
     }
     return true;

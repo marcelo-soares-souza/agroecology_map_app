@@ -5,6 +5,7 @@ import 'package:agroecology_map_app/screens/practice_details.dart';
 import 'package:agroecology_map_app/services/practice_service.dart';
 import 'package:agroecology_map_app/widgets/practices/practice_item_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -76,7 +77,8 @@ class _PracticesWidget extends State<PracticesWidget> {
     _pagingController.refresh();
 
     if (!mounted) return;
-    FormHelper.successMessage(context, 'Practice Removed');
+    final l10n = AppLocalizations.of(context)!;
+    FormHelper.successMessage(context, l10n.practiceRemoved);
   }
 
   @override
@@ -93,7 +95,7 @@ class _PracticesWidget extends State<PracticesWidget> {
                   if (item.hasPermission) ...[
                     SlidableAction(
                       onPressed: (onPressed) => _removePractice(item),
-                      label: 'Delete',
+                      label: AppLocalizations.of(context)!.delete,
                       icon: FontAwesomeIcons.trash,
                       backgroundColor: const Color(0xFFFE4A49),
                       foregroundColor: Colors.white,

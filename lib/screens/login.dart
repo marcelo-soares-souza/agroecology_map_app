@@ -2,6 +2,7 @@ import 'package:agroecology_map_app/configs/config.dart';
 import 'package:agroecology_map_app/screens/home.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -20,11 +21,12 @@ class _LoginScreen extends State<LoginScreen> {
   Duration get singupTime => const Duration(milliseconds: 500);
 
   Future<String?> _authUser(LoginData data) async {
+    final l10n = AppLocalizations.of(context)!;
     final bool isAuthenticated = await AuthService.login(data.name, data.password);
 
     return Future.delayed(loginTime).then((_) {
       if (!isAuthenticated) {
-        return 'Incorrect e-mail or password.';
+        return l10n.incorrectEmailOrPassword;
       }
 
       return null;
@@ -32,6 +34,7 @@ class _LoginScreen extends State<LoginScreen> {
   }
 
   Future<String?> _signUp(SignupData signupData) async {
+    final l10n = AppLocalizations.of(context)!;
     // signupData.additionalSignupData?.forEach((key, value) {
     //  debugPrint('$key: $value');
     // });
@@ -44,7 +47,7 @@ class _LoginScreen extends State<LoginScreen> {
 
     return Future.delayed(singupTime).then((_) {
       if (status == 'failed') {
-        return 'Something is wrong $message';
+        return l10n.somethingWrong(message);
       }
 
       return null;
@@ -52,13 +55,16 @@ class _LoginScreen extends State<LoginScreen> {
   }
 
   Future<String> _recoverPassword(String name) {
+    final l10n = AppLocalizations.of(context)!;
     return Future.delayed(loginTime).then((_) {
-      return 'Password recovery not implemented';
+      return l10n.passwordRecoveryNotImplemented;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Stack(
       children: [
         FlutterLogin(
@@ -86,19 +92,19 @@ class _LoginScreen extends State<LoginScreen> {
           logo: const AssetImage('assets/images/logo.png'),
           onLogin: _authUser,
           onSignup: _signUp,
-          userValidator: (value) => value!.isEmpty ? 'E-mail is required' : null,
-          passwordValidator: (value) => value!.length < 6 ? 'Password must be at least 6 characters long.' : null,
+          userValidator: (value) => value!.isEmpty ? l10n.emailRequired : null,
+          passwordValidator: (value) => value!.length < 6 ? l10n.passwordMinLength : null,
           additionalSignupFields: [
             UserFormField(
               fieldValidator: (value) {
                 if (value!.isEmpty || value.length < 4) {
-                  return 'Must be at least 4 characters long.';
+                  return l10n.minLength4;
                 }
                 return null;
               },
               keyName: 'name',
               icon: const Icon(FontAwesomeIcons.user),
-              displayName: 'Your Name',
+              displayName: l10n.yourName,
             ),
           ],
           onSubmitAnimationCompleted: () {
@@ -116,9 +122,9 @@ class _LoginScreen extends State<LoginScreen> {
           right: 0,
           child: Center(
             child: InkWell(
-              child: const Text(
-                'Read our Privacy Policy',
-                style: TextStyle(color: Colors.red, fontSize: 21, fontWeight: FontWeight.bold),
+              child: Text(
+                l10n.privacyPolicyLink,
+                style: const TextStyle(color: Colors.red, fontSize: 21, fontWeight: FontWeight.bold),
               ),
               onTap: () => launchUrl(Uri.parse(Config.privacyPolicyPage)),
             ),

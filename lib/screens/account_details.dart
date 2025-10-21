@@ -7,6 +7,7 @@ import 'package:agroecology_map_app/services/chat_service.dart';
 import 'package:agroecology_map_app/widgets/text_block_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AccountDetailsScreen extends StatefulWidget {
@@ -50,14 +51,15 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
   }
 
   Future<void> _startConversation() async {
+    final l10n = AppLocalizations.of(context)!;
     if (!_isLoggedIn) {
       if (!mounted) return;
-      FormHelper.infoMessage(context, 'Please login to start a conversation');
+      FormHelper.infoMessage(context, l10n.pleaseLoginToChat);
       return;
     }
     if (_myAccountId != null && _myAccountId == widget.account.id) {
       if (!mounted) return;
-      FormHelper.infoMessage(context, 'You cannot start a conversation with yourself');
+      FormHelper.infoMessage(context, l10n.cannotChatWithYourself);
       return;
     }
     try {
@@ -73,7 +75,8 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
       );
     } catch (e) {
       if (!mounted) return;
-      FormHelper.errorMessage(context, 'Failed to start conversation');
+      final l10n = AppLocalizations.of(context)!;
+      FormHelper.errorMessage(context, l10n.failedToStartConversation);
     }
   }
 
@@ -93,6 +96,7 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     Widget body = const Center(child: CircularProgressIndicator());
     if (!_loading) {
       body = RefreshIndicator(
@@ -106,10 +110,10 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
             children: [
               const SizedBox(height: 4),
               _headerImage(),
-              TextBlockWidget(label: 'About', value: _details.about),
+              TextBlockWidget(label: l10n.about, value: _details.about),
               if (_details.website.isNotEmpty)
                 TextBlockWidget(
-                  label: 'Website',
+                  label: l10n.website,
                   value: _details.website,
                 ),
               const SizedBox(height: 12),
@@ -118,9 +122,9 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _CounterChip(label: 'Locations', value: widget.account.totalOfLocations),
-                    _CounterChip(label: 'Practices', value: widget.account.totalOfPractices),
-                    _CounterChip(label: 'Medias', value: widget.account.totalOfMedias),
+                    _CounterChip(label: l10n.locations, value: widget.account.totalOfLocations),
+                    _CounterChip(label: l10n.practices, value: widget.account.totalOfPractices),
+                    _CounterChip(label: l10n.medias, value: widget.account.totalOfMedias),
                   ],
                 ),
               ),
@@ -133,14 +137,14 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                     child: FilledButton.icon(
                       onPressed: _startConversation,
                       icon: const Icon(FontAwesomeIcons.solidComments),
-                      label: const Text('Start conversation'),
+                      label: Text(l10n.startConversation),
                     ),
                   ),
                 ),
               if (_details.locations.isNotEmpty) ...[
                 const SizedBox(height: 12),
                 Text(
-                  'Locations',
+                  l10n.locations,
                   style: Theme.of(context).textTheme.titleMedium!.copyWith(
                         color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.bold,

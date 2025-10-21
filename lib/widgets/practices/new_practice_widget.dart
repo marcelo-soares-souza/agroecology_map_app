@@ -11,6 +11,7 @@ import 'package:agroecology_map_app/services/location_service.dart';
 import 'package:agroecology_map_app/services/practice_service.dart';
 import 'package:agroecology_map_app/widgets/image_input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewPractice extends StatefulWidget {
   const NewPractice({super.key});
@@ -107,17 +108,19 @@ class _NewPractice extends State<NewPractice> {
 
       if (status == 'success') {
         FormHelper.successMessage(context, message);
+        final l10n = AppLocalizations.of(context)!;
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const HomeScreen(
-              activePage: PracticesScreen(),
-              activePageTitle: 'Practices',
+            builder: (context) => HomeScreen(
+              activePage: const PracticesScreen(),
+              activePageTitle: l10n.practices,
             ),
           ),
         );
       } else {
-        FormHelper.errorMessage(context, 'An error occured: $message');
+        final l10n = AppLocalizations.of(context)!;
+        FormHelper.errorMessage(context, l10n.errorOccurred(message));
       }
       setState(() => _isSending = false);
     }
@@ -125,13 +128,14 @@ class _NewPractice extends State<NewPractice> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     Widget content = const Center(child: CircularProgressIndicator());
 
     if (!_isLoading) {
       if (!_isLoggedIn) {
         content = Center(
           child: Text(
-            'You need to login to add a new record',
+            l10n.pleaseLoginToChat, // Using existing key - TODO: add specific key
             style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).colorScheme.secondary),
           ),
         );
@@ -145,7 +149,7 @@ class _NewPractice extends State<NewPractice> {
                 child: Column(
                   children: [
                     const SizedBox(height: 10),
-                    const Text('Location', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                    Text(l10n.location, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                     DropdownButtonFormField(
                       items: dropDownLocations,
                       value: _locations.isNotEmpty ? _locations[0].id.toString() : null,
@@ -161,7 +165,7 @@ class _NewPractice extends State<NewPractice> {
                       dropdownColor: Theme.of(context).colorScheme.secondary,
                     ),
                     const SizedBox(height: 21),
-                    const Text('Practice Name', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                    Text(l10n.practiceName, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                     TextFormField(
                       textCapitalization: TextCapitalization.sentences,
                       keyboardType: TextInputType.text,
@@ -170,7 +174,7 @@ class _NewPractice extends State<NewPractice> {
                       validator: (value) => FormHelper.validateInputSize(value, 1, 64),
                       onSaved: (value) => _practice.name = value!,
                       decoration: InputDecoration(
-                        hintText: 'Name this practice (e.g. my agroforestry, permaculture experiment, etc.).?',
+                        hintText: l10n.practiceNameHint,
                         hintStyle: TextStyle(
                           color: Colors.grey.withValues(alpha: 0.4),
                           fontSize: 12,
@@ -178,7 +182,7 @@ class _NewPractice extends State<NewPractice> {
                       ),
                     ),
                     const SizedBox(height: 21),
-                    const Text('Photo', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                    Text(l10n.photo, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                     const SizedBox(height: 21),
                     ImageInput(onPickImage: (image) => _selectedImage = image),
                     const SizedBox(height: 20),
@@ -201,7 +205,7 @@ class _NewPractice extends State<NewPractice> {
                                   width: 16,
                                   child: CircularProgressIndicator(),
                                 )
-                              : const Text('Save'),
+                              : Text(l10n.save),
                         ),
                       ],
                     ),
@@ -214,7 +218,7 @@ class _NewPractice extends State<NewPractice> {
         } else {
           content = Center(
             child: Text(
-              'You need to add at least one location',
+              l10n.needAtLeastOneLocation,
               style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).colorScheme.secondary),
             ),
           );
@@ -224,7 +228,7 @@ class _NewPractice extends State<NewPractice> {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Add a new Practice'),
+          title: Text(l10n.addNewPractice),
         ),
         body: content);
   }

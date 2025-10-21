@@ -100,5 +100,16 @@
   "noItems": "Nenhum item",
   "errorTryAgain": "Ocorreu um erro, por favor tente novamente.",
   "lengthBetween": "Deve ter entre {min} e {max} caracteres.",
-  "noneOfAbove": "Nenhuma das opções acima"
+  "noneOfAbove": "Nenhuma das opções acima",
+  "agroecologyPrinciplesInvoked": "Princípios agroecológicos invocados?",
+  "foodSystemComponents": "Componentes do sistema alimentar abordados?",
+  "locationAdded": "Local adicionado",
+  "errorOccurredLoginAgain": "Ocorreu um erro. Por favor, faça login novamente.",
+  "locationUpdated": "Local atualizado",
+  "mediaAdded": "Mídia adicionada",
+  "mediaRemoved": "Mídia removida",
+  "genericError": "Erro genérico. Por favor, tente novamente.",
+  "practiceAdded": "Prática adicionada",
+  "characteriseUpdated": "Caracterização atualizada",
+  "accountCreated": "Conta criada"
 }

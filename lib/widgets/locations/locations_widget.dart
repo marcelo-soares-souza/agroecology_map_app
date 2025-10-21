@@ -5,6 +5,7 @@ import 'package:agroecology_map_app/screens/location_details.dart';
 import 'package:agroecology_map_app/services/location_service.dart';
 import 'package:agroecology_map_app/widgets/locations/location_item_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -78,7 +79,8 @@ class _LocationsWidget extends State<LocationsWidget> {
 
     if (!mounted) return;
 
-    FormHelper.successMessage(context, 'Location removed');
+    final l10n = AppLocalizations.of(context)!;
+    FormHelper.successMessage(context, l10n.locationRemoved);
   }
 
   @override
@@ -95,7 +97,7 @@ class _LocationsWidget extends State<LocationsWidget> {
                 if (item.hasPermission) ...[
                   SlidableAction(
                     onPressed: (onPressed) => _removeLocation(item),
-                    label: 'Delete',
+                    label: AppLocalizations.of(context)!.delete,
                     icon: FontAwesomeIcons.trash,
                     backgroundColor: const Color(0xFFFE4A49),
                     foregroundColor: Colors.white,

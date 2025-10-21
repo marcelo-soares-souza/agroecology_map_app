@@ -11,6 +11,7 @@ import 'package:agroecology_map_app/widgets/new_media_widget.dart';
 import 'package:agroecology_map_app/widgets/text_block_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -116,6 +117,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
   }
 
   Future<void> _showAlertDialog() async {
+    final l10n = AppLocalizations.of(context)!;
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -124,23 +126,23 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
           backgroundColor: Theme.of(context).colorScheme.surface,
           titleTextStyle: TextStyle(color: Theme.of(context).primaryColor),
           contentTextStyle: TextStyle(color: Theme.of(context).secondaryHeaderColor),
-          title: const Text('Delete this Location'),
-          content: const SingleChildScrollView(
+          title: Text(l10n.deleteThisLocation),
+          content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Are you sure?'),
+                Text(l10n.areYouSure),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('No'),
+              child: Text(l10n.no),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: const Text('Yes'),
+              child: Text(l10n.yes),
               onPressed: () {
                 widget.onRemoveLocation(widget.location);
                 Navigator.push(
@@ -165,6 +167,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     Widget activePage = const Center(child: CircularProgressIndicator());
 
     final Widget galleryWidget = RefreshIndicator(
@@ -180,7 +183,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                 if (_location.hasPermission)
                   SlidableAction(
                     onPressed: (onPressed) => _removeGalleryItem(item),
-                    label: 'Delete',
+                    label: l10n.delete,
                     icon: FontAwesomeIcons.trash,
                     backgroundColor: const Color(0xFFFE4A49),
                     foregroundColor: Colors.white,
@@ -273,32 +276,32 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                     imageUrl: _location.imageUrl,
                   ),
                   TextBlockWidget(
-                    label: 'Description',
+                    label: l10n.description,
                     value: _location.description,
                   ),
                   TextBlockWidget(
-                    label: 'Country',
+                    label: l10n.country,
                     value: '${_location.country} (${_location.countryCode})',
                   ),
                   TextBlockWidget(
-                    label: 'Farm and Farming System',
+                    label: l10n.farmAndFarmingSystem,
                     value: _location.farmAndFarmingSystem,
                   ),
                   TextBlockWidget(
-                    label: 'What do you have on your farm?',
+                    label: l10n.whatDoYouHave,
                     value: _location.farmAndFarmingSystemComplement,
                   ),
                   TextBlockWidget(
-                    label: 'Details of the farming system',
+                    label: l10n.farmingSystemDetails,
                     value: _location.farmAndFarmingSystemDetails,
                   ),
                   TextBlockWidget(
-                    label: 'What is your dream ',
+                    label: l10n.whatIsYourDream,
                     value: _location.whatIsYourDream,
                   ),
                   Text(
                     overflow: TextOverflow.ellipsis,
-                    'Location',
+                    l10n.location,
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
                           color: Theme.of(context).colorScheme.primary,
                           fontWeight: FontWeight.bold,
@@ -328,7 +331,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                     ),
                   ),
                   TextBlockWidget(
-                    label: 'Responsible for Information',
+                    label: l10n.responsibleForInfo,
                     value: _location.responsibleForInformation,
                   ),
                 ] else if (_selectedPageIndex == 1 && _sendMedia == true) ...[
@@ -373,7 +376,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                     ],
                   ),
                   TextBlockWidget(
-                    label: 'Temperature',
+                    label: l10n.temperature,
                     value: '${_location.temperature} °C',
                     icon: CustomIcon(
                       icon: FontAwesomeIcons.temperatureHalf,
@@ -381,7 +384,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                     ),
                   ),
                   TextBlockWidget(
-                    label: 'Humidity',
+                    label: l10n.humidity,
                     value: '${_location.humidity}%',
                     icon: CustomIcon(
                       icon: FontAwesomeIcons.water,
@@ -389,7 +392,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                     ),
                   ),
                   TextBlockWidget(
-                    label: 'Soil moisture',
+                    label: l10n.soilMoisture,
                     value: '${_location.moisture}%',
                     icon: CustomIcon(
                       icon: FontAwesomeIcons.seedling,
@@ -397,7 +400,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                     ),
                   ),
                   TextBlockWidget(
-                    label: 'Updated at',
+                    label: l10n.updatedAt,
                     value: _location.sensorsLastUpdatedAt,
                   ),
                 ]
@@ -452,18 +455,18 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
           onTap: _selectPage,
           currentIndex: _selectedPageIndex,
           items: [
-            const BottomNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.locationDot),
-              label: 'Home',
+            BottomNavigationBarItem(
+              icon: const Icon(FontAwesomeIcons.locationDot),
+              label: l10n.home,
             ),
-            const BottomNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.photoFilm),
-              label: 'Gallery',
+            BottomNavigationBarItem(
+              icon: const Icon(FontAwesomeIcons.photoFilm),
+              label: l10n.gallery,
             ),
             if (_location.temperature.isNotEmpty && _location.temperature != 'null') ...[
-              const BottomNavigationBarItem(
-                icon: Icon(FontAwesomeIcons.temperatureFull),
-                label: 'Sensors',
+              BottomNavigationBarItem(
+                icon: const Icon(FontAwesomeIcons.temperatureFull),
+                label: l10n.sensors,
               )
             ],
           ],

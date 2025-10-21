@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImageInput extends StatefulWidget {
@@ -40,19 +41,20 @@ class _ImageInputState extends State<ImageInput> {
   }
 
   Future showOptions() async {
+    final l10n = AppLocalizations.of(context)!;
     showCupertinoModalPopup(
       context: context,
       builder: (context) => CupertinoActionSheet(
         actions: [
           CupertinoActionSheetAction(
-            child: const Text('Photo Gallery'),
+            child: Text(l10n.photoGallery),
             onPressed: () {
               Navigator.of(context).pop();
               _getImageFromGallery();
             },
           ),
           CupertinoActionSheetAction(
-            child: const Text('Camera'),
+            child: Text(l10n.camera),
             onPressed: () {
               Navigator.of(context).pop();
               _getImageFromCamera();
@@ -65,9 +67,10 @@ class _ImageInputState extends State<ImageInput> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     Widget content = TextButton.icon(
       icon: const Icon(Icons.camera),
-      label: const Text('Pick a Photo'),
+      label: Text(l10n.pickAPhoto),
       onPressed: showOptions,
     );
 

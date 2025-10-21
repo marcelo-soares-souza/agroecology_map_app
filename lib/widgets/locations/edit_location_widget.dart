@@ -11,6 +11,7 @@ import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/location_service.dart';
 import 'package:agroecology_map_app/widgets/image_input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -95,17 +96,19 @@ class _EditLocation extends State<EditLocation> {
 
       if (status == 'success') {
         FormHelper.successMessage(context, message);
+        final l10n = AppLocalizations.of(context)!;
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const HomeScreen(
-              activePage: LocationsScreen(),
-              activePageTitle: 'Locations',
+            builder: (context) => HomeScreen(
+              activePage: const LocationsScreen(),
+              activePageTitle: l10n.locations,
             ),
           ),
         );
       } else {
-        FormHelper.errorMessage(context, 'An error occured: $message');
+        final l10n = AppLocalizations.of(context)!;
+        FormHelper.errorMessage(context, l10n.errorOccurred(message));
       }
       setState(() => _isSending = false);
     }
@@ -124,12 +127,13 @@ class _EditLocation extends State<EditLocation> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     Widget content = const Center(child: CircularProgressIndicator());
 
     if (!_isLoading) {
       content = Center(
         child: Text(
-          'You need to login to edit a record',
+          l10n.pleaseLoginToChat, // Using existing key - TODO: add specific key
           style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).colorScheme.secondary),
         ),
       );
@@ -143,7 +147,7 @@ class _EditLocation extends State<EditLocation> {
               child: Column(
                 children: [
                   const SizedBox(height: 10),
-                  const Text('Location Name', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  Text(l10n.locationName, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
                     textCapitalization: TextCapitalization.sentences,
                     keyboardType: TextInputType.text,
@@ -153,7 +157,7 @@ class _EditLocation extends State<EditLocation> {
                     initialValue: _location.name,
                     onSaved: (value) => _location.name = value!,
                   ),
-                  const Text('Country', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  Text(l10n.country, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                   DropdownButtonFormField(
                     items: LocationHelper.dropDownCountries,
                     value: _location.countryCode,
@@ -171,7 +175,7 @@ class _EditLocation extends State<EditLocation> {
                     dropdownColor: Theme.of(context).colorScheme.secondary,
                   ),
                   const SizedBox(height: 21),
-                  const Text('Is it a farm?', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  Text(l10n.isItAFarm, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                   DropdownButtonFormField(
                     items: FormHelper.dropDownYesNoBool,
                     value: _location.isItAFarm,
@@ -183,7 +187,7 @@ class _EditLocation extends State<EditLocation> {
                     dropdownColor: Theme.of(context).colorScheme.secondary,
                   ),
                   const SizedBox(height: 21),
-                  const Text('What do you have on your farm?', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  Text(l10n.whatDoYouHave, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                   for (final key in _locationHelper.farmAndFarmingSystemComplementValues.keys) ...[
                     CheckboxListTile(
                       title: Text(key),
@@ -193,7 +197,7 @@ class _EditLocation extends State<EditLocation> {
                     )
                   ],
                   const SizedBox(height: 21),
-                  const Text('What\'s the main purpose?', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  Text(l10n.mainPurpose, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                   DropdownButtonFormField(
                     items: LocationHelper.dropDownFarmAndFarmingSystemOptions,
                     value: _location.farmAndFarmingSystem,
@@ -205,7 +209,7 @@ class _EditLocation extends State<EditLocation> {
                     dropdownColor: Theme.of(context).colorScheme.secondary,
                   ),
                   const SizedBox(height: 30),
-                  const Text('What is your dream?', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  Text(l10n.whatIsYourDream, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
                     textCapitalization: TextCapitalization.sentences,
                     keyboardType: TextInputType.text,
@@ -217,11 +221,11 @@ class _EditLocation extends State<EditLocation> {
                     onSaved: (value) => _location.whatIsYourDream = value!,
                   ),
                   const SizedBox(height: 21),
-                  const Text('Photo', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  Text(l10n.photo, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                   const SizedBox(height: 21),
                   ImageInput(onPickImage: (image) => _selectedImage = image),
                   const SizedBox(height: 20),
-                  const Text('Description', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  Text(l10n.description, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
                     textCapitalization: TextCapitalization.sentences,
                     keyboardType: TextInputType.text,
@@ -233,7 +237,7 @@ class _EditLocation extends State<EditLocation> {
                     onSaved: (value) => _location.description = value!,
                   ),
                   const SizedBox(height: 21),
-                  const Text('Location', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  Text(l10n.location, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                   const SizedBox(height: 21),
                   SizedBox(
                     width: double.infinity,
@@ -282,7 +286,7 @@ class _EditLocation extends State<EditLocation> {
                                 width: 16,
                                 child: CircularProgressIndicator(),
                               )
-                            : const Text('Save'),
+                            : Text(l10n.save),
                       ),
                     ],
                   ),
@@ -296,7 +300,7 @@ class _EditLocation extends State<EditLocation> {
     }
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Edit Location'),
+          title: Text(l10n.editLocation),
         ),
         body: content);
   }

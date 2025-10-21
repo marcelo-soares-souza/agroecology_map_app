@@ -5,6 +5,7 @@ import 'package:agroecology_map_app/screens/chat_page.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/chat_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChatListScreen extends StatefulWidget {
   const ChatListScreen({super.key});
@@ -47,24 +48,25 @@ class _ChatListScreenState extends State<ChatListScreen> {
   }
 
   Future<void> _startChatDialog() async {
+    final l10n = AppLocalizations.of(context)!;
     final controller = TextEditingController();
     final recipientId = await showDialog<int>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Start Conversation'),
+        title: Text(l10n.startConversationDialog),
         content: TextField(
           controller: controller,
           keyboardType: TextInputType.number,
-          decoration: const InputDecoration(hintText: 'Recipient account ID'),
+          decoration: InputDecoration(hintText: l10n.recipientAccountId),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.of(ctx).pop(), child: const Text('Cancel')),
+          TextButton(onPressed: () => Navigator.of(ctx).pop(), child: Text(l10n.cancel)),
           ElevatedButton(
             onPressed: () {
               final id = int.tryParse(controller.text.trim());
               if (id != null) Navigator.of(ctx).pop(id);
             },
-            child: const Text('Create'),
+            child: Text(l10n.create),
           ),
         ],
       ),
@@ -84,6 +86,8 @@ class _ChatListScreenState extends State<ChatListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return FutureBuilder<bool>(
       future: _loggedInFuture,
       builder: (context, snapshot) {
@@ -91,7 +95,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
           return const Center(child: CircularProgressIndicator());
         }
         if (snapshot.data != true) {
-          return const Center(child: Text('Please login to use chat'));
+          return Center(child: Text(l10n.pleaseLoginToUseChat));
         }
 
         return RefreshIndicator(
@@ -135,7 +139,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                 bottom: 16,
                 child: FloatingActionButton(
                   onPressed: _startChatDialog,
-                  tooltip: 'Start chat',
+                  tooltip: l10n.startChat,
                   child: const Icon(Icons.chat_bubble_outline),
                 ),
               ),

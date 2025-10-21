@@ -8,6 +8,7 @@ import 'package:agroecology_map_app/widgets/practices/new_characterises_widget.d
 import 'package:agroecology_map_app/widgets/text_block_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PracticeDetailsScreen extends StatefulWidget {
@@ -62,15 +63,18 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
     });
   }
 
-  Map<int, String> pageSelectedTitle = {
-    0: 'Summary',
-    1: 'Characterise',
-    2: 'Gallery',
-  };
+  Map<int, String> getPageSelectedTitle(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return {
+      0: l10n.summary,
+      1: l10n.characterise,
+      2: l10n.gallery,
+    };
+  }
 
   void _selectPage(int index, [String operation = '']) {
     setState(() {
-      activePageTitle = pageSelectedTitle[index]!;
+      activePageTitle = getPageSelectedTitle(context)[index]!;
       _selectedPageIndex = index;
       _selectedPageOperation = operation.isNotEmpty ? operation : '';
     });
@@ -84,6 +88,7 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
   }
 
   Future<void> _showAlertDialog() async {
+    final l10n = AppLocalizations.of(context)!;
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -92,23 +97,23 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
           backgroundColor: Theme.of(context).colorScheme.surface,
           titleTextStyle: TextStyle(color: Theme.of(context).primaryColor),
           contentTextStyle: TextStyle(color: Theme.of(context).secondaryHeaderColor),
-          title: const Text('Delete this Practice'),
-          content: const SingleChildScrollView(
+          title: Text(l10n.deleteThisPractice),
+          content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Are you sure?'),
+                Text(l10n.areYouSure),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('No'),
+              child: Text(l10n.no),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: const Text('Yes'),
+              child: Text(l10n.yes),
               onPressed: () {
                 widget.onRemovePractice(widget.practice);
                 Navigator.push(
@@ -125,6 +130,7 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     Widget activePage = const Center(child: CircularProgressIndicator());
 
     if (!_isLoading) {
@@ -180,7 +186,7 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
                     Center(
                         child: Text(
                       textAlign: TextAlign.center,
-                      'No images available',
+                      l10n.noImagesAvailable,
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
                             color: Theme.of(context).colorScheme.secondary,
                           ),
@@ -243,7 +249,7 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
                 const SizedBox(height: 100),
                 Center(
                   child: Text(
-                    'No data available for this section.',
+                    l10n.noDataAvailable,
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color: Theme.of(context).colorScheme.secondary,
                         ),
@@ -283,18 +289,18 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
         showUnselectedLabels: false,
         onTap: _selectPage,
         currentIndex: _selectedPageIndex,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.seedling),
-            label: 'Summary',
+            icon: const Icon(FontAwesomeIcons.seedling),
+            label: l10n.summary,
           ),
           BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.info),
-            label: 'Characterise',
+            icon: const Icon(FontAwesomeIcons.info),
+            label: l10n.characterise,
           ),
           BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.photoFilm),
-            label: 'Gallery',
+            icon: const Icon(FontAwesomeIcons.photoFilm),
+            label: l10n.gallery,
           ),
         ],
       ),

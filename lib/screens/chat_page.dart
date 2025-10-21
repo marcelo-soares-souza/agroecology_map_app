@@ -6,6 +6,7 @@ import 'package:agroecology_map_app/services/action_cable_service.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/chat_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChatPage extends StatefulWidget {
   final int conversationId;
@@ -199,12 +200,15 @@ class _ChatPageState extends State<ChatPage> {
         _messageIds.remove(temp.id);
       });
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Failed to send message')));
+      final l10n = AppLocalizations.of(context)!;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.failedToSendMessage)));
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return FutureBuilder<bool>(
       future: _loggedInFuture,
       builder: (context, snapshot) {
@@ -218,7 +222,7 @@ class _ChatPageState extends State<ChatPage> {
         if (!loggedIn) {
           return Scaffold(
             appBar: AppBar(title: Text(widget.otherName)),
-            body: const Center(child: Text('Please login to use chat')),
+            body: Center(child: Text(l10n.pleaseLoginToUseChat)),
           );
         }
 
@@ -287,7 +291,7 @@ class _ChatPageState extends State<ChatPage> {
                           cursorColor: Theme.of(context).colorScheme.primary,
                           style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                           decoration: InputDecoration(
-                            hintText: 'Type a message',
+                            hintText: l10n.typeAMessage,
                             hintStyle: TextStyle(
                               color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                             ),

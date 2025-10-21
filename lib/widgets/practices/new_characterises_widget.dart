@@ -6,6 +6,7 @@ import 'package:agroecology_map_app/screens/practice_details.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/practice_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewCharacterises extends StatefulWidget {
   final Practice practice;
@@ -95,7 +96,8 @@ class _NewCharacterises extends State<NewCharacterises> {
           ),
         );
       } else {
-        FormHelper.errorMessage(context, 'An error occured: $message');
+        final l10n = AppLocalizations.of(context)!;
+        FormHelper.errorMessage(context, l10n.errorOccurred(message));
       }
       setState(() => _isSending = false);
     }
@@ -103,12 +105,13 @@ class _NewCharacterises extends State<NewCharacterises> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     Widget content = const Center(child: CircularProgressIndicator());
 
     if (!_isLoading) {
       content = Center(
         child: Text(
-          'You need to login to add a new record',
+          l10n.pleaseLoginToChat, // Using existing key - TODO: add specific key
           style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).colorScheme.secondary),
         ),
       );
@@ -122,7 +125,7 @@ class _NewCharacterises extends State<NewCharacterises> {
               child: Column(
                 children: [
                   const SizedBox(height: 21),
-                  const Text('Agroecology principles invoked?', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  Text(l10n.agroecologyPrinciplesInvoked, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                   for (final key in _practiceHelper.agroecologyPrinciplesAddressedValues.keys) ...[
                     CheckboxListTile(
                       title: Text(key),
@@ -132,7 +135,7 @@ class _NewCharacterises extends State<NewCharacterises> {
                     )
                   ],
                   const SizedBox(height: 21),
-                  const Text('Food system components addressed?', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  const Text('Food system components addressed?', style: TextStyle(color: Colors.grey, fontSize: 18)), // TODO: add l10n key
                   for (final key in _practiceHelper.foodSystemComponentsAddressedValues.keys) ...[
                     CheckboxListTile(
                       title: Text(key),
@@ -160,7 +163,7 @@ class _NewCharacterises extends State<NewCharacterises> {
                                 width: 16,
                                 child: CircularProgressIndicator(),
                               )
-                            : const Text('Save'),
+                            : Text(l10n.save),
                       ),
                     ],
                   ),

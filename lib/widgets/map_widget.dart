@@ -4,6 +4,7 @@ import 'package:agroecology_map_app/models/location.dart';
 import 'package:agroecology_map_app/screens/location_details.dart';
 import 'package:agroecology_map_app/services/location_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_cluster_plus/flutter_map_marker_cluster_plus.dart';
 import 'package:latlong2/latlong.dart';
@@ -79,7 +80,8 @@ class _MapWidget extends State<MapWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Widget content = const Center(child: Text('No items'));
+    final l10n = AppLocalizations.of(context)!;
+    Widget content = Center(child: Text(l10n.noItems));
 
     if (_isLoading) {
       content = const Center(child: CircularProgressIndicator());
@@ -138,7 +140,7 @@ class _MapWidget extends State<MapWidget> {
                 Center(
                     child: Text(
                   textAlign: TextAlign.center,
-                  'An error has occurred, please try again.',
+                  l10n.errorTryAgain,
                   style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         color: Theme.of(context).colorScheme.secondary,
                       ),

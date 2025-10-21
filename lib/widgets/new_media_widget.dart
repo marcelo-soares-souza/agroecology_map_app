@@ -11,6 +11,7 @@ import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/location_service.dart';
 import 'package:agroecology_map_app/widgets/image_input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewMediaWidget extends StatefulWidget {
   final Location location;
@@ -109,7 +110,7 @@ class _NewMediaWidget extends State<NewMediaWidget> {
           Center(
               child: Text(
             textAlign: TextAlign.center,
-            'You need to login to add a new photo',
+            AppLocalizations.of(context)!.needLoginToAddPhoto,
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   color: Theme.of(context).colorScheme.secondary,
                 ),
@@ -124,11 +125,11 @@ class _NewMediaWidget extends State<NewMediaWidget> {
               child: Column(
                 children: [
                   const SizedBox(height: 10),
-                  const Text('Photo', style: TextStyle(color: Colors.grey, fontSize: 16)),
+                  Text(AppLocalizations.of(context)!.photo, style: const TextStyle(color: Colors.grey, fontSize: 16)),
                   const SizedBox(height: 16),
                   ImageInput(onPickImage: (image) => _selectedImage = image),
                   const SizedBox(height: 16),
-                  const Text('Description', style: TextStyle(color: Colors.grey, fontSize: 16)),
+                  Text(AppLocalizations.of(context)!.description, style: const TextStyle(color: Colors.grey, fontSize: 16)),
                   TextFormField(
                     textCapitalization: TextCapitalization.sentences,
                     keyboardType: TextInputType.text,
@@ -152,7 +153,7 @@ class _NewMediaWidget extends State<NewMediaWidget> {
                                 width: 16,
                                 child: CircularProgressIndicator(),
                               )
-                            : const Text('Save'),
+                            : Text(AppLocalizations.of(context)!.save),
                       ),
                     ],
                   ),
