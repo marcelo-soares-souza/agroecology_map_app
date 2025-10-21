@@ -1,0 +1,521 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "Agroecology Map",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+
+  "locations": "Locations",
+  "@locations": {
+    "description": "Navigation menu item for locations"
+  },
+
+  "practices": "Practices",
+  "@practices": {
+    "description": "Navigation menu item for practices"
+  },
+
+  "accounts": "Accounts",
+  "@accounts": {
+    "description": "Navigation menu item for accounts"
+  },
+
+  "about": "About",
+  "@about": {
+    "description": "Navigation menu item for about page"
+  },
+
+  "chat": "Chat",
+  "@chat": {
+    "description": "Navigation menu item for chat"
+  },
+
+  "login": "Login",
+  "@login": {
+    "description": "Login button/menu item"
+  },
+
+  "logout": "Logout",
+  "@logout": {
+    "description": "Logout button/menu item"
+  },
+
+  "map": "Map",
+  "@map": {
+    "description": "Navigation menu item for map"
+  },
+
+  "language": "Language",
+  "@language": {
+    "description": "Language selector menu item"
+  },
+
+  "searchLocation": "Search Location...",
+  "@searchLocation": {
+    "description": "Search hint for locations"
+  },
+
+  "searchPractice": "Search Practice...",
+  "@searchPractice": {
+    "description": "Search hint for practices"
+  },
+
+  "incorrectEmailOrPassword": "Incorrect e-mail or password.",
+  "@incorrectEmailOrPassword": {
+    "description": "Login error message"
+  },
+
+  "somethingWrong": "Something is wrong {message}",
+  "@somethingWrong": {
+    "description": "Generic error message",
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+
+  "passwordRecoveryNotImplemented": "Password recovery not implemented",
+  "@passwordRecoveryNotImplemented": {
+    "description": "Password recovery message"
+  },
+
+  "emailRequired": "E-mail is required",
+  "@emailRequired": {
+    "description": "Email validation message"
+  },
+
+  "passwordMinLength": "Password must be at least 6 characters long.",
+  "@passwordMinLength": {
+    "description": "Password validation message"
+  },
+
+  "minLength4": "Must be at least 4 characters long.",
+  "@minLength4": {
+    "description": "Generic validation message"
+  },
+
+  "yourName": "Your Name",
+  "@yourName": {
+    "description": "Display name field label"
+  },
+
+  "privacyPolicyLink": "Read our Privacy Policy",
+  "@privacyPolicyLink": {
+    "description": "Link to privacy policy"
+  },
+
+  "deleteThisLocation": "Delete this Location",
+  "@deleteThisLocation": {
+    "description": "Delete location dialog title"
+  },
+
+  "deleteThisPractice": "Delete this Practice",
+  "@deleteThisPractice": {
+    "description": "Delete practice dialog title"
+  },
+
+  "areYouSure": "Are you sure?",
+  "@areYouSure": {
+    "description": "Confirmation dialog message"
+  },
+
+  "no": "No",
+  "@no": {
+    "description": "Negative button in dialogs and dropdowns"
+  },
+
+  "yes": "Yes",
+  "@yes": {
+    "description": "Positive button in dialogs and dropdowns"
+  },
+
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button"
+  },
+
+  "delete": "Delete",
+  "@delete": {
+    "description": "Delete button/action"
+  },
+
+  "ok": "OK",
+  "@ok": {
+    "description": "OK button"
+  },
+
+  "description": "Description",
+  "@description": {
+    "description": "Description field label"
+  },
+
+  "country": "Country",
+  "@country": {
+    "description": "Country field label"
+  },
+
+  "farmAndFarmingSystem": "Farm and Farming System",
+  "@farmAndFarmingSystem": {
+    "description": "Section title for farm information"
+  },
+
+  "whatDoYouHave": "What do you have on your farm?",
+  "@whatDoYouHave": {
+    "description": "Farm contents field label"
+  },
+
+  "farmingSystemDetails": "Details of the farming system",
+  "@farmingSystemDetails": {
+    "description": "Farming system details label"
+  },
+
+  "whatIsYourDream": "What is your dream?",
+  "@whatIsYourDream": {
+    "description": "Dream field label"
+  },
+
+  "location": "Location",
+  "@location": {
+    "description": "Location field label"
+  },
+
+  "responsibleForInfo": "Responsible for Information",
+  "@responsibleForInfo": {
+    "description": "Responsible person label"
+  },
+
+  "temperature": "Temperature",
+  "@temperature": {
+    "description": "Temperature sensor label"
+  },
+
+  "humidity": "Humidity",
+  "@humidity": {
+    "description": "Humidity sensor label"
+  },
+
+  "soilMoisture": "Soil moisture",
+  "@soilMoisture": {
+    "description": "Soil moisture sensor label"
+  },
+
+  "updatedAt": "Updated at",
+  "@updatedAt": {
+    "description": "Last update timestamp label"
+  },
+
+  "home": "Home",
+  "@home": {
+    "description": "Home navigation item"
+  },
+
+  "gallery": "Gallery",
+  "@gallery": {
+    "description": "Gallery navigation item"
+  },
+
+  "sensors": "Sensors",
+  "@sensors": {
+    "description": "Sensors navigation item"
+  },
+
+  "summary": "Summary",
+  "@summary": {
+    "description": "Summary section title"
+  },
+
+  "characterise": "Characterise",
+  "@characterise": {
+    "description": "Characterise section title"
+  },
+
+  "noImagesAvailable": "No images available",
+  "@noImagesAvailable": {
+    "description": "Empty state message for gallery"
+  },
+
+  "noDataAvailable": "No data available for this section.",
+  "@noDataAvailable": {
+    "description": "Empty state message for sections"
+  },
+
+  "pleaseLoginToChat": "Please login to start a conversation",
+  "@pleaseLoginToChat": {
+    "description": "Login required message for chat"
+  },
+
+  "cannotChatWithYourself": "You cannot start a conversation with yourself",
+  "@cannotChatWithYourself": {
+    "description": "Error message when trying to chat with self"
+  },
+
+  "failedToStartConversation": "Failed to start conversation",
+  "@failedToStartConversation": {
+    "description": "Error message for conversation creation"
+  },
+
+  "website": "Website",
+  "@website": {
+    "description": "Website field label"
+  },
+
+  "medias": "Medias",
+  "@medias": {
+    "description": "Media counter label"
+  },
+
+  "startConversation": "Start conversation",
+  "@startConversation": {
+    "description": "Button to start a conversation"
+  },
+
+  "aboutContent": "Agroecology Map is an open source, citizen science and open data platform that since 2017 has been maintained by a group of volunteers who work to strengthen and create new collaboration networks that improve sharing knowledge about Agroecology.",
+  "@aboutContent": {
+    "description": "About page content text"
+  },
+
+  "learnMoreAboutUs": "Learn more about us",
+  "@learnMoreAboutUs": {
+    "description": "Link to learn more"
+  },
+
+  "startConversationDialog": "Start Conversation",
+  "@startConversationDialog": {
+    "description": "Start conversation dialog title"
+  },
+
+  "recipientAccountId": "Recipient account ID",
+  "@recipientAccountId": {
+    "description": "Recipient ID input hint"
+  },
+
+  "create": "Create",
+  "@create": {
+    "description": "Create button"
+  },
+
+  "pleaseLoginToUseChat": "Please login to use chat",
+  "@pleaseLoginToUseChat": {
+    "description": "Login required for chat feature"
+  },
+
+  "startChat": "Start chat",
+  "@startChat": {
+    "description": "Tooltip for start chat button"
+  },
+
+  "typeAMessage": "Type a message",
+  "@typeAMessage": {
+    "description": "Chat input placeholder"
+  },
+
+  "failedToSendMessage": "Failed to send message",
+  "@failedToSendMessage": {
+    "description": "Error message when message fails to send"
+  },
+
+  "deleteMyAccount": "Delete my account",
+  "@deleteMyAccount": {
+    "description": "Delete account button"
+  },
+
+  "deleteAccount": "Delete Account",
+  "@deleteAccount": {
+    "description": "Delete account dialog title"
+  },
+
+  "deleteAccountConfirmation": "Are you sure you want to delete your account? This action cannot be undone.",
+  "@deleteAccountConfirmation": {
+    "description": "Delete account confirmation message"
+  },
+
+  "error": "Error",
+  "@error": {
+    "description": "Generic error title"
+  },
+
+  "failedToDeleteAccount": "Failed to delete account. Please try again later.",
+  "@failedToDeleteAccount": {
+    "description": "Delete account error message"
+  },
+
+  "accountSuccessfullyDeleted": "Account successfully deleted",
+  "@accountSuccessfullyDeleted": {
+    "description": "Success message for account deletion"
+  },
+
+  "checkingSession": "Checking session...",
+  "@checkingSession": {
+    "description": "Loading message while checking auth session"
+  },
+
+  "addNewLocation": "Add a new Location",
+  "@addNewLocation": {
+    "description": "Title for add location screen"
+  },
+
+  "needLoginToAdd": "You need to login to add a new record",
+  "@needLoginToAdd": {
+    "description": "Login required message for adding records"
+  },
+
+  "locationName": "Location Name",
+  "@locationName": {
+    "description": "Location name field label"
+  },
+
+  "isItAFarm": "Is it a farm?",
+  "@isItAFarm": {
+    "description": "Farm question field label"
+  },
+
+  "mainPurpose": "What's the main purpose?",
+  "@mainPurpose": {
+    "description": "Main purpose field label"
+  },
+
+  "photo": "Photo",
+  "@photo": {
+    "description": "Photo field label"
+  },
+
+  "locationNameHint": "How would you like to name the place where you practice agroecology?",
+  "@locationNameHint": {
+    "description": "Hint text for location name input"
+  },
+
+  "dreamHint": "Do you have a dream of transforming your farm and/or location?",
+  "@dreamHint": {
+    "description": "Hint text for dream input"
+  },
+
+  "descriptionHint": "Tell us a bit about your place, what you do in the place you register",
+  "@descriptionHint": {
+    "description": "Hint text for description input"
+  },
+
+  "locationServicesDisabled": "Location services are disabled. Please enable the services",
+  "@locationServicesDisabled": {
+    "description": "Error when location services are disabled"
+  },
+
+  "locationPermissionsDenied": "Location permissions are denied",
+  "@locationPermissionsDenied": {
+    "description": "Error when location permissions are denied"
+  },
+
+  "locationPermissionsPermanentlyDenied": "Location permissions are permanently denied, we cannot request permissions.",
+  "@locationPermissionsPermanentlyDenied": {
+    "description": "Error when location permissions are permanently denied"
+  },
+
+  "save": "Save",
+  "@save": {
+    "description": "Save button"
+  },
+
+  "mainlyHomeConsumption": "Mainly Home Consumption",
+  "@mainlyHomeConsumption": {
+    "description": "Dropdown option for main purpose"
+  },
+
+  "editLocation": "Edit Location",
+  "@editLocation": {
+    "description": "Title for edit location screen"
+  },
+
+  "needLoginToEdit": "You need to login to edit a record",
+  "@needLoginToEdit": {
+    "description": "Login required message for editing records"
+  },
+
+  "addNewPractice": "Add a new Practice",
+  "@addNewPractice": {
+    "description": "Title for add practice screen"
+  },
+
+  "needAtLeastOneLocation": "You need to add at least one location",
+  "@needAtLeastOneLocation": {
+    "description": "Error when trying to add practice without locations"
+  },
+
+  "practiceName": "Practice Name",
+  "@practiceName": {
+    "description": "Practice name field label"
+  },
+
+  "practiceNameHint": "Name this practice (e.g. my agroforestry, permaculture experiment, etc.).",
+  "@practiceNameHint": {
+    "description": "Hint text for practice name input"
+  },
+
+  "locationRemoved": "Location removed",
+  "@locationRemoved": {
+    "description": "Snackbar message when location is deleted"
+  },
+
+  "practiceRemoved": "Practice Removed",
+  "@practiceRemoved": {
+    "description": "Snackbar message when practice is deleted"
+  },
+
+  "pickAPhoto": "Pick a Photo",
+  "@pickAPhoto": {
+    "description": "Button to pick a photo"
+  },
+
+  "photoGallery": "Photo Gallery",
+  "@photoGallery": {
+    "description": "Option to pick from gallery"
+  },
+
+  "camera": "Camera",
+  "@camera": {
+    "description": "Option to take photo with camera"
+  },
+
+  "needLoginToAddPhoto": "You need to login to add a new photo",
+  "@needLoginToAddPhoto": {
+    "description": "Login required message for adding photos"
+  },
+
+  "errorOccurred": "An error occured: {message}",
+  "@errorOccurred": {
+    "description": "Generic error with message",
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+
+  "noItems": "No items",
+  "@noItems": {
+    "description": "Empty state message"
+  },
+
+  "errorTryAgain": "An error has occurred, please try again.",
+  "@errorTryAgain": {
+    "description": "Generic error message with retry suggestion"
+  },
+
+  "lengthBetween": "Must be between {min} and {max} characters long.",
+  "@lengthBetween": {
+    "description": "Validation message for length between range",
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+
+  "noneOfAbove": "None of above",
+  "@noneOfAbove": {
+    "description": "Dropdown option"
+  }
+}

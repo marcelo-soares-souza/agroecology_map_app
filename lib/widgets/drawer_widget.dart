@@ -1,6 +1,8 @@
 import 'package:agroecology_map_app/configs/config.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
+import 'package:agroecology_map_app/services/locale_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -27,24 +29,24 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   }
 
   void _deleteAccount() async {
+    final l10n = AppLocalizations.of(context)!;
+
     final bool? confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Account'),
-        content: const Text(
-          'Are you sure you want to delete your account? This action cannot be undone.',
-        ),
+        title: Text(l10n.deleteAccount),
+        content: Text(l10n.deleteAccountConfirmation),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: Text(l10n.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: TextButton.styleFrom(
               foregroundColor: Colors.red,
             ),
-            child: const Text('Delete'),
+            child: Text(l10n.delete),
           ),
         ],
       ),
@@ -59,8 +61,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     if (deleteSuccess) {
       widget.onSelectScreen('locations');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Account successfully deleted'),
+        SnackBar(
+          content: Text(l10n.accountSuccessfullyDeleted),
           backgroundColor: Colors.green,
         ),
       );
@@ -68,12 +70,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Error'),
-          content: const Text('Failed to delete account. Please try again later.'),
+          title: Text(l10n.error),
+          content: Text(l10n.failedToDeleteAccount),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('OK'),
+              child: Text(l10n.ok),
             ),
           ],
         ),
@@ -85,6 +87,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     return ValueListenableBuilder<AuthStatus>(
       valueListenable: AuthService.authStatus,
       builder: (context, status, _) {
+        final l10n = AppLocalizations.of(context)!;
         final textStyle = Theme.of(context)
             .textTheme
             .titleSmall!
@@ -97,7 +100,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               width: 24,
               child: CircularProgressIndicator(strokeWidth: 2),
             ),
-            title: Text('Checking session...', style: textStyle),
+            title: Text(l10n.checkingSession, style: textStyle),
             enabled: false,
           );
         }
@@ -110,7 +113,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             size: 26,
             color: Theme.of(context).colorScheme.secondary,
           ),
-          title: Text(isLoggedIn ? 'Logout' : 'Login', style: textStyle),
+          title: Text(isLoggedIn ? l10n.logout : l10n.login, style: textStyle),
           onTap: () {
             if (isLoggedIn) {
               _logout();
@@ -118,6 +121,40 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               widget.onSelectScreen('login');
             }
           },
+        );
+      },
+    );
+  }
+
+  void _showLanguageDialog(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text(l10n.language),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: LocaleService.supportedLocales.map((locale) {
+              final languageName = LocaleService.getLanguageName(locale.languageCode);
+              final languageFlag = LocaleService.getLanguageFlag(locale.languageCode);
+
+              return ListTile(
+                leading: Text(
+                  languageFlag,
+                  style: const TextStyle(fontSize: 32),
+                ),
+                title: Text(languageName),
+                onTap: () async {
+                  await LocaleService.changeLocale(locale);
+                  if (dialogContext.mounted) {
+                    Navigator.of(dialogContext).pop();
+                  }
+                },
+              );
+            }).toList(),
+          ),
         );
       },
     );
@@ -131,6 +168,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           return const SizedBox.shrink();
         }
 
+        final l10n = AppLocalizations.of(context)!;
+
         return Padding(
           padding: const EdgeInsets.only(
             left: 16,
@@ -140,9 +179,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           child: TextButton(
             onPressed: _deleteAccount,
-            child: const Text(
-              'Delete my account',
-              style: TextStyle(
+            child: Text(
+              l10n.deleteMyAccount,
+              style: const TextStyle(
                 color: Colors.red,
                 fontSize: 14,
               ),
@@ -155,6 +194,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final textStyle = Theme.of(context).textTheme.titleSmall!.copyWith(
+          color: Theme.of(context).colorScheme.secondary,
+          fontSize: 24,
+        );
+
     return Drawer(
       child: Column(
         children: [
@@ -185,13 +230,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               size: 26,
               color: Theme.of(context).colorScheme.secondary,
             ),
-            title: Text(
-              'Locations',
-              style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                    color: Theme.of(context).colorScheme.secondary,
-                    fontSize: 24,
-                  ),
-            ),
+            title: Text(l10n.locations, style: textStyle),
             onTap: () {
               widget.onSelectScreen('locations');
             },
@@ -202,11 +241,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               size: 26,
               color: Theme.of(context).colorScheme.secondary,
             ),
-            title: Text('Practices',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall!
-                    .copyWith(color: Theme.of(context).colorScheme.secondary, fontSize: 24)),
+            title: Text(l10n.practices, style: textStyle),
             onTap: () {
               widget.onSelectScreen('practices');
             },
@@ -217,11 +252,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               size: 26,
               color: Theme.of(context).colorScheme.secondary,
             ),
-            title: Text('Map',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall!
-                    .copyWith(color: Theme.of(context).colorScheme.secondary, fontSize: 24)),
+            title: Text(l10n.map, style: textStyle),
             onTap: () {
               widget.onSelectScreen('map');
             },
@@ -232,13 +263,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               size: 26,
               color: Theme.of(context).colorScheme.secondary,
             ),
-            title: Text(
-              'Accounts',
-              style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                    color: Theme.of(context).colorScheme.secondary,
-                    fontSize: 24,
-                  ),
-            ),
+            title: Text(l10n.accounts, style: textStyle),
             onTap: () {
               widget.onSelectScreen('accounts');
             },
@@ -249,11 +274,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               size: 26,
               color: Theme.of(context).colorScheme.secondary,
             ),
-            title: Text('Chat',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall!
-                    .copyWith(color: Theme.of(context).colorScheme.secondary, fontSize: 24)),
+            title: Text(l10n.chat, style: textStyle),
             onTap: () {
               widget.onSelectScreen('chat');
             },
@@ -265,13 +286,20 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               size: 26,
               color: Theme.of(context).colorScheme.secondary,
             ),
-            title: Text('About',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall!
-                    .copyWith(color: Theme.of(context).colorScheme.secondary, fontSize: 24)),
+            title: Text(l10n.about, style: textStyle),
             onTap: () {
               widget.onSelectScreen('about');
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              FontAwesomeIcons.language,
+              size: 26,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            title: Text(l10n.language, style: textStyle),
+            onTap: () {
+              _showLanguageDialog(context);
             },
           ),
           const Spacer(),
