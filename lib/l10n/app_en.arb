@@ -592,5 +592,120 @@
   "foodSystemComponentsAddressed": "Food system components addressed",
   "@foodSystemComponentsAddressed": {
     "description": "Food system components field label"
+  },
+
+  "filters": "Filters",
+  "@filters": {
+    "description": "Filters title"
+  },
+
+  "applyFilters": "Apply Filters",
+  "@applyFilters": {
+    "description": "Button to apply filters"
+  },
+
+  "clearFilters": "Clear Filters",
+  "@clearFilters": {
+    "description": "Button to clear all filters"
+  },
+
+  "all": "All",
+  "@all": {
+    "description": "Option to select all items in a filter"
+  },
+
+  "farmFunctions": "Farm Functions",
+  "@farmFunctions": {
+    "description": "Farm functions filter label"
+  },
+
+  "mainlyHomeConsumption": "Mainly home consumption",
+  "@mainlyHomeConsumption": {
+    "description": "Farm function option"
+  },
+
+  "mixedHomeConsumptionAndCommercial": "Mixed home consumption and commercial",
+  "@mixedHomeConsumptionAndCommercial": {
+    "description": "Farm function option"
+  },
+
+  "mainlyCommercial": "Mainly commercial",
+  "@mainlyCommercial": {
+    "description": "Farm function option"
+  },
+
+  "other": "Other",
+  "@other": {
+    "description": "Generic other option"
+  },
+
+  "iAmNotSure": "I am not sure",
+  "@iAmNotSure": {
+    "description": "Unsure option"
+  },
+
+  "farmComponents": "Farm Components",
+  "@farmComponents": {
+    "description": "Farm components filter label"
+  },
+
+  "crops": "Crops",
+  "@crops": {
+    "description": "Farm component option"
+  },
+
+  "animals": "Animals",
+  "@animals": {
+    "description": "Farm component option"
+  },
+
+  "trees": "Trees",
+  "@trees": {
+    "description": "Farm component option"
+  },
+
+  "fish": "Fish",
+  "@fish": {
+    "description": "Farm component option"
+  },
+
+  "continent": "Continent",
+  "@continent": {
+    "description": "Continent filter label"
+  },
+
+  "africa": "Africa",
+  "@africa": {
+    "description": "Continent name"
+  },
+
+  "asia": "Asia",
+  "@asia": {
+    "description": "Continent name"
+  },
+
+  "europe": "Europe",
+  "@europe": {
+    "description": "Continent name"
+  },
+
+  "northAmerica": "North America",
+  "@northAmerica": {
+    "description": "Continent name"
+  },
+
+  "southAmerica": "South America",
+  "@southAmerica": {
+    "description": "Continent name"
+  },
+
+  "australia": "Australia/Oceania",
+  "@australia": {
+    "description": "Continent name"
+  },
+
+  "antarctica": "Antarctica",
+  "@antarctica": {
+    "description": "Continent name"
   }
 }

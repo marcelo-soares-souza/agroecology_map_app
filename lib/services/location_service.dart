@@ -6,6 +6,7 @@ import 'package:agroecology_map_app/configs/config.dart';
 import 'package:agroecology_map_app/helpers/custom_interceptor.dart';
 import 'package:agroecology_map_app/models/gallery_item.dart';
 import 'package:agroecology_map_app/models/location.dart';
+import 'package:agroecology_map_app/models/location_filters.dart';
 import 'package:agroecology_map_app/models/pagination.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:flutter/foundation.dart';
@@ -50,13 +51,20 @@ class LocationService {
   static Future<PaginatedResponse<Location>> retrieveLocationsPerPage(
     int page, {
     int perPage = 5,
+    LocationFilters? filters,
   }) async {
+    final Map<String, dynamic> params = {
+      'page': page,
+      'per_page': perPage,
+    };
+
+    if (filters != null) {
+      params.addAll(filters.toParams());
+    }
+
     final res = await httpClient.get(
       Config.getURI('locations.json'),
-      params: {
-        'page': page,
-        'per_page': perPage,
-      },
+      params: params,
     );
 
     final List<Location> locations = [];

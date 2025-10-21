@@ -1,6 +1,7 @@
 import 'package:agroecology_map_app/configs/config.dart';
 import 'package:agroecology_map_app/helpers/form_helper.dart';
 import 'package:agroecology_map_app/models/location.dart';
+import 'package:agroecology_map_app/models/location_filters.dart';
 import 'package:agroecology_map_app/screens/location_details.dart';
 import 'package:agroecology_map_app/services/location_service.dart';
 import 'package:agroecology_map_app/widgets/locations/location_item_widget.dart';
@@ -11,9 +12,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class LocationsWidget extends StatefulWidget {
-  final String filter;
+  final LocationFilters filters;
 
-  const LocationsWidget({super.key, this.filter = ''});
+  const LocationsWidget({super.key, required this.filters});
 
   @override
   State<LocationsWidget> createState() => _LocationsWidget();
@@ -39,17 +40,21 @@ class _LocationsWidget extends State<LocationsWidget> {
     super.initState();
   }
 
+  @override
+  void didUpdateWidget(LocationsWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Refresh the list when filters change
+    if (oldWidget.filters != widget.filters) {
+      _pagingController.refresh();
+    }
+  }
+
   Future<void> _fetchPage(int page) async {
     try {
-      if (widget.filter.isNotEmpty) {
-        final filteredLocations = await LocationService.retrieveLocationsByFilter(widget.filter);
-        _pagingController.appendLastPage(filteredLocations);
-        return;
-      }
-
       final response = await LocationService.retrieveLocationsPerPage(
         page,
         perPage: _numberOfItemsPerRequest,
+        filters: widget.filters.hasActiveFilters ? widget.filters : null,
       );
 
       final locations = response.data;

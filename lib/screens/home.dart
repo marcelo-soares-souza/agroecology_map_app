@@ -1,3 +1,4 @@
+import 'package:agroecology_map_app/models/location_filters.dart';
 import 'package:agroecology_map_app/screens/about.dart';
 import 'package:agroecology_map_app/screens/accounts.dart';
 import 'package:agroecology_map_app/screens/chat_list.dart';
@@ -6,6 +7,7 @@ import 'package:agroecology_map_app/screens/login.dart';
 import 'package:agroecology_map_app/screens/map.dart';
 import 'package:agroecology_map_app/screens/practices.dart';
 import 'package:agroecology_map_app/widgets/drawer_widget.dart';
+import 'package:agroecology_map_app/widgets/locations/location_filters_widget.dart';
 import 'package:agroecology_map_app/widgets/locations/new_location_widget.dart';
 import 'package:agroecology_map_app/widgets/practices/new_practice_widget.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget activePage = const LocationsScreen();
   String activePageTitle = 'Locations';
   String _searchQuery = '';
+  LocationFilters _locationFilters = LocationFilters();
 
   void _addLocation() async {
     final l10n = AppLocalizations.of(context)!;
@@ -55,6 +58,25 @@ class _HomeScreenState extends State<HomeScreen> {
       activePage = const PracticesScreen();
       activePageTitle = l10n.practices;
     });
+  }
+
+  void _showLocationFilters() {
+    final l10n = AppLocalizations.of(context)!;
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => LocationFiltersWidget(
+        initialFilters: _locationFilters,
+        onApplyFilters: (filters) {
+          setState(() {
+            _locationFilters = filters.copyWith(name: _searchQuery);
+            activePage = LocationsScreen(filters: _locationFilters);
+            activePageTitle = l10n.locations;
+          });
+        },
+      ),
+    );
   }
 
   void _setScreen(String screen) {
@@ -124,14 +146,11 @@ class _HomeScreenState extends State<HomeScreen> {
     if (activePageTitle == l10n.locations || activePage is LocationsScreen) {
       title = TextField(
         onSubmitted: (value) {
-          Navigator.pop(context);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  HomeScreen(activePage: LocationsScreen(filter: _searchQuery), activePageTitle: l10n.locations),
-            ),
-          );
+          setState(() {
+            _searchQuery = value;
+            _locationFilters = _locationFilters.copyWith(name: value);
+            activePage = LocationsScreen(filters: _locationFilters);
+          });
         },
         cursorColor: Colors.white,
         onChanged: (value) => _searchQuery = value,
@@ -145,14 +164,10 @@ class _HomeScreenState extends State<HomeScreen> {
             suffixIcon: IconButton(
               icon: const Icon(FontAwesomeIcons.magnifyingGlass),
               onPressed: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        HomeScreen(activePage: LocationsScreen(filter: _searchQuery), activePageTitle: l10n.locations),
-                  ),
-                );
+                setState(() {
+                  _locationFilters = _locationFilters.copyWith(name: _searchQuery);
+                  activePage = LocationsScreen(filters: _locationFilters);
+                });
               },
             )),
         style: const TextStyle(color: Colors.white, fontSize: 15.0),
@@ -205,11 +220,16 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: getTitle(),
         actions: [
-          if (activePageTitle == l10n.locations || activePage is LocationsScreen)
+          if (activePageTitle == l10n.locations || activePage is LocationsScreen) ...[
+            IconButton(
+              onPressed: _showLocationFilters,
+              icon: const Icon(FontAwesomeIcons.filter),
+            ),
             IconButton(
               onPressed: _addLocation,
               icon: const Icon(FontAwesomeIcons.plus),
             ),
+          ],
           if (activePageTitle == l10n.practices || activePage is PracticesScreen)
             IconButton(
               onPressed: _addPractice,
