@@ -144,38 +144,35 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // Check if current page is Locations (by comparing with localized string)
     if (activePageTitle == l10n.locations || activePage is LocationsScreen) {
-      title = Expanded(
-        child: TextField(
-          onSubmitted: (value) {
-            setState(() {
-              _searchQuery = value;
-              // Reset all filters and only keep the search query
-              _locationFilters = LocationFilters(name: value);
-              activePage = LocationsScreen(filters: _locationFilters);
-            });
-          },
-          cursorColor: Colors.white,
-          onChanged: (value) => _searchQuery = value,
-          decoration: InputDecoration(
-              hintText: l10n.searchLocation,
-              hintStyle: TextStyle(
-                color: Colors.grey.withValues(alpha: 0.3),
-                fontSize: 18,
-              ),
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 21),
-              suffixIcon: IconButton(
-                icon: const Icon(FontAwesomeIcons.magnifyingGlass),
-                onPressed: () {
-                  setState(() {
-                    // Reset all filters and only keep the search query
-                    _locationFilters = LocationFilters(name: _searchQuery);
-                    activePage = LocationsScreen(filters: _locationFilters);
-                  });
-                },
-              )),
-          style: const TextStyle(color: Colors.white, fontSize: 18.0),
-        ),
+      title = TextField(
+        onSubmitted: (value) {
+          setState(() {
+            _searchQuery = value;
+            // Reset all filters and only keep the search query
+            _locationFilters = LocationFilters(name: value);
+            activePage = LocationsScreen(filters: _locationFilters);
+          });
+        },
+        cursorColor: Colors.white,
+        onChanged: (value) => _searchQuery = value,
+        decoration: InputDecoration(
+            hintText: l10n.searchLocation,
+            hintStyle: TextStyle(
+              color: Colors.grey.withValues(alpha: 0.3),
+              fontSize: 21,
+            ),
+            border: InputBorder.none,
+            suffixIcon: IconButton(
+              icon: const Icon(FontAwesomeIcons.magnifyingGlass),
+              onPressed: () {
+                setState(() {
+                  // Reset all filters and only keep the search query
+                  _locationFilters = LocationFilters(name: _searchQuery);
+                  activePage = LocationsScreen(filters: _locationFilters);
+                });
+              },
+            )),
+        style: const TextStyle(color: Colors.white, fontSize: 15.0),
       );
     } else if (activePageTitle == l10n.practices || activePage is PracticesScreen) {
       title = TextField(
@@ -223,7 +220,6 @@ class _HomeScreenState extends State<HomeScreen> {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        titleSpacing: 0,
         title: getTitle(),
         actions: [
           if (activePageTitle == l10n.locations || activePage is LocationsScreen) ...[
