@@ -1,9 +1,11 @@
 import 'package:agroecology_map_app/helpers/form_helper.dart';
 import 'package:agroecology_map_app/models/account.dart';
 import 'package:agroecology_map_app/screens/chat_page.dart';
+import 'package:agroecology_map_app/screens/location_details.dart';
 import 'package:agroecology_map_app/services/account_service.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/chat_service.dart';
+import 'package:agroecology_map_app/services/location_service.dart';
 import 'package:agroecology_map_app/widgets/text_block_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -161,6 +163,28 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                         ListTile(
                           leading: const Icon(FontAwesomeIcons.locationDot),
                           title: Text(loc.name),
+                          onTap: () async {
+                            final navigator = Navigator.of(context);
+                            final scaffold = ScaffoldMessenger.of(context);
+                            final l10n = AppLocalizations.of(context)!;
+
+                            try {
+                              final location = await LocationService.retrieveLocation(loc.id.toString());
+                              if (!mounted) return;
+                              await navigator.push(
+                                MaterialPageRoute(
+                                  builder: (ctx) => LocationDetailsScreen(location: location),
+                                ),
+                              );
+                              setState(() => _loading = true);
+                              await _load();
+                            } catch (e) {
+                              if (!mounted) return;
+                              scaffold.showSnackBar(
+                                SnackBar(content: Text(l10n.failedToLoadLocation)),
+                              );
+                            }
+                          },
                         ),
                       ]
                     ],

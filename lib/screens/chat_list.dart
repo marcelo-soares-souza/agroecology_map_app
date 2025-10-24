@@ -47,42 +47,6 @@ class _ChatListScreenState extends State<ChatListScreen> {
     }
   }
 
-  Future<void> _startChatDialog() async {
-    final l10n = AppLocalizations.of(context)!;
-    final controller = TextEditingController();
-    final recipientId = await showDialog<int>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(l10n.startConversationDialog),
-        content: TextField(
-          controller: controller,
-          keyboardType: TextInputType.number,
-          decoration: InputDecoration(hintText: l10n.recipientAccountId),
-        ),
-        actions: [
-          TextButton(onPressed: () => Navigator.of(ctx).pop(), child: Text(l10n.cancel)),
-          ElevatedButton(
-            onPressed: () {
-              final id = int.tryParse(controller.text.trim());
-              if (id != null) Navigator.of(ctx).pop(id);
-            },
-            child: Text(l10n.create),
-          ),
-        ],
-      ),
-    );
-    if (recipientId == null) return;
-
-    try {
-      final conv = await _svc.createOrFindChat(recipientId);
-      if (!mounted) return;
-      await Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => ChatPage(conversationId: conv.id, otherName: conv.other.name)));
-      await _load();
-    } catch (_) {
-      // ignore minimal errors
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +67,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
           child: Stack(
             children: [
               ListView.separated(
-                padding: const EdgeInsets.only(bottom: 80, top: 8),
+                padding: const EdgeInsets.only(top: 8),
                 itemCount: _conversations.length,
                 separatorBuilder: (_, __) => const Divider(height: 1),
                 itemBuilder: (ctx, i) {
@@ -134,15 +98,6 @@ class _ChatListScreenState extends State<ChatListScreen> {
                 },
               ),
               if (_loading) const Align(alignment: Alignment.topCenter, child: LinearProgressIndicator(minHeight: 2)),
-              Positioned(
-                right: 16,
-                bottom: 16,
-                child: FloatingActionButton(
-                  onPressed: _startChatDialog,
-                  tooltip: l10n.startChat,
-                  child: const Icon(Icons.chat_bubble_outline),
-                ),
-              ),
             ],
           ),
         );

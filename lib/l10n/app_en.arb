@@ -732,5 +732,10 @@
   "antarctica": "Antarctica",
   "@antarctica": {
     "description": "Continent name"
+  },
+
+  "failedToLoadLocation": "Failed to load location details",
+  "@failedToLoadLocation": {
+    "description": "Error message when location details fail to load"
   }
 }

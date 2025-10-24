@@ -144,5 +144,6 @@
   "northAmerica": "América del Norte",
   "southAmerica": "América del Sur",
   "australia": "Australia/Oceanía",
-  "antarctica": "Antártida"
+  "antarctica": "Antártida",
+  "failedToLoadLocation": "Error al cargar los detalles de la ubicación"
 }
