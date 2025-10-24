@@ -82,6 +82,47 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
     }
   }
 
+  Future<void> _openLocation(int locationId) async {
+    final navigator = Navigator.of(context);
+    final scaffold = ScaffoldMessenger.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    final rootNavigator = Navigator.of(context, rootNavigator: true);
+
+    var loaderVisible = true;
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const _LoadingDialog(),
+    ).whenComplete(() => loaderVisible = false);
+
+    void dismissLoader() {
+      if (loaderVisible && rootNavigator.mounted) {
+        loaderVisible = false;
+        rootNavigator.pop();
+      }
+    }
+
+    try {
+      final location = await LocationService.retrieveLocation(locationId.toString());
+      dismissLoader();
+      if (!mounted) return;
+      await navigator.push(
+        MaterialPageRoute(
+          builder: (ctx) => LocationDetailsScreen(location: location),
+        ),
+      );
+      if (!mounted) return;
+      setState(() => _loading = true);
+      await _load();
+    } catch (e) {
+      dismissLoader();
+      if (!mounted) return;
+      scaffold.showSnackBar(
+        SnackBar(content: Text(l10n.failedToLoadLocation)),
+      );
+    }
+  }
+
   Widget _headerImage() => CachedNetworkImage(
         errorWidget: (context, url, error) => const Icon(
           FontAwesomeIcons.circleExclamation,
@@ -175,30 +216,31 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                             Icons.chevron_right,
                             color: Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
-                          onTap: () async {
-                            final navigator = Navigator.of(context);
-                            final scaffold = ScaffoldMessenger.of(context);
-                            final l10n = AppLocalizations.of(context)!;
-
-                            try {
-                              final location = await LocationService.retrieveLocation(loc.id.toString());
-                              if (!mounted) return;
-                              await navigator.push(
-                                MaterialPageRoute(
-                                  builder: (ctx) => LocationDetailsScreen(location: location),
-                                ),
-                              );
-                              setState(() => _loading = true);
-                              await _load();
-                            } catch (e) {
-                              if (!mounted) return;
-                              scaffold.showSnackBar(
-                                SnackBar(content: Text(l10n.failedToLoadLocation)),
-                              );
-                            }
+                          onTap: () {
+                            _openLocation(loc.id);
                           },
                         ),
                       ]
+                    ],
+                  ),
+                ),
+              ] else ...[
+                const SizedBox(height: 24),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
+                  child: Column(
+                    children: [
+                      Icon(
+                        FontAwesomeIcons.seedling,
+                        size: 40,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        l10n.noLocationsRegistered,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
                     ],
                   ),
                 ),
@@ -230,6 +272,25 @@ class _CounterChip extends StatelessWidget {
     return Chip(
       label: Text('$label: $value'),
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+    );
+  }
+}
+
+class _LoadingDialog extends StatelessWidget {
+  const _LoadingDialog();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Dialog(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      child: Center(
+        child: SizedBox(
+          width: 56,
+          height: 56,
+          child: CircularProgressIndicator(),
+        ),
+      ),
     );
   }
 }

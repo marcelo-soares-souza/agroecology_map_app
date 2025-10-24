@@ -79,7 +79,6 @@ class AccountLocation {
         id: json['id'] as int,
         name: json['name']?.toString() ?? '',
         url: json['url']?.toString() ?? '',
-        imageUrl: json['image_url']?.toString() ?? '',
+        imageUrl: (json['image_url'] ?? json['imageUrl'])?.toString() ?? '',
       );
 }
-

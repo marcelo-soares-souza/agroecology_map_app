@@ -737,5 +737,10 @@
   "failedToLoadLocation": "Failed to load location details",
   "@failedToLoadLocation": {
     "description": "Error message when location details fail to load"
+  },
+
+  "noLocationsRegistered": "No locations registered yet",
+  "@noLocationsRegistered": {
+    "description": "Empty state message when an account has no locations"
   }
 }

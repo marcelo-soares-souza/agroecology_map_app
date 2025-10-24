@@ -145,5 +145,6 @@
   "southAmerica": "Amérique du Sud",
   "australia": "Australie/Océanie",
   "antarctica": "Antarctique",
-  "failedToLoadLocation": "Échec du chargement des détails de l'emplacement"
+  "failedToLoadLocation": "Échec du chargement des détails de l'emplacement",
+  "noLocationsRegistered": "Aucune localisation enregistrée pour le moment."
 }

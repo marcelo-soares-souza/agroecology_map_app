@@ -145,5 +145,6 @@
   "southAmerica": "América do Sul",
   "australia": "Austrália/Oceania",
   "antarctica": "Antártida",
-  "failedToLoadLocation": "Falha ao carregar detalhes da localização"
+  "failedToLoadLocation": "Falha ao carregar detalhes da localização",
+  "noLocationsRegistered": "Nenhuma localização cadastrada ainda."
 }
