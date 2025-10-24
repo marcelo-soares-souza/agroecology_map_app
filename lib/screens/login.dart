@@ -72,6 +72,21 @@ class _LoginScreen extends State<LoginScreen> {
           hideProvidersTitle: true,
           theme: LoginTheme(
             primaryColor: Theme.of(context).copyWith().shadowColor,
+            buttonTheme: const LoginButtonTheme(
+              backgroundColor: Color(0xFF2E7D32),
+              highlightColor: Color(0xFF66BB6A),
+              splashColor: Color(0xFF1B5E20),
+              elevation: 6,
+              highlightElevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(18)),
+              ),
+            ),
+            buttonStyle: const TextStyle(
+              color: Colors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.w700,
+            ),
             cardTheme: CardTheme(
               color: Theme.of(context).copyWith().shadowColor,
               surfaceTintColor: Colors.white,
@@ -116,17 +131,18 @@ class _LoginScreen extends State<LoginScreen> {
           },
           onRecoverPassword: _recoverPassword,
         ),
-        Positioned(
-          bottom: 120,
-          left: 0,
-          right: 0,
-          child: Center(
-            child: InkWell(
-              child: Text(
-                l10n.privacyPolicyLink,
-                style: const TextStyle(color: Colors.red, fontSize: 21, fontWeight: FontWeight.bold),
+        SafeArea(
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 24),
+              child: InkWell(
+                child: Text(
+                  l10n.privacyPolicyLink,
+                  style: const TextStyle(color: Colors.red, fontSize: 21, fontWeight: FontWeight.bold),
+                ),
+                onTap: () => launchUrl(Uri.parse(Config.privacyPolicyPage)),
               ),
-              onTap: () => launchUrl(Uri.parse(Config.privacyPolicyPage)),
             ),
           ),
         ),
