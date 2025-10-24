@@ -6,11 +6,13 @@ import 'package:agroecology_map_app/models/gallery_item.dart';
 import 'package:agroecology_map_app/models/location.dart';
 import 'package:agroecology_map_app/models/location_like_state.dart';
 import 'package:agroecology_map_app/models/practice/practice.dart';
+import 'package:agroecology_map_app/screens/account_details.dart';
 import 'package:agroecology_map_app/screens/home.dart';
+import 'package:agroecology_map_app/services/account_service.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/location_service.dart';
-import 'package:agroecology_map_app/widgets/locations/edit_location_widget.dart';
 import 'package:agroecology_map_app/widgets/like_badge.dart';
+import 'package:agroecology_map_app/widgets/locations/edit_location_widget.dart';
 import 'package:agroecology_map_app/widgets/new_media_widget.dart';
 import 'package:agroecology_map_app/widgets/text_block_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -238,6 +240,24 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
     );
   }
 
+  Future<void> _navigateToAccountProfile() async {
+    if (_location.accountId == 0) return;
+
+    try {
+      final account = await AccountService.retrieveAccountDetails(_location.accountId);
+      if (!mounted) return;
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (ctx) => AccountDetailsScreen(account: account),
+        ),
+      );
+    } catch (e) {
+      debugPrint('[DEBUG] Error fetching account details: $e');
+      if (!mounted) return;
+      FormHelper.errorMessage(context, 'Failed to load account details');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -417,10 +437,36 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                       ),
                     ),
                   ),
-                  TextBlockWidget(
-                    label: l10n.responsibleForInfo,
-                    value: _location.responsibleForInformation,
-                  ),
+                  if (_location.responsibleForInformation.isNotEmpty) ...[
+                    const SizedBox(height: 14),
+                    Text(
+                      overflow: TextOverflow.ellipsis,
+                      l10n.responsibleForInfo,
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 21,
+                          ),
+                    ),
+                    const SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 21),
+                      child: GestureDetector(
+                        onTap: _navigateToAccountProfile,
+                        child: Text(
+                          textAlign: TextAlign.center,
+                          _location.responsibleForInformation.trim(),
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontSize: 20,
+                                height: 1.5,
+                                decoration: TextDecoration.underline,
+                              ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                  ],
                 ] else if (_selectedPageIndex == 1 && _sendMedia == true) ...[
                   NewMediaWidget(
                     location: widget.location,

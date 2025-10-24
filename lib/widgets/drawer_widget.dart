@@ -174,7 +174,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           padding: const EdgeInsets.only(
             left: 16,
             right: 16,
-            bottom: 130, // Account for bottom navigation bar
+            bottom: 16,
             top: 8,
           ),
           child: TextButton(
@@ -224,85 +224,92 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               ),
             ]),
           ),
-          ListTile(
-            leading: Icon(
-              FontAwesomeIcons.locationDot,
-              size: 26,
-              color: Theme.of(context).colorScheme.secondary,
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: Icon(
+                      FontAwesomeIcons.locationDot,
+                      size: 26,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    title: Text(l10n.locations, style: textStyle),
+                    onTap: () {
+                      widget.onSelectScreen('locations');
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      FontAwesomeIcons.seedling,
+                      size: 26,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    title: Text(l10n.practices, style: textStyle),
+                    onTap: () {
+                      widget.onSelectScreen('practices');
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      FontAwesomeIcons.map,
+                      size: 26,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    title: Text(l10n.map, style: textStyle),
+                    onTap: () {
+                      widget.onSelectScreen('map');
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      FontAwesomeIcons.userGroup,
+                      size: 26,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    title: Text(l10n.accounts, style: textStyle),
+                    onTap: () {
+                      widget.onSelectScreen('accounts');
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      FontAwesomeIcons.solidComments,
+                      size: 26,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    title: Text(l10n.chat, style: textStyle),
+                    onTap: () {
+                      widget.onSelectScreen('chat');
+                    },
+                  ),
+                  _buildAuthTile(context),
+                  ListTile(
+                    leading: Icon(
+                      FontAwesomeIcons.info,
+                      size: 26,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    title: Text(l10n.about, style: textStyle),
+                    onTap: () {
+                      widget.onSelectScreen('about');
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      FontAwesomeIcons.language,
+                      size: 26,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    title: Text(l10n.language, style: textStyle),
+                    onTap: () {
+                      _showLanguageDialog(context);
+                    },
+                  ),
+                ],
+              ),
             ),
-            title: Text(l10n.locations, style: textStyle),
-            onTap: () {
-              widget.onSelectScreen('locations');
-            },
           ),
-          ListTile(
-            leading: Icon(
-              FontAwesomeIcons.seedling,
-              size: 26,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            title: Text(l10n.practices, style: textStyle),
-            onTap: () {
-              widget.onSelectScreen('practices');
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              FontAwesomeIcons.map,
-              size: 26,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            title: Text(l10n.map, style: textStyle),
-            onTap: () {
-              widget.onSelectScreen('map');
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              FontAwesomeIcons.userGroup,
-              size: 26,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            title: Text(l10n.accounts, style: textStyle),
-            onTap: () {
-              widget.onSelectScreen('accounts');
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              FontAwesomeIcons.solidComments,
-              size: 26,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            title: Text(l10n.chat, style: textStyle),
-            onTap: () {
-              widget.onSelectScreen('chat');
-            },
-          ),
-          _buildAuthTile(context),
-          ListTile(
-            leading: Icon(
-              FontAwesomeIcons.info,
-              size: 26,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            title: Text(l10n.about, style: textStyle),
-            onTap: () {
-              widget.onSelectScreen('about');
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              FontAwesomeIcons.language,
-              size: 26,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            title: Text(l10n.language, style: textStyle),
-            onTap: () {
-              _showLanguageDialog(context);
-            },
-          ),
-          const Spacer(),
           _buildDeleteButton(context),
         ],
       ),
