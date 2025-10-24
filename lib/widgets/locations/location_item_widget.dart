@@ -1,16 +1,105 @@
+import 'package:agroecology_map_app/helpers/form_helper.dart';
 import 'package:agroecology_map_app/models/location.dart';
+import 'package:agroecology_map_app/models/location_like_state.dart';
+import 'package:agroecology_map_app/services/auth_service.dart';
+import 'package:agroecology_map_app/services/location_service.dart';
+import 'package:agroecology_map_app/widgets/like_badge.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class LocationItemWidget extends StatelessWidget {
+class LocationItemWidget extends StatefulWidget {
   final Location location;
   final void Function(BuildContext context, Location location) onSelectLocation;
 
   const LocationItemWidget({super.key, required this.location, required this.onSelectLocation});
 
   @override
+  State<LocationItemWidget> createState() => _LocationItemWidgetState();
+}
+
+class _LocationItemWidgetState extends State<LocationItemWidget> {
+  late int _likesCount;
+  late bool _liked;
+  bool _isProcessing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _likesCount = widget.location.likesCount;
+    _liked = widget.location.liked;
+    _loadLikes();
+  }
+
+  @override
+  void didUpdateWidget(covariant LocationItemWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.location.id != widget.location.id) {
+      _likesCount = widget.location.likesCount;
+      _liked = widget.location.liked;
+      _loadLikes();
+    }
+  }
+
+  Future<void> _loadLikes() async {
+    if (widget.location.slug.isEmpty) return;
+
+    try {
+      final LocationLikeState state = await LocationService.retrieveLocationLikes(widget.location.slug);
+      if (!mounted) return;
+      setState(() {
+        _likesCount = state.likesCount;
+        _liked = state.liked;
+        widget.location.likesCount = state.likesCount;
+        widget.location.liked = state.liked;
+      });
+    } catch (e) {
+      debugPrint('[DEBUG] Failed to load likes for location ${widget.location.id}: $e');
+    }
+  }
+
+  Future<void> _handleLike() async {
+    if (_isProcessing) return;
+    if (widget.location.slug.isEmpty) return;
+
+    final l10n = AppLocalizations.of(context)!;
+
+    final bool isLoggedIn = await AuthService.isLoggedIn();
+    if (!isLoggedIn) {
+      if (!mounted) return;
+      FormHelper.infoMessage(context, l10n.loginRequiredToLike);
+      return;
+    }
+
+    setState(() => _isProcessing = true);
+
+    try {
+      final LocationLikeState state = await LocationService.likeLocation(widget.location.slug);
+      if (!mounted) return;
+      setState(() {
+        _likesCount = state.likesCount;
+        _liked = state.liked;
+        widget.location.likesCount = state.likesCount;
+        widget.location.liked = state.liked;
+      });
+    } on LocationLikeException catch (e) {
+      if (!mounted) return;
+      final bool unauthorized = e.statusCode == 401;
+      FormHelper.errorMessage(context, unauthorized ? l10n.loginRequiredToLike : l10n.likeActionFailed);
+    } catch (e) {
+      if (!mounted) return;
+      FormHelper.errorMessage(context, l10n.likeActionFailed);
+    } finally {
+      if (mounted) {
+        setState(() => _isProcessing = false);
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final location = widget.location;
     return Card(
       margin: const EdgeInsets.all(8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -18,7 +107,7 @@ class LocationItemWidget extends StatelessWidget {
       elevation: 2,
       child: InkWell(
         onTap: () {
-          onSelectLocation(context, location);
+          widget.onSelectLocation(context, location);
         },
         child: Stack(
           children: [
@@ -42,31 +131,11 @@ class LocationItemWidget extends StatelessWidget {
             Positioned(
               top: 12,
               right: 12,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Colors.black54,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      FontAwesomeIcons.solidHeart,
-                      color: Colors.pinkAccent,
-                      size: 16,
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      location.likesCount.toString(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
+              child: LikeBadge(
+                likesCount: _likesCount,
+                liked: _liked,
+                isLoading: _isProcessing,
+                onPressed: _handleLike,
               ),
             ),
             Positioned(

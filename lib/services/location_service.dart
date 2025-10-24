@@ -7,6 +7,7 @@ import 'package:agroecology_map_app/helpers/custom_interceptor.dart';
 import 'package:agroecology_map_app/models/gallery_item.dart';
 import 'package:agroecology_map_app/models/location.dart';
 import 'package:agroecology_map_app/models/location_filters.dart';
+import 'package:agroecology_map_app/models/location_like_state.dart';
 import 'package:agroecology_map_app/models/pagination.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:flutter/foundation.dart';
@@ -173,6 +174,54 @@ class LocationService {
     }
 
     return locations;
+  }
+
+  static Future<LocationLikeState> retrieveLocationLikes(String slug) async {
+    if (slug.isEmpty) {
+      throw const LocationLikeException('missing_slug');
+    }
+
+    final res = await httpClient.get(Config.getURI('/locations/$slug/likes.json'));
+
+    if (res.statusCode != 200) {
+      throw LocationLikeException(res.body.toString(), statusCode: res.statusCode);
+    }
+
+    final dynamic data = json.decode(res.body.toString());
+    if (data is Map<String, dynamic>) {
+      return LocationLikeState.fromJson(data);
+    }
+    throw const LocationLikeException('invalid_response');
+  }
+
+  static Future<LocationLikeState> likeLocation(String slug) async {
+    if (slug.isEmpty) {
+      throw const LocationLikeException('missing_slug');
+    }
+
+    final res = await httpClient.put(
+      Config.getURI('/locations/$slug/like.json'),
+      body: json.encode({}),
+    );
+
+    if (res.statusCode == 200 || res.statusCode == 201) {
+      final dynamic data = json.decode(res.body.toString());
+      if (data is Map<String, dynamic>) {
+        return LocationLikeState(
+          likesCount: (data['likes_count'] as num?)?.toInt() ?? 0,
+          liked: true,
+        );
+      }
+    }
+
+    if (res.statusCode == 401) {
+      throw const LocationLikeException('unauthorized', statusCode: 401);
+    }
+
+    final dynamic data = json.decode(res.body.toString());
+    final message = data is Map<String, dynamic> ? data['error']?.toString() ?? data['message']?.toString() ?? '' : '';
+
+    throw LocationLikeException(message.isNotEmpty ? message : res.body.toString(), statusCode: res.statusCode);
   }
 
   static Future<Map<String, String>> sendLocation(Location location) async {

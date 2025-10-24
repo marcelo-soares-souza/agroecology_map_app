@@ -15,6 +15,7 @@ class Location {
   String responsibleForInformation;
   String url;
   String imageUrl;
+  String slug;
   String temperature;
   String humidity;
   String moisture;
@@ -24,6 +25,7 @@ class Location {
   String base64Image;
   int accountId;
   int likesCount;
+  bool liked;
   bool hasPermission;
 
   Location({
@@ -43,12 +45,14 @@ class Location {
     required this.longitude,
     required this.responsibleForInformation,
     required this.url,
+    required this.slug,
     required this.temperature,
     required this.humidity,
     required this.moisture,
     required this.sensorsLastUpdatedAt,
     required this.accountId,
     required this.likesCount,
+    required this.liked,
   })  : base64Image = '',
         hasPermission = false,
         createdAt = '',
@@ -72,16 +76,19 @@ class Location {
       longitude: '-47.89',
       responsibleForInformation: '',
       url: '',
+      slug: '',
       temperature: '0.0',
       humidity: '0.0',
       moisture: '0.0',
       sensorsLastUpdatedAt: '',
       accountId: 0,
       likesCount: 0,
+      liked: false,
     );
   }
 
   factory Location.fromJson(Map<String, dynamic> json) {
+    final String url = json['url']?.toString() ?? '';
     return Location(
       id: json['id'],
       name: json['name'].toString(),
@@ -97,14 +104,16 @@ class Location {
       latitude: json['latitude'].toString(),
       longitude: json['longitude'].toString(),
       responsibleForInformation: json['responsible_for_information'].toString(),
-      url: json['url'].toString(),
+      url: url,
       imageUrl: json['image_url'].toString(),
+      slug: _extractSlug(json['slug'], url),
       temperature: json['temperature'].toString(),
       humidity: json['humidity'].toString(),
       moisture: json['moisture'].toString(),
       sensorsLastUpdatedAt: json['sensors_last_updated_at'].toString(),
       accountId: json['account_id'] ?? 0,
       likesCount: (json['likes_count'] as num?)?.toInt() ?? 0,
+      liked: json['liked'] == true,
     );
   }
 
@@ -134,4 +143,28 @@ class Location {
 
     return json;
   }
+}
+
+String _extractSlug(dynamic slugValue, String url) {
+  final String? slug = slugValue?.toString();
+  if (slug != null && slug.isNotEmpty) {
+    return slug;
+  }
+
+  if (url.isEmpty) {
+    return '';
+  }
+
+  try {
+    final uri = Uri.parse(url);
+    final segments = uri.pathSegments.where((segment) => segment.isNotEmpty).toList();
+    if (segments.isNotEmpty) {
+      return segments.last;
+    }
+  } catch (_) {
+    // Fallback to manual parsing below.
+  }
+
+  final parts = url.split('/').where((part) => part.isNotEmpty).toList();
+  return parts.isNotEmpty ? parts.last : '';
 }

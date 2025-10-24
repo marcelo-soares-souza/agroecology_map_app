@@ -181,6 +181,26 @@
     "description": "Label for the number of likes a location has received"
   },
 
+  "likeThisLocation": "Like this location",
+  "@likeThisLocation": {
+    "description": "Tooltip for liking a location that the user has not yet liked"
+  },
+
+  "youAlreadyLiked": "You already liked this location",
+  "@youAlreadyLiked": {
+    "description": "Tooltip for a location the user already liked"
+  },
+
+  "loginRequiredToLike": "Please log in to like this location.",
+  "@loginRequiredToLike": {
+    "description": "Message shown when the user must log in before liking"
+  },
+
+  "likeActionFailed": "Unable to update like. Please try again later.",
+  "@likeActionFailed": {
+    "description": "Generic error when the like request fails"
+  },
+
   "location": "Location",
   "@location": {
     "description": "Location field label"
