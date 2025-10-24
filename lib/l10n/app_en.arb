@@ -176,6 +176,11 @@
     "description": "Dream field label"
   },
 
+  "likes": "Likes",
+  "@likes": {
+    "description": "Label for the number of likes a location has received"
+  },
+
   "location": "Location",
   "@location": {
     "description": "Location field label"

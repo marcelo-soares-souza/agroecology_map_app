@@ -40,6 +40,36 @@ class LocationItemWidget extends StatelessWidget {
               imageUrl: location.imageUrl,
             ),
             Positioned(
+              top: 12,
+              right: 12,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.black54,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      FontAwesomeIcons.solidHeart,
+                      color: Colors.pinkAccent,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      location.likesCount.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
               bottom: 0,
               left: 0,
               right: 0,

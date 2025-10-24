@@ -258,22 +258,56 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
               children: [
                 const SizedBox(height: 4),
                 if (_selectedPageIndex == 0) ...[
-                  CachedNetworkImage(
-                    errorWidget: (context, url, error) => const Icon(
-                      FontAwesomeIcons.circleExclamation,
-                      color: Colors.red,
-                    ),
-                    height: 250,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => const Center(
-                      child: SizedBox(
-                        width: 30.0,
-                        height: 30.0,
-                        child: CircularProgressIndicator(),
+                  Stack(
+                    children: [
+                      CachedNetworkImage(
+                        errorWidget: (context, url, error) => const Icon(
+                          FontAwesomeIcons.circleExclamation,
+                          color: Colors.red,
+                        ),
+                        height: 250,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => const Center(
+                          child: SizedBox(
+                            width: 30.0,
+                            height: 30.0,
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                        imageUrl: _location.imageUrl,
                       ),
-                    ),
-                    imageUrl: _location.imageUrl,
+                      Positioned(
+                        top: 12,
+                        right: 12,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: Colors.black54,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(
+                                FontAwesomeIcons.solidHeart,
+                                color: Colors.pinkAccent,
+                                size: 16,
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                _location.likesCount.toString(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   TextBlockWidget(
                     label: l10n.description,

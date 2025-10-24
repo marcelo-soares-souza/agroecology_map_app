@@ -23,6 +23,7 @@ class Location {
   String updatedAt;
   String base64Image;
   int accountId;
+  int likesCount;
   bool hasPermission;
 
   Location({
@@ -47,6 +48,7 @@ class Location {
     required this.moisture,
     required this.sensorsLastUpdatedAt,
     required this.accountId,
+    required this.likesCount,
   })  : base64Image = '',
         hasPermission = false,
         createdAt = '',
@@ -75,6 +77,7 @@ class Location {
       moisture: '0.0',
       sensorsLastUpdatedAt: '',
       accountId: 0,
+      likesCount: 0,
     );
   }
 
@@ -101,6 +104,7 @@ class Location {
       moisture: json['moisture'].toString(),
       sensorsLastUpdatedAt: json['sensors_last_updated_at'].toString(),
       accountId: json['account_id'] ?? 0,
+      likesCount: (json['likes_count'] as num?)?.toInt() ?? 0,
     );
   }
 
