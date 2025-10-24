@@ -1,7 +1,7 @@
 name: agroecology_map_app
 description: "Agroecology Map App"
 homepage: "https://agroecologymap.org"
-version: 2.0.1
+version: 2.0.2
 
 platforms:
   android:

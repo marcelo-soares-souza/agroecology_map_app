@@ -161,8 +161,20 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                       for (final loc in _details.locations) ...[
                         const Divider(height: 1),
                         ListTile(
-                          leading: const Icon(FontAwesomeIcons.locationDot),
+                          leading: loc.imageUrl.isNotEmpty
+                              ? CircleAvatar(
+                                  backgroundImage: CachedNetworkImageProvider(loc.imageUrl),
+                                  onBackgroundImageError: (exception, stackTrace) {},
+                                  child: null,
+                                )
+                              : const CircleAvatar(
+                                  child: Icon(FontAwesomeIcons.locationDot, size: 18),
+                                ),
                           title: Text(loc.name),
+                          trailing: Icon(
+                            Icons.chevron_right,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
                           onTap: () async {
                             final navigator = Navigator.of(context);
                             final scaffold = ScaffoldMessenger.of(context);

@@ -66,13 +66,20 @@ class AccountLocation {
   final int id;
   final String name;
   final String url;
+  final String imageUrl;
 
-  const AccountLocation({required this.id, required this.name, required this.url});
+  const AccountLocation({
+    required this.id,
+    required this.name,
+    required this.url,
+    this.imageUrl = '',
+  });
 
   factory AccountLocation.fromJson(Map<String, dynamic> json) => AccountLocation(
         id: json['id'] as int,
         name: json['name']?.toString() ?? '',
         url: json['url']?.toString() ?? '',
+        imageUrl: json['image_url']?.toString() ?? '',
       );
 }
 
