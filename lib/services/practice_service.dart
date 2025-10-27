@@ -8,6 +8,7 @@ import 'package:agroecology_map_app/models/gallery_item.dart';
 import 'package:agroecology_map_app/models/pagination.dart';
 import 'package:agroecology_map_app/models/practice/characterises.dart';
 import 'package:agroecology_map_app/models/practice/practice.dart';
+import 'package:agroecology_map_app/models/practice_filters.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http_interceptor/http/intercepted_client.dart';
@@ -38,13 +39,20 @@ class PracticeService {
   static Future<PaginatedResponse<Practice>> retrievePracticesPerPage(
     int page, {
     int perPage = 5,
+    PracticeFilters? filters,
   }) async {
+    final Map<String, dynamic> params = {
+      'page': page,
+      'per_page': perPage,
+    };
+
+    if (filters != null) {
+      params.addAll(filters.toParams());
+    }
+
     final res = await httpClient.get(
       Config.getURI('practices.json'),
-      params: {
-        'page': page,
-        'per_page': perPage,
-      },
+      params: params,
     );
 
     final List<Practice> practices = [];
@@ -61,20 +69,6 @@ class PracticeService {
       data: practices,
       metadata: PaginationMetadata.fromHeaders(res.headers),
     );
-  }
-
-  static Future<List<Practice>> retrievePracticesByFilter(String filter) async {
-    final List<Practice> practices = [];
-
-    final res = await httpClient.get(Config.getURI('practices.json'), params: {'filter': 'true', 'name': filter});
-
-    for (final practice in json.decode(res.body.toString())) {
-      final Practice p = Practice.fromJson(practice);
-      p.hasPermission = await AuthService.hasPermission(int.parse(p.accountId));
-      practices.add(p);
-    }
-
-    return practices;
   }
 
   static Future<Practice> retrievePractice(String id) async {

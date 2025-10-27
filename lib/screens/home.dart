@@ -1,4 +1,5 @@
 import 'package:agroecology_map_app/models/location_filters.dart';
+import 'package:agroecology_map_app/models/practice_filters.dart';
 import 'package:agroecology_map_app/screens/about.dart';
 import 'package:agroecology_map_app/screens/accounts.dart';
 import 'package:agroecology_map_app/screens/chat_list.dart';
@@ -10,6 +11,7 @@ import 'package:agroecology_map_app/widgets/drawer_widget.dart';
 import 'package:agroecology_map_app/widgets/locations/location_filters_widget.dart';
 import 'package:agroecology_map_app/widgets/locations/new_location_widget.dart';
 import 'package:agroecology_map_app/widgets/practices/new_practice_widget.dart';
+import 'package:agroecology_map_app/widgets/practices/practice_filters_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -29,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String activePageTitle = 'Locations';
   String _searchQuery = '';
   LocationFilters _locationFilters = LocationFilters();
+  PracticeFilters _practiceFilters = const PracticeFilters();
 
   void _addLocation() async {
     final l10n = AppLocalizations.of(context)!;
@@ -73,6 +76,28 @@ class _HomeScreenState extends State<HomeScreen> {
             _locationFilters = filters.copyWith(name: _searchQuery);
             activePage = LocationsScreen(filters: _locationFilters);
             activePageTitle = l10n.locations;
+          });
+        },
+      ),
+    );
+  }
+
+  void _showPracticeFilters() {
+    final l10n = AppLocalizations.of(context)!;
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => PracticeFiltersWidget(
+        initialFilters: _practiceFilters,
+        onApplyFilters: (filters) {
+          setState(() {
+            _practiceFilters = filters.copyWith(
+              name: _searchQuery,
+              clearName: _searchQuery.isEmpty,
+            );
+            activePage = PracticesScreen(filters: _practiceFilters);
+            activePageTitle = l10n.practices;
           });
         },
       ),
@@ -177,14 +202,14 @@ class _HomeScreenState extends State<HomeScreen> {
     } else if (activePageTitle == l10n.practices || activePage is PracticesScreen) {
       title = TextField(
         onSubmitted: (value) {
-          Navigator.pop(context);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  HomeScreen(activePage: PracticesScreen(filter: _searchQuery), activePageTitle: l10n.practices),
-            ),
-          );
+          setState(() {
+            _searchQuery = value;
+            _practiceFilters = _practiceFilters.copyWith(
+              name: value,
+              clearName: value.isEmpty,
+            );
+            activePage = PracticesScreen(filters: _practiceFilters);
+          });
         },
         cursorColor: Colors.white,
         onChanged: (value) => _searchQuery = value,
@@ -198,14 +223,13 @@ class _HomeScreenState extends State<HomeScreen> {
             suffixIcon: IconButton(
               icon: const Icon(FontAwesomeIcons.magnifyingGlass),
               onPressed: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        HomeScreen(activePage: PracticesScreen(filter: _searchQuery), activePageTitle: l10n.practices),
-                  ),
-                );
+                setState(() {
+                  _practiceFilters = _practiceFilters.copyWith(
+                    name: _searchQuery,
+                    clearName: _searchQuery.isEmpty,
+                  );
+                  activePage = PracticesScreen(filters: _practiceFilters);
+                });
               },
             )),
         style: const TextStyle(color: Colors.white, fontSize: 15.0),
@@ -232,11 +256,16 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: const Icon(FontAwesomeIcons.plus),
             ),
           ],
-          if (activePageTitle == l10n.practices || activePage is PracticesScreen)
+          if (activePageTitle == l10n.practices || activePage is PracticesScreen) ...[
+            IconButton(
+              onPressed: _showPracticeFilters,
+              icon: const Icon(FontAwesomeIcons.filter),
+            ),
             IconButton(
               onPressed: _addPractice,
               icon: const Icon(FontAwesomeIcons.plus),
             ),
+          ],
         ],
       ),
       drawer: DrawerWidget(onSelectScreen: _setScreen),

@@ -694,6 +694,136 @@
     "description": "Farm component option"
   },
 
+  "systemComponent": "System Component",
+  "@systemComponent": {
+    "description": "System component filter label"
+  },
+
+  "soil": "Soil",
+  "@soil": {
+    "description": "Soil option"
+  },
+
+  "water": "Water",
+  "@water": {
+    "description": "Water option"
+  },
+
+  "livestock": "Livestock",
+  "@livestock": {
+    "description": "Livestock option"
+  },
+
+  "pests": "Pests",
+  "@pests": {
+    "description": "Pests option"
+  },
+
+  "energy": "Energy",
+  "@energy": {
+    "description": "Energy option"
+  },
+
+  "household": "Household",
+  "@household": {
+    "description": "Household option"
+  },
+
+  "workers": "Workers",
+  "@workers": {
+    "description": "Workers option"
+  },
+
+  "community": "Community",
+  "@community": {
+    "description": "Community option"
+  },
+
+  "valueChain": "Value chain",
+  "@valueChain": {
+    "description": "Value chain option"
+  },
+
+  "policy": "Policy",
+  "@policy": {
+    "description": "Policy option"
+  },
+
+  "wholeFoodSystem": "Whole food system",
+  "@wholeFoodSystem": {
+    "description": "Whole food system option"
+  },
+
+  "agroecologyPrinciple": "Agroecology principle",
+  "@agroecologyPrinciple": {
+    "description": "Agroecology principle filter label"
+  },
+
+  "recycling": "Recycling",
+  "@recycling": {
+    "description": "Agroecology principle option"
+  },
+
+  "inputReduction": "Input reduction",
+  "@inputReduction": {
+    "description": "Agroecology principle option"
+  },
+
+  "soilHealth": "Soil health",
+  "@soilHealth": {
+    "description": "Agroecology principle option"
+  },
+
+  "animalHealth": "Animal health",
+  "@animalHealth": {
+    "description": "Agroecology principle option"
+  },
+
+  "biodiversity": "Biodiversity",
+  "@biodiversity": {
+    "description": "Agroecology principle option"
+  },
+
+  "synergy": "Synergy",
+  "@synergy": {
+    "description": "Agroecology principle option"
+  },
+
+  "economicDiversification": "Economic diversification",
+  "@economicDiversification": {
+    "description": "Agroecology principle option"
+  },
+
+  "coCreationOfKnowledge": "Co-creation of knowledge",
+  "@coCreationOfKnowledge": {
+    "description": "Agroecology principle option"
+  },
+
+  "socialValuesAndDiets": "Social values and diets",
+  "@socialValuesAndDiets": {
+    "description": "Agroecology principle option"
+  },
+
+  "fairness": "Fairness",
+  "@fairness": {
+    "description": "Agroecology principle option"
+  },
+
+  "connectivity": "Connectivity",
+  "@connectivity": {
+    "description": "Agroecology principle option"
+  },
+
+  "landAndNaturalResourceGovernance": "Land and natural resource governance",
+  "@landAndNaturalResourceGovernance": {
+    "description": "Agroecology principle option"
+  },
+
+  "participation": "Participation",
+  "@participation": {
+    "description": "Agroecology principle option"
+  },
+
   "continent": "Continent",
   "@continent": {
     "description": "Continent filter label"

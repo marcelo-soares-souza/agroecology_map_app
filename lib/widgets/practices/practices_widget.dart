@@ -1,6 +1,7 @@
 import 'package:agroecology_map_app/configs/config.dart';
 import 'package:agroecology_map_app/helpers/form_helper.dart';
 import 'package:agroecology_map_app/models/practice/practice.dart';
+import 'package:agroecology_map_app/models/practice_filters.dart';
 import 'package:agroecology_map_app/screens/practice_details.dart';
 import 'package:agroecology_map_app/services/practice_service.dart';
 import 'package:agroecology_map_app/widgets/practices/practice_item_widget.dart';
@@ -11,9 +12,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class PracticesWidget extends StatefulWidget {
-  final String filter;
+  final PracticeFilters filters;
 
-  const PracticesWidget({super.key, this.filter = ''});
+  const PracticesWidget({super.key, this.filters = const PracticeFilters()});
 
   @override
   State<PracticesWidget> createState() => _PracticesWidget();
@@ -45,17 +46,26 @@ class _PracticesWidget extends State<PracticesWidget> {
     super.initState();
   }
 
+  @override
+  void didUpdateWidget(covariant PracticesWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.filters != widget.filters) {
+      _pagingController.refresh();
+    }
+  }
+
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
+  }
+
   Future<void> _fetchPage(int page) async {
     try {
-      if (widget.filter.isNotEmpty) {
-        final practiceList = await PracticeService.retrievePracticesByFilter(widget.filter);
-        _pagingController.appendLastPage(practiceList);
-        return;
-      }
-
       final response = await PracticeService.retrievePracticesPerPage(
         page,
         perPage: _numberOfItemsPerRequest,
+        filters: widget.filters.hasActiveFilters ? widget.filters : null,
       );
       final practiceList = response.data;
       final nextPage = response.metadata?.nextPage;
