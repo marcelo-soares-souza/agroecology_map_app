@@ -13,6 +13,7 @@
   "language": "Idioma",
   "searchLocation": "Buscar Local...",
   "searchPractice": "Buscar Prática...",
+  "searchAccount": "Buscar Conta...",
   "incorrectEmailOrPassword": "E-mail ou senha incorretos.",
   "somethingWrong": "Algo deu errado {message}",
   "passwordRecoveryNotImplemented": "Recuperação de senha não implementada",

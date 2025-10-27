@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:agroecology_map_app/configs/config.dart';
 import 'package:agroecology_map_app/helpers/custom_interceptor.dart';
 import 'package:agroecology_map_app/models/account.dart';
+import 'package:agroecology_map_app/models/account_filters.dart';
 import 'package:agroecology_map_app/models/pagination.dart';
 import 'package:http_interceptor/http/intercepted_client.dart';
 
@@ -20,13 +21,20 @@ class AccountService {
   static Future<PaginatedResponse<Account>> retrieveAccountsPerPage(
     int page, {
     int perPage = 5,
+    AccountFilters? filters,
   }) async {
+    final Map<String, dynamic> params = {
+      'page': page,
+      'per_page': perPage,
+    };
+
+    if (filters != null && filters.hasActiveFilters) {
+      params.addAll(filters.toParams());
+    }
+
     final res = await httpClient.get(
       Config.getURI('accounts.json'),
-      params: {
-        'page': page,
-        'per_page': perPage,
-      },
+      params: params,
     );
 
     final List<Account> accounts = [];

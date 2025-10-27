@@ -1,3 +1,4 @@
+import 'package:agroecology_map_app/models/account_filters.dart';
 import 'package:agroecology_map_app/models/location_filters.dart';
 import 'package:agroecology_map_app/models/practice_filters.dart';
 import 'package:agroecology_map_app/screens/about.dart';
@@ -32,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String _searchQuery = '';
   LocationFilters _locationFilters = LocationFilters();
   PracticeFilters _practiceFilters = const PracticeFilters();
+  AccountFilters _accountFilters = const AccountFilters();
 
   void _addLocation() async {
     final l10n = AppLocalizations.of(context)!;
@@ -121,6 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
         break;
       case 'accounts':
         setState(() {
+          _accountFilters = const AccountFilters();
           activePage = const AccountsScreen();
           activePageTitle = l10n.accounts;
         });
@@ -229,6 +232,41 @@ class _HomeScreenState extends State<HomeScreen> {
                     clearName: _searchQuery.isEmpty,
                   );
                   activePage = PracticesScreen(filters: _practiceFilters);
+                });
+              },
+            )),
+        style: const TextStyle(color: Colors.white, fontSize: 15.0),
+      );
+    } else if (activePageTitle == l10n.accounts || activePage is AccountsScreen) {
+      title = TextField(
+        onSubmitted: (value) {
+          setState(() {
+            _searchQuery = value;
+            _accountFilters = _accountFilters.copyWith(
+              name: value,
+              clearName: value.isEmpty,
+            );
+            activePage = AccountsScreen(filters: _accountFilters);
+          });
+        },
+        cursorColor: Colors.white,
+        onChanged: (value) => _searchQuery = value,
+        decoration: InputDecoration(
+            hintText: l10n.searchAccount,
+            hintStyle: TextStyle(
+              color: Colors.grey.withValues(alpha: 0.3),
+              fontSize: 21,
+            ),
+            border: InputBorder.none,
+            suffixIcon: IconButton(
+              icon: const Icon(FontAwesomeIcons.magnifyingGlass),
+              onPressed: () {
+                setState(() {
+                  _accountFilters = _accountFilters.copyWith(
+                    name: _searchQuery,
+                    clearName: _searchQuery.isEmpty,
+                  );
+                  activePage = AccountsScreen(filters: _accountFilters);
                 });
               },
             )),

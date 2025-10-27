@@ -61,6 +61,11 @@
     "description": "Search hint for practices"
   },
 
+  "searchAccount": "Search Account...",
+  "@searchAccount": {
+    "description": "Search hint for accounts"
+  },
+
   "incorrectEmailOrPassword": "Incorrect e-mail or password.",
   "@incorrectEmailOrPassword": {
     "description": "Login error message"
