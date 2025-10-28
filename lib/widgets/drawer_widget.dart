@@ -252,17 +252,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   ),
                   ListTile(
                     leading: Icon(
-                      FontAwesomeIcons.map,
-                      size: 26,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    title: Text(l10n.map, style: textStyle),
-                    onTap: () {
-                      widget.onSelectScreen('map');
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(
                       FontAwesomeIcons.images,
                       size: 26,
                       color: Theme.of(context).colorScheme.secondary,
@@ -270,6 +259,17 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     title: Text(l10n.gallery, style: textStyle),
                     onTap: () {
                       widget.onSelectScreen('gallery');
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      FontAwesomeIcons.map,
+                      size: 26,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    title: Text(l10n.map, style: textStyle),
+                    onTap: () {
+                      widget.onSelectScreen('map');
                     },
                   ),
                   ListTile(
