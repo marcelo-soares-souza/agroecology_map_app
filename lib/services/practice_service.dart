@@ -38,7 +38,7 @@ class PracticeService {
 
   static Future<PaginatedResponse<Practice>> retrievePracticesPerPage(
     int page, {
-    int perPage = 5,
+    int perPage = 4,
     PracticeFilters? filters,
   }) async {
     final Map<String, dynamic> params = {

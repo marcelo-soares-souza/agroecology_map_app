@@ -51,7 +51,7 @@ class LocationService {
 
   static Future<PaginatedResponse<Location>> retrieveLocationsPerPage(
     int page, {
-    int perPage = 5,
+    int perPage = 4,
     LocationFilters? filters,
   }) async {
     final Map<String, dynamic> params = {
@@ -126,7 +126,7 @@ class LocationService {
   static Future<PaginatedResponse<GalleryItem>> retrieveLocationGalleryPerPage(
     String locationId,
     int page, {
-    int perPage = 5,
+    int perPage = 4,
   }) async {
     final res = await httpClient.get(
       Config.getURI('/locations/$locationId/gallery.json'),

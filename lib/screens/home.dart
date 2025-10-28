@@ -35,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   LocationFilters _locationFilters = LocationFilters();
   PracticeFilters _practiceFilters = const PracticeFilters();
   AccountFilters _accountFilters = const AccountFilters();
+  String _galleryLocationFilter = '';
 
   void _addLocation() async {
     final l10n = AppLocalizations.of(context)!;
@@ -124,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
         break;
       case 'gallery':
         setState(() {
-          activePage = const GalleryScreen();
+          activePage = GalleryScreen(locationFilter: _galleryLocationFilter);
           activePageTitle = l10n.gallery;
         });
         break;
@@ -274,6 +275,38 @@ class _HomeScreenState extends State<HomeScreen> {
                     clearName: _searchQuery.isEmpty,
                   );
                   activePage = AccountsScreen(filters: _accountFilters);
+                });
+              },
+            )),
+        style: const TextStyle(color: Colors.white, fontSize: 15.0),
+      );
+    } else if (activePageTitle == l10n.gallery || activePage is GalleryScreen) {
+      title = TextField(
+        onSubmitted: (value) {
+          final locationFilter = value.trim();
+          setState(() {
+            _searchQuery = locationFilter;
+            _galleryLocationFilter = locationFilter;
+            activePage = GalleryScreen(locationFilter: _galleryLocationFilter);
+          });
+        },
+        cursorColor: Colors.white,
+        onChanged: (value) => _searchQuery = value,
+        decoration: InputDecoration(
+            hintText: l10n.searchGalleryByLocation,
+            hintStyle: TextStyle(
+              color: Colors.grey.withValues(alpha: 0.3),
+              fontSize: 21,
+            ),
+            border: InputBorder.none,
+            suffixIcon: IconButton(
+              icon: const Icon(FontAwesomeIcons.magnifyingGlass),
+              onPressed: () {
+                final locationFilter = _searchQuery.trim();
+                setState(() {
+                  _searchQuery = locationFilter;
+                  _galleryLocationFilter = locationFilter;
+                  activePage = GalleryScreen(locationFilter: _galleryLocationFilter);
                 });
               },
             )),

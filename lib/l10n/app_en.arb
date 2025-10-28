@@ -65,6 +65,10 @@
   "@searchAccount": {
     "description": "Search hint for accounts"
   },
+  "searchGalleryByLocation": "Search by location...",
+  "@searchGalleryByLocation": {
+    "description": "Search hint for gallery filtered by location"
+  },
 
   "incorrectEmailOrPassword": "Incorrect e-mail or password.",
   "@incorrectEmailOrPassword": {

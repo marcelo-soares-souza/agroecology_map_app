@@ -9,7 +9,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class GalleryScreen extends StatefulWidget {
-  const GalleryScreen({super.key});
+  final String? locationFilter;
+
+  const GalleryScreen({super.key, this.locationFilter});
 
   @override
   State<GalleryScreen> createState() => _GalleryScreenState();
@@ -26,6 +28,14 @@ class _GalleryScreenState extends State<GalleryScreen> {
   }
 
   @override
+  void didUpdateWidget(covariant GalleryScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.locationFilter != widget.locationFilter) {
+      _pagingController.refresh();
+    }
+  }
+
+  @override
   void dispose() {
     _pagingController.dispose();
     super.dispose();
@@ -33,9 +43,11 @@ class _GalleryScreenState extends State<GalleryScreen> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
+      final locationFilter = widget.locationFilter?.trim();
       final response = await GalleryService.retrieveGallery(
         page: pageKey,
         perPage: _itemsPerPage,
+        location: locationFilter != null && locationFilter.isNotEmpty ? locationFilter : null,
       );
       final items = response.data;
       final nextPageFromHeaders = response.metadata?.nextPage;

@@ -21,13 +21,20 @@ class GalleryService {
   static Future<PaginatedResponse<GalleryItem>> retrieveGallery({
     int page = 1,
     int perPage = 4,
+    String? location,
   }) async {
+    final Map<String, dynamic> params = {
+      'page': page,
+      'per_page': perPage,
+    };
+
+    if (location != null && location.trim().isNotEmpty) {
+      params['location'] = location;
+    }
+
     final res = await httpClient.get(
       Config.getURI('gallery.json'),
-      params: {
-        'page': page,
-        'per_page': perPage,
-      },
+      params: params,
     );
 
     debugPrint('[DEBUG]: retrieveGallery statusCode ${res.statusCode}');

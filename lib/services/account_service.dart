@@ -20,7 +20,7 @@ class AccountService {
 
   static Future<PaginatedResponse<Account>> retrieveAccountsPerPage(
     int page, {
-    int perPage = 5,
+    int perPage = 4,
     AccountFilters? filters,
   }) async {
     final Map<String, dynamic> params = {
