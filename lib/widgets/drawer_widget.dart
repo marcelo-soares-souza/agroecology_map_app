@@ -263,6 +263,17 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   ),
                   ListTile(
                     leading: Icon(
+                      FontAwesomeIcons.images,
+                      size: 26,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    title: Text(l10n.gallery, style: textStyle),
+                    onTap: () {
+                      widget.onSelectScreen('gallery');
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
                       FontAwesomeIcons.userGroup,
                       size: 26,
                       color: Theme.of(context).colorScheme.secondary,

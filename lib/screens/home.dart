@@ -4,6 +4,7 @@ import 'package:agroecology_map_app/models/practice_filters.dart';
 import 'package:agroecology_map_app/screens/about.dart';
 import 'package:agroecology_map_app/screens/accounts.dart';
 import 'package:agroecology_map_app/screens/chat_list.dart';
+import 'package:agroecology_map_app/screens/gallery.dart';
 import 'package:agroecology_map_app/screens/locations.dart';
 import 'package:agroecology_map_app/screens/login.dart';
 import 'package:agroecology_map_app/screens/map.dart';
@@ -119,6 +120,12 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           activePage = const PracticesScreen();
           activePageTitle = l10n.practices;
+        });
+        break;
+      case 'gallery':
+        setState(() {
+          activePage = const GalleryScreen();
+          activePageTitle = l10n.gallery;
         });
         break;
       case 'accounts':

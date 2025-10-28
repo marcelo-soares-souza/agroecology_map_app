@@ -265,6 +265,10 @@
   "@noImagesAvailable": {
     "description": "Empty state message for gallery"
   },
+  "galleryLocationUnavailable": "Location information not available for this media",
+  "@galleryLocationUnavailable": {
+    "description": "Snack bar message when a gallery item does not include a location"
+  },
 
   "noDataAvailable": "No data available for this section.",
   "@noDataAvailable": {

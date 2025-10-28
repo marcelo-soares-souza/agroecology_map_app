@@ -53,6 +53,7 @@
   "summary": "Resumo",
   "characterise": "Caracterizar",
   "noImagesAvailable": "Nenhuma imagem disponível",
+  "galleryLocationUnavailable": "Informações de localização não disponíveis para esta mídia",
   "noDataAvailable": "Nenhum dado disponível para esta seção.",
   "pleaseLoginToChat": "Por favor, faça login para iniciar uma conversa",
   "cannotChatWithYourself": "Você não pode iniciar uma conversa consigo mesmo",

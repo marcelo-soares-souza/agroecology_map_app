@@ -7,6 +7,7 @@ class GalleryItem {
   String practiceId;
   String createdAt;
   String updatedAt;
+  String location;
 
   String base64Image;
 
@@ -15,18 +16,25 @@ class GalleryItem {
     required this.description,
     required this.imageUrl,
     required this.accountId,
-  })  : base64Image = '',
-        locationId = '',
-        practiceId = '',
-        createdAt = '',
-        updatedAt = '';
+    this.locationId = '',
+    this.practiceId = '',
+    this.createdAt = '',
+    this.updatedAt = '',
+    this.location = '',
+    this.base64Image = '',
+  });
 
   factory GalleryItem.fromJson(Map<String, dynamic> json) {
     return GalleryItem(
-      id: json['id'],
-      description: json['description'],
-      imageUrl: json['image_url'],
-      accountId: json['account_id'],
+      id: (json['id'] as num?)?.toInt() ?? 0,
+      description: json['description']?.toString() ?? '',
+      imageUrl: json['image_url']?.toString() ?? '',
+      accountId: (json['account_id'] as num?)?.toInt() ?? 0,
+      locationId: json['location_id']?.toString() ?? '',
+      practiceId: json['practice_id']?.toString() ?? '',
+      createdAt: json['created_at']?.toString() ?? '',
+      updatedAt: json['updated_at']?.toString() ?? '',
+      location: json['location']?.toString() ?? '',
     );
   }
 
@@ -36,6 +44,11 @@ class GalleryItem {
       description: '',
       imageUrl: '',
       accountId: 0,
+      locationId: '',
+      practiceId: '',
+      createdAt: '',
+      updatedAt: '',
+      location: '',
     );
   }
 
