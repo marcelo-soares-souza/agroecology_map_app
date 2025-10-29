@@ -1,5 +1,5 @@
 import 'package:agroecology_map_app/models/account.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:agroecology_map_app/widgets/app_cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -35,21 +35,10 @@ class AccountItemWidget extends StatelessWidget {
         onTap: () => onSelectAccount(context, account),
         child: Stack(
           children: [
-            CachedNetworkImage(
-              errorWidget: (context, url, error) => const Icon(
-                FontAwesomeIcons.circleExclamation,
-                color: Colors.red,
-              ),
+            AppCachedImage(
+              cacheKey: 'account-${account.id}',
               height: 200,
               width: double.infinity,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => const Center(
-                child: SizedBox(
-                  width: 30.0,
-                  height: 30.0,
-                  child: CircularProgressIndicator(),
-                ),
-              ),
               imageUrl: account.imageUrl,
             ),
             if (contributions.isNotEmpty)

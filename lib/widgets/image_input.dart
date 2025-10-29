@@ -15,32 +15,30 @@ class ImageInput extends StatefulWidget {
 }
 
 class _ImageInputState extends State<ImageInput> {
+  static const double _maxDimension = 1600;
+  static const int _imageQuality = 80;
+
   File? _selectedImage;
   final imagePicker = ImagePicker();
 
-  Future _getImageFromGallery() async {
-    final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await imagePicker.pickImage(
+      source: source,
+      maxWidth: _maxDimension,
+      maxHeight: _maxDimension,
+      imageQuality: _imageQuality,
+    );
 
+    if (pickedFile == null) return;
+
+    final file = File(pickedFile.path);
     setState(() {
-      if (pickedFile != null) {
-        _selectedImage = File(pickedFile.path);
-        widget.onPickImage(_selectedImage!);
-      }
+      _selectedImage = file;
     });
+    widget.onPickImage(file);
   }
 
-  Future _getImageFromCamera() async {
-    final pickedFile = await imagePicker.pickImage(source: ImageSource.camera, maxWidth: 1980);
-
-    setState(() {
-      if (pickedFile != null) {
-        _selectedImage = File(pickedFile.path);
-        widget.onPickImage(_selectedImage!);
-      }
-    });
-  }
-
-  Future showOptions() async {
+  Future<void> showOptions() async {
     final l10n = AppLocalizations.of(context)!;
     showCupertinoModalPopup(
       context: context,
@@ -50,14 +48,14 @@ class _ImageInputState extends State<ImageInput> {
             child: Text(l10n.photoGallery),
             onPressed: () {
               Navigator.of(context).pop();
-              _getImageFromGallery();
+              _pickImage(ImageSource.gallery);
             },
           ),
           CupertinoActionSheetAction(
             child: Text(l10n.camera),
             onPressed: () {
               Navigator.of(context).pop();
-              _getImageFromCamera();
+              _pickImage(ImageSource.camera);
             },
           ),
         ],

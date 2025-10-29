@@ -2,7 +2,7 @@ import 'package:agroecology_map_app/models/gallery_item.dart';
 import 'package:agroecology_map_app/screens/location_details.dart';
 import 'package:agroecology_map_app/services/gallery_service.dart';
 import 'package:agroecology_map_app/services/location_service.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:agroecology_map_app/widgets/app_cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -101,28 +101,20 @@ class _GalleryScreenState extends State<GalleryScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       if (item.imageUrl.trim().isNotEmpty)
-                        CachedNetworkImage(
-                          imageUrl: item.imageUrl,
+                        AppCachedImage(
+                          cacheKey: 'gallery-${item.id}',
                           height: 200,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) => const Center(
-                            child: SizedBox(
-                              height: 32,
-                              width: 32,
-                              child: CircularProgressIndicator(),
+                          width: double.infinity,
+                          imageUrl: item.imageUrl,
+                          errorWidget: (context, url, error) => Container(
+                            height: 200,
+                            color: Theme.of(context).colorScheme.surface,
+                            alignment: Alignment.center,
+                            child: Icon(
+                              FontAwesomeIcons.circleExclamation,
+                              color: Theme.of(context).colorScheme.error,
                             ),
                           ),
-                          errorWidget: (context, url, error) {
-                            return Container(
-                              height: 200,
-                              color: Theme.of(context).colorScheme.surface,
-                              alignment: Alignment.center,
-                              child: Icon(
-                                FontAwesomeIcons.circleExclamation,
-                                color: Theme.of(context).colorScheme.error,
-                              ),
-                            );
-                          },
                         )
                       else
                         Container(

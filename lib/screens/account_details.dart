@@ -6,8 +6,8 @@ import 'package:agroecology_map_app/services/account_service.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/chat_service.dart';
 import 'package:agroecology_map_app/services/location_service.dart';
+import 'package:agroecology_map_app/widgets/app_cached_image.dart';
 import 'package:agroecology_map_app/widgets/text_block_widget.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -123,17 +123,10 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
     }
   }
 
-  Widget _headerImage() => CachedNetworkImage(
-        errorWidget: (context, url, error) => const Icon(
-          FontAwesomeIcons.circleExclamation,
-          color: Colors.red,
-        ),
+  Widget _headerImage() => AppCachedImage(
+        cacheKey: 'account-${widget.account.id}-header',
         height: 250,
         width: double.infinity,
-        fit: BoxFit.cover,
-        placeholder: (context, url) => const Center(
-          child: SizedBox(width: 30, height: 30, child: CircularProgressIndicator()),
-        ),
         imageUrl: widget.account.imageUrl,
       );
 
@@ -203,10 +196,14 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                         const Divider(height: 1),
                         ListTile(
                           leading: loc.imageUrl.isNotEmpty
-                              ? CircleAvatar(
-                                  backgroundImage: CachedNetworkImageProvider(loc.imageUrl),
-                                  onBackgroundImageError: (exception, stackTrace) {},
-                                  child: null,
+                              ? ClipOval(
+                                  child: AppCachedImage(
+                                    cacheKey: 'account-location-${loc.id}',
+                                    height: 48,
+                                    width: 48,
+                                    imageUrl: loc.imageUrl,
+                                    fit: BoxFit.cover,
+                                  ),
                                 )
                               : const CircleAvatar(
                                   child: Icon(FontAwesomeIcons.locationDot, size: 18),

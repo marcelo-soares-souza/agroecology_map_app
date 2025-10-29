@@ -80,11 +80,9 @@ class _EditLocation extends State<EditLocation> {
 
       _location.country = _location.countryCode;
 
-      String imageBase64 = '';
-
       if (_selectedImage != null) {
-        imageBase64 = base64Encode(_selectedImage!.readAsBytesSync());
-        _location.base64Image = imageBase64;
+        final bytes = await _selectedImage!.readAsBytes();
+        _location.base64Image = base64Encode(bytes);
       }
 
       final Map<String, String> response = await LocationService.updateLocation(_location);

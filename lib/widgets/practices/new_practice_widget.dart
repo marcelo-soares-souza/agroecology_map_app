@@ -92,11 +92,9 @@ class _NewPractice extends State<NewPractice> {
       _practice.accountId = await AuthService.getCurrentAccountId();
       _practice.locationId = _practice.locationId.isNotEmpty ? _practice.locationId : _locations[0].id.toString();
 
-      String imageBase64 = '';
-
       if (_selectedImage != null) {
-        imageBase64 = base64Encode(_selectedImage!.readAsBytesSync());
-        _practice.base64Image = imageBase64;
+        final bytes = await _selectedImage!.readAsBytes();
+        _practice.base64Image = base64Encode(bytes);
       }
 
       final Map<String, String> response = await PracticeService.sendPractice(_practice);

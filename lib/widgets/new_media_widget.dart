@@ -63,11 +63,9 @@ class _NewMediaWidget extends State<NewMediaWidget> {
 
       setState(() => _isSending = true);
 
-      String imageBase64 = '';
-
       if (_selectedImage != null) {
-        imageBase64 = base64Encode(_selectedImage!.readAsBytesSync());
-        _galleryItem.base64Image = imageBase64;
+        final bytes = await _selectedImage!.readAsBytes();
+        _galleryItem.base64Image = base64Encode(bytes);
       }
 
       final Map<String, String> response = await LocationService.sendMediaToLocation(_galleryItem);

@@ -11,11 +11,11 @@ import 'package:agroecology_map_app/screens/home.dart';
 import 'package:agroecology_map_app/services/account_service.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/location_service.dart';
+import 'package:agroecology_map_app/widgets/app_cached_image.dart';
 import 'package:agroecology_map_app/widgets/like_badge.dart';
 import 'package:agroecology_map_app/widgets/locations/edit_location_widget.dart';
 import 'package:agroecology_map_app/widgets/new_media_widget.dart';
 import 'package:agroecology_map_app/widgets/text_block_widget.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -285,20 +285,10 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
             ),
             child: Stack(
               children: [
-                CachedNetworkImage(
-                  errorWidget: (context, url, error) => const Icon(
-                    FontAwesomeIcons.circleExclamation,
-                    color: Colors.red,
-                  ),
+                AppCachedImage(
+                  cacheKey: 'location-${_location.id}-gallery-${item.id}',
                   height: 300,
                   width: double.infinity,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => const Center(
-                      child: SizedBox(
-                    width: 30.0,
-                    height: 30.0,
-                    child: CircularProgressIndicator(),
-                  )),
                   imageUrl: item.imageUrl,
                 ),
                 Positioned(
@@ -353,21 +343,10 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                 if (_selectedPageIndex == 0) ...[
                   Stack(
                     children: [
-                      CachedNetworkImage(
-                        errorWidget: (context, url, error) => const Icon(
-                          FontAwesomeIcons.circleExclamation,
-                          color: Colors.red,
-                        ),
+                      AppCachedImage(
+                        cacheKey: 'location-${_location.id}-header',
                         height: 250,
                         width: double.infinity,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) => const Center(
-                          child: SizedBox(
-                            width: 30.0,
-                            height: 30.0,
-                            child: CircularProgressIndicator(),
-                          ),
-                        ),
                         imageUrl: _location.imageUrl,
                       ),
                       Positioned(
@@ -476,21 +455,10 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                 ] else if (_selectedPageIndex == 2) ...[
                   Stack(
                     children: [
-                      CachedNetworkImage(
-                        errorWidget: (context, url, error) => const Icon(
-                          FontAwesomeIcons.circleExclamation,
-                          color: Colors.red,
-                        ),
+                      AppCachedImage(
+                        cacheKey: 'location-${_location.id}-details',
                         height: 250,
                         width: double.infinity,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) => const Center(
-                          child: SizedBox(
-                            width: 30.0,
-                            height: 30.0,
-                            child: CircularProgressIndicator(),
-                          ),
-                        ),
                         imageUrl: _location.imageUrl,
                       ),
                       Positioned(

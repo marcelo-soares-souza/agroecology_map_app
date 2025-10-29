@@ -3,10 +3,10 @@ import 'package:agroecology_map_app/models/location.dart';
 import 'package:agroecology_map_app/models/practice/practice.dart';
 import 'package:agroecology_map_app/screens/home.dart';
 import 'package:agroecology_map_app/services/practice_service.dart';
+import 'package:agroecology_map_app/widgets/app_cached_image.dart';
 import 'package:agroecology_map_app/widgets/new_media_widget.dart';
 import 'package:agroecology_map_app/widgets/practices/new_characterises_widget.dart';
 import 'package:agroecology_map_app/widgets/text_block_widget.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -146,24 +146,13 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
-              if (_selectedPageIndex != 2) ...[
-                CachedNetworkImage(
-                  errorWidget: (context, url, error) => const Icon(
-                    FontAwesomeIcons.circleExclamation,
-                    color: Colors.red,
-                  ),
+              if (_selectedPageIndex != 2)
+                AppCachedImage(
+                  cacheKey: 'practice-${widget.practice.id}-header',
                   height: 250,
                   width: double.infinity,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => const Center(
-                      child: SizedBox(
-                    width: 30.0,
-                    height: 30.0,
-                    child: CircularProgressIndicator(),
-                  )),
                   imageUrl: widget.practice.imageUrl,
                 ),
-              ],
               if (_selectedPageOperation == 'add') ...[
                 if (_selectedPageIndex == 1)
                   SizedBox(child: NewCharacterises(practice: _practice))
@@ -199,20 +188,10 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
                   for (final i in _gallery) ...[
                     Stack(
                       children: [
-                        CachedNetworkImage(
-                          errorWidget: (context, url, error) => const Icon(
-                            FontAwesomeIcons.circleExclamation,
-                            color: Colors.red,
-                          ),
+                        AppCachedImage(
+                          cacheKey: 'practice-gallery-${i.id}',
                           height: 300,
                           width: double.infinity,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) => const Center(
-                              child: SizedBox(
-                            width: 30.0,
-                            height: 30.0,
-                            child: CircularProgressIndicator(),
-                          )),
                           imageUrl: i.imageUrl,
                         ),
                         if (i.description.length > 5)

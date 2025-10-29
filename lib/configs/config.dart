@@ -4,10 +4,10 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Config {
-  static const bool debugMode = kReleaseMode ? false : false;
+  static const bool debugMode = kReleaseMode ? false : true;
 
   static const String title = 'Agroecology Map';
-  static const String siteUrl = debugMode ? '10.0.2.2:3000' : 'agroecologymap.org';
+  static const String siteUrl = debugMode ? '192.168.1.112:3000' : 'agroecologymap.org';
   static const String _scheme = debugMode ? 'http' : 'https';
   // ActionCable path (standard Rails default)
   static const String _cablePath = '/cable';
