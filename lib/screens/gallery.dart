@@ -103,7 +103,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                       if (item.imageUrl.trim().isNotEmpty)
                         AppCachedImage(
                           cacheKey: 'gallery-${item.id}',
-                          height: 200,
+                          height: 300,
                           width: double.infinity,
                           imageUrl: item.imageUrl,
                           errorWidget: (context, url, error) => Container(
@@ -176,7 +176,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
 
     try {
       final location = await LocationService.retrieveLocation(item.locationId);
-      if (dialogContext != null) {
+      if (dialogContext?.mounted ?? false) {
         Navigator.of(dialogContext!, rootNavigator: true).pop();
         dialogContext = null;
       }
@@ -187,7 +187,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
         ),
       );
     } catch (e) {
-      if (dialogContext != null) {
+      if (dialogContext?.mounted ?? false) {
         Navigator.of(dialogContext!, rootNavigator: true).pop();
         dialogContext = null;
       }

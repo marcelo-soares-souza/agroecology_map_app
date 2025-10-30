@@ -7,6 +7,7 @@ import 'package:agroecology_map_app/widgets/app_cached_image.dart';
 import 'package:agroecology_map_app/widgets/like_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LocationItemWidget extends StatefulWidget {
   final Location location;
@@ -112,7 +113,7 @@ class _LocationItemWidgetState extends State<LocationItemWidget> {
           children: [
             AppCachedImage(
               cacheKey: 'location-${location.id}',
-              height: 200,
+              height: 250,
               width: double.infinity,
               imageUrl: location.imageUrl,
             ),

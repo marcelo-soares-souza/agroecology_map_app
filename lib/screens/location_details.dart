@@ -283,43 +283,46 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                   )
               ],
             ),
-            child: Stack(
-              children: [
-                AppCachedImage(
-                  cacheKey: 'location-${_location.id}-gallery-${item.id}',
-                  height: 300,
-                  width: double.infinity,
-                  imageUrl: item.imageUrl,
-                ),
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    color: Colors.black54,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 6,
-                      horizontal: 44,
-                    ),
-                    child: Column(
-                      children: [
-                        Text(
-                          item.description.length > 4 ? item.description : _location.name,
-                          maxLines: 2,
-                          textAlign: TextAlign.center,
-                          softWrap: true,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Stack(
+                children: [
+                  AppCachedImage(
+                    cacheKey: 'location-${_location.id}-gallery-${item.id}',
+                    height: 300,
+                    width: double.infinity,
+                    imageUrl: item.imageUrl,
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      color: Colors.black54,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 8,
+                        horizontal: 44,
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            item.description.length > 4 ? item.description : _location.name,
+                            maxLines: 2,
+                            textAlign: TextAlign.center,
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -345,7 +348,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                     children: [
                       AppCachedImage(
                         cacheKey: 'location-${_location.id}-header',
-                        height: 250,
+                        height: 300,
                         width: double.infinity,
                         imageUrl: _location.imageUrl,
                       ),
@@ -457,7 +460,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                     children: [
                       AppCachedImage(
                         cacheKey: 'location-${_location.id}-details',
-                        height: 250,
+                        height: 300,
                         width: double.infinity,
                         imageUrl: _location.imageUrl,
                       ),

@@ -23,7 +23,7 @@ class PracticeItemWidget extends StatelessWidget {
           children: [
             AppCachedImage(
               cacheKey: 'practice-${practice.id}',
-              height: 200,
+              height: 250,
               width: double.infinity,
               imageUrl: practice.imageUrl,
             ),

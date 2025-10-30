@@ -149,7 +149,7 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
               if (_selectedPageIndex != 2)
                 AppCachedImage(
                   cacheKey: 'practice-${widget.practice.id}-header',
-                  height: 250,
+                  height: 300,
                   width: double.infinity,
                   imageUrl: widget.practice.imageUrl,
                 ),
@@ -225,7 +225,7 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
                           )
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 8),
                   ],
               ] else ...[
                 const SizedBox(height: 100),
@@ -250,9 +250,15 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
         actions: [
           if (!_isLoading && _practice.hasPermission) ...[
             if (_selectedPageIndex == 1 && _selectedPageOperation != 'add')
-              IconButton(icon: const Icon(FontAwesomeIcons.penToSquare), color: Colors.green, onPressed: () => _selectPage(1, 'add'))
+              IconButton(
+                  icon: const Icon(FontAwesomeIcons.penToSquare),
+                  color: Colors.green,
+                  onPressed: () => _selectPage(1, 'add'))
             else if (_selectedPageIndex == 2 && _selectedPageOperation != 'add')
-              IconButton(icon: const Icon(FontAwesomeIcons.penToSquare), color: Colors.green, onPressed: () => _selectPage(2, 'add'))
+              IconButton(
+                  icon: const Icon(FontAwesomeIcons.penToSquare),
+                  color: Colors.green,
+                  onPressed: () => _selectPage(2, 'add'))
             else if (_selectedPageIndex == 0 && _practice.hasPermission) ...[
               IconButton(
                 icon: const Icon(FontAwesomeIcons.trashCan),
