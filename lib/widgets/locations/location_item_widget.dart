@@ -1,4 +1,5 @@
 import 'package:agroecology_map_app/helpers/form_helper.dart';
+import 'package:agroecology_map_app/l10n/app_localizations.dart';
 import 'package:agroecology_map_app/models/location.dart';
 import 'package:agroecology_map_app/models/location_like_state.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
@@ -6,8 +7,6 @@ import 'package:agroecology_map_app/services/location_service.dart';
 import 'package:agroecology_map_app/widgets/app_cached_image.dart';
 import 'package:agroecology_map_app/widgets/like_badge.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LocationItemWidget extends StatefulWidget {
   final Location location;

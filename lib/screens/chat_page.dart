@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:agroecology_map_app/configs/config.dart';
+import 'package:agroecology_map_app/l10n/app_localizations.dart';
 import 'package:agroecology_map_app/models/chat/message.dart';
 import 'package:agroecology_map_app/services/action_cable_service.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/chat_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChatPage extends StatefulWidget {
   final int conversationId;

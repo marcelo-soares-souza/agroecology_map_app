@@ -1,7 +1,7 @@
+import 'package:agroecology_map_app/l10n/app_localizations.dart';
 import 'package:agroecology_map_app/models/practice_filters.dart';
 import 'package:dart_countries/dart_countries.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PracticeFiltersWidget extends StatefulWidget {
   final PracticeFilters initialFilters;
@@ -301,7 +301,7 @@ class _PracticeFiltersWidgetState extends State<PracticeFiltersWidget> {
                   padding: const EdgeInsets.all(16.0),
                   children: [
                     DropdownButtonFormField<String>(
-                      value: _selectedSystemFunction,
+                      initialValue: _selectedSystemFunction,
                       decoration: InputDecoration(
                         labelText: l10n.farmFunctions,
                         border: const OutlineInputBorder(),
@@ -327,7 +327,7 @@ class _PracticeFiltersWidgetState extends State<PracticeFiltersWidget> {
                     ),
                     const SizedBox(height: 16),
                     DropdownButtonFormField<String>(
-                      value: _selectedSystemComponent,
+                      initialValue: _selectedSystemComponent,
                       decoration: InputDecoration(
                         labelText: l10n.farmComponents,
                         border: const OutlineInputBorder(),
@@ -353,7 +353,7 @@ class _PracticeFiltersWidgetState extends State<PracticeFiltersWidget> {
                     ),
                     const SizedBox(height: 16),
                     DropdownButtonFormField<String>(
-                      value: _selectedComponent,
+                      initialValue: _selectedComponent,
                       decoration: InputDecoration(
                         labelText: l10n.systemComponent,
                         border: const OutlineInputBorder(),
@@ -379,7 +379,7 @@ class _PracticeFiltersWidgetState extends State<PracticeFiltersWidget> {
                     ),
                     const SizedBox(height: 16),
                     DropdownButtonFormField<String>(
-                      value: _selectedPrinciple,
+                      initialValue: _selectedPrinciple,
                       decoration: InputDecoration(
                         labelText: l10n.agroecologyPrinciple,
                         border: const OutlineInputBorder(),
@@ -405,7 +405,7 @@ class _PracticeFiltersWidgetState extends State<PracticeFiltersWidget> {
                     ),
                     const SizedBox(height: 16),
                     DropdownButtonFormField<String>(
-                      value: _selectedCountry,
+                      initialValue: _selectedCountry,
                       decoration: InputDecoration(
                         labelText: l10n.country,
                         border: const OutlineInputBorder(),
@@ -433,7 +433,7 @@ class _PracticeFiltersWidgetState extends State<PracticeFiltersWidget> {
                     ),
                     const SizedBox(height: 16),
                     DropdownButtonFormField<String>(
-                      value: _selectedContinent,
+                      initialValue: _selectedContinent,
                       decoration: InputDecoration(
                         labelText: l10n.continent,
                         border: const OutlineInputBorder(),

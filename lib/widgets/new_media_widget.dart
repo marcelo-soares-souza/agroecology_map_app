@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:agroecology_map_app/helpers/form_helper.dart';
+import 'package:agroecology_map_app/l10n/app_localizations.dart';
 import 'package:agroecology_map_app/models/gallery_item.dart';
 import 'package:agroecology_map_app/models/location.dart';
 import 'package:agroecology_map_app/models/practice/practice.dart';
@@ -11,7 +12,6 @@ import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/location_service.dart';
 import 'package:agroecology_map_app/widgets/image_input.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewMediaWidget extends StatefulWidget {
   final Location location;

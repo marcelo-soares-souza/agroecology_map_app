@@ -1,11 +1,11 @@
 import 'dart:async';
 
+import 'package:agroecology_map_app/l10n/app_localizations.dart';
 import 'package:agroecology_map_app/models/chat/conversation.dart';
 import 'package:agroecology_map_app/screens/chat_page.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/chat_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChatListScreen extends StatefulWidget {
   const ChatListScreen({super.key});

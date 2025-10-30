@@ -1,3 +1,4 @@
+import 'package:agroecology_map_app/l10n/app_localizations.dart';
 import 'package:agroecology_map_app/models/account_filters.dart';
 import 'package:agroecology_map_app/models/location_filters.dart';
 import 'package:agroecology_map_app/models/practice_filters.dart';
@@ -15,7 +16,6 @@ import 'package:agroecology_map_app/widgets/locations/new_location_widget.dart';
 import 'package:agroecology_map_app/widgets/practices/new_practice_widget.dart';
 import 'package:agroecology_map_app/widgets/practices/practice_filters_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeScreen extends StatefulWidget {

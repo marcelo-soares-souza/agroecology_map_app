@@ -1,10 +1,10 @@
+import 'package:agroecology_map_app/l10n/app_localizations.dart';
 import 'package:agroecology_map_app/models/gallery_item.dart';
 import 'package:agroecology_map_app/screens/location_details.dart';
 import 'package:agroecology_map_app/services/gallery_service.dart';
 import 'package:agroecology_map_app/services/location_service.dart';
 import 'package:agroecology_map_app/widgets/app_cached_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -156,43 +156,45 @@ class _GalleryScreenState extends State<GalleryScreen> {
 
   Future<void> _openLocation(GalleryItem item) async {
     final l10n = AppLocalizations.of(context)!;
+    final messenger = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
+    final rootNavigator = Navigator.of(context, rootNavigator: true);
+
     if (item.locationId.isEmpty) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
+      messenger.showSnackBar(
         SnackBar(content: Text(l10n.galleryLocationUnavailable)),
       );
       return;
     }
 
-    BuildContext? dialogContext;
+    var dialogClosed = false;
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (ctx) {
-        dialogContext = ctx;
-        return const Center(child: CircularProgressIndicator());
-      },
-    );
+      builder: (_) => const Center(child: CircularProgressIndicator()),
+    ).then((_) {
+      dialogClosed = true;
+    });
 
     try {
       final location = await LocationService.retrieveLocation(item.locationId);
-      if (dialogContext?.mounted ?? false) {
-        Navigator.of(dialogContext!, rootNavigator: true).pop();
-        dialogContext = null;
+      if (!dialogClosed && rootNavigator.mounted) {
+        rootNavigator.pop();
+        dialogClosed = true;
       }
       if (!mounted) return;
-      await Navigator.of(context).push(
+      await navigator.push(
         MaterialPageRoute(
           builder: (ctx) => LocationDetailsScreen(location: location),
         ),
       );
     } catch (e) {
-      if (dialogContext?.mounted ?? false) {
-        Navigator.of(dialogContext!, rootNavigator: true).pop();
-        dialogContext = null;
+      if (!dialogClosed && rootNavigator.mounted) {
+        rootNavigator.pop();
+        dialogClosed = true;
       }
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
+      messenger.showSnackBar(
         SnackBar(content: Text(l10n.failedToLoadLocation)),
       );
     }

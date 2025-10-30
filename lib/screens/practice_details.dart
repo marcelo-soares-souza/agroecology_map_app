@@ -1,3 +1,4 @@
+import 'package:agroecology_map_app/l10n/app_localizations.dart';
 import 'package:agroecology_map_app/models/gallery_item.dart';
 import 'package:agroecology_map_app/models/location.dart';
 import 'package:agroecology_map_app/models/practice/practice.dart';
@@ -8,7 +9,6 @@ import 'package:agroecology_map_app/widgets/new_media_widget.dart';
 import 'package:agroecology_map_app/widgets/practices/new_characterises_widget.dart';
 import 'package:agroecology_map_app/widgets/text_block_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PracticeDetailsScreen extends StatefulWidget {

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:agroecology_map_app/configs/config.dart';
 import 'package:agroecology_map_app/helpers/form_helper.dart';
 import 'package:agroecology_map_app/helpers/location_helper.dart';
+import 'package:agroecology_map_app/l10n/app_localizations.dart';
 import 'package:agroecology_map_app/models/location.dart';
 import 'package:agroecology_map_app/screens/home.dart';
 import 'package:agroecology_map_app/screens/locations.dart';
@@ -11,7 +12,6 @@ import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/location_service.dart';
 import 'package:agroecology_map_app/widgets/image_input.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
@@ -155,7 +155,7 @@ class _NewLocation extends State<NewLocation> {
                   Text(l10n.country, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                   DropdownButtonFormField(
                     items: LocationHelper.dropDownCountries,
-                    value: _location.countryCode,
+                    initialValue: _location.countryCode,
                     onChanged: (value) {
                       setState(() {
                         _location.country = value!;
@@ -173,7 +173,7 @@ class _NewLocation extends State<NewLocation> {
                   Text(l10n.isItAFarm, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                   DropdownButtonFormField(
                     items: FormHelper.dropDownYesNoBool,
-                    value: 'true',
+                    initialValue: 'true',
                     onChanged: (value) => _location.isItAFarm = value!,
                     decoration: const InputDecoration(
                       filled: false,
@@ -195,7 +195,7 @@ class _NewLocation extends State<NewLocation> {
                   Text(l10n.mainPurpose, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                   DropdownButtonFormField(
                     items: LocationHelper.dropDownFarmAndFarmingSystemOptions,
-                    value: 'Mainly Home Consumption',
+                    initialValue: 'Mainly Home Consumption',
                     onChanged: (value) => _location.farmAndFarmingSystem = value!,
                     decoration: const InputDecoration(
                       filled: false,

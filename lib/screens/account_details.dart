@@ -1,4 +1,5 @@
 import 'package:agroecology_map_app/helpers/form_helper.dart';
+import 'package:agroecology_map_app/l10n/app_localizations.dart';
 import 'package:agroecology_map_app/models/account.dart';
 import 'package:agroecology_map_app/screens/chat_page.dart';
 import 'package:agroecology_map_app/screens/location_details.dart';
@@ -9,7 +10,6 @@ import 'package:agroecology_map_app/services/location_service.dart';
 import 'package:agroecology_map_app/widgets/app_cached_image.dart';
 import 'package:agroecology_map_app/widgets/text_block_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AccountDetailsScreen extends StatefulWidget {

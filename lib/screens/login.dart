@@ -1,8 +1,8 @@
 import 'package:agroecology_map_app/configs/config.dart';
+import 'package:agroecology_map_app/l10n/app_localizations.dart';
 import 'package:agroecology_map_app/screens/home.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';

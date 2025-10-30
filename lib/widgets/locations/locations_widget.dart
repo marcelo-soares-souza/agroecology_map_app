@@ -1,12 +1,12 @@
 import 'package:agroecology_map_app/configs/config.dart';
 import 'package:agroecology_map_app/helpers/form_helper.dart';
+import 'package:agroecology_map_app/l10n/app_localizations.dart';
 import 'package:agroecology_map_app/models/location.dart';
 import 'package:agroecology_map_app/models/location_filters.dart';
 import 'package:agroecology_map_app/screens/location_details.dart';
 import 'package:agroecology_map_app/services/location_service.dart';
 import 'package:agroecology_map_app/widgets/locations/location_item_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';

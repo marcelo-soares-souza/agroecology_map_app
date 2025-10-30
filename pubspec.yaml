@@ -1,15 +1,15 @@
 name: agroecology_map_app
 description: "Agroecology Map App"
 homepage: "https://agroecologymap.org"
-version: 2.1.0
+version: 2.2.0
 
 platforms:
   android:
   ios:
 
 environment:
-  sdk: "3.6.2"
-  flutter: "3.27.4"
+  sdk: "3.9.2"
+  flutter: "3.35.7"
 
 publish_to: none
 

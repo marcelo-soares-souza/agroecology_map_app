@@ -1,7 +1,7 @@
+import 'package:agroecology_map_app/l10n/app_localizations.dart';
 import 'package:agroecology_map_app/models/location_filters.dart';
 import 'package:dart_countries/dart_countries.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LocationFiltersWidget extends StatefulWidget {
   final LocationFilters initialFilters;
@@ -193,7 +193,7 @@ class _LocationFiltersWidgetState extends State<LocationFiltersWidget> {
 
               // System Functions Dropdown
               DropdownButtonFormField<String>(
-                value: _selectedSystemFunction,
+                initialValue: _selectedSystemFunction,
                 decoration: InputDecoration(
                   labelText: l10n.farmFunctions,
                   border: const OutlineInputBorder(),
@@ -221,7 +221,7 @@ class _LocationFiltersWidgetState extends State<LocationFiltersWidget> {
 
               // System Components Dropdown
               DropdownButtonFormField<String>(
-                value: _selectedSystemComponent,
+                initialValue: _selectedSystemComponent,
                 decoration: InputDecoration(
                   labelText: l10n.farmComponents,
                   border: const OutlineInputBorder(),
@@ -249,7 +249,7 @@ class _LocationFiltersWidgetState extends State<LocationFiltersWidget> {
 
               // Country Dropdown
               DropdownButtonFormField<String>(
-                value: _selectedCountry,
+                initialValue: _selectedCountry,
                 decoration: InputDecoration(
                   labelText: l10n.country,
                   border: const OutlineInputBorder(),
@@ -279,7 +279,7 @@ class _LocationFiltersWidgetState extends State<LocationFiltersWidget> {
 
               // Continent Dropdown
               DropdownButtonFormField<String>(
-                value: _selectedContinent,
+                initialValue: _selectedContinent,
                 decoration: InputDecoration(
                   labelText: l10n.continent,
                   border: const OutlineInputBorder(),

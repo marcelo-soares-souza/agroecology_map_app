@@ -1,7 +1,7 @@
 // ignore_for_file: strict_top_level_inference
 
+import 'package:agroecology_map_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FormHelper {
   static String? validateInputSize(String? value, int min, int max) {

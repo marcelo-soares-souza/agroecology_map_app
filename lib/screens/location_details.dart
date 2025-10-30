@@ -1,6 +1,7 @@
 import 'package:agroecology_map_app/configs/config.dart';
 import 'package:agroecology_map_app/helpers/form_helper.dart';
 import 'package:agroecology_map_app/helpers/location_helper.dart';
+import 'package:agroecology_map_app/l10n/app_localizations.dart';
 import 'package:agroecology_map_app/models/custom_icon.dart';
 import 'package:agroecology_map_app/models/gallery_item.dart';
 import 'package:agroecology_map_app/models/location.dart';
@@ -17,7 +18,6 @@ import 'package:agroecology_map_app/widgets/locations/edit_location_widget.dart'
 import 'package:agroecology_map_app/widgets/new_media_widget.dart';
 import 'package:agroecology_map_app/widgets/text_block_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

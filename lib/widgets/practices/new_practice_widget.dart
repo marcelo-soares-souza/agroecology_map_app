@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:agroecology_map_app/helpers/form_helper.dart';
+import 'package:agroecology_map_app/l10n/app_localizations.dart';
 import 'package:agroecology_map_app/models/location.dart';
 import 'package:agroecology_map_app/models/practice/practice.dart';
 import 'package:agroecology_map_app/screens/home.dart';
@@ -11,7 +12,6 @@ import 'package:agroecology_map_app/services/location_service.dart';
 import 'package:agroecology_map_app/services/practice_service.dart';
 import 'package:agroecology_map_app/widgets/image_input.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewPractice extends StatefulWidget {
   const NewPractice({super.key});
@@ -150,7 +150,7 @@ class _NewPractice extends State<NewPractice> {
                     Text(l10n.location, style: const TextStyle(color: Colors.grey, fontSize: 18)),
                     DropdownButtonFormField(
                       items: dropDownLocations,
-                      value: _locations.isNotEmpty ? _locations[0].id.toString() : null,
+                      initialValue: _locations.isNotEmpty ? _locations[0].id.toString() : null,
                       onChanged: (value) {
                         setState(() {
                           _practice.locationId = value!;

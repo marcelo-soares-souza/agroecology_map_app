@@ -18,7 +18,8 @@ class Config {
 
   static const InteractionOptions interactionOptions = InteractionOptions(
     enableMultiFingerGestureRace: true,
-    flags: InteractiveFlag.doubleTapDragZoom |
+    flags:
+        InteractiveFlag.doubleTapDragZoom |
         InteractiveFlag.doubleTapZoom |
         InteractiveFlag.drag |
         InteractiveFlag.flingAnimation |
@@ -60,15 +61,9 @@ class Config {
     scaffoldBackgroundColor: _colorScheme.surface,
     colorScheme: _colorScheme,
     textTheme: GoogleFonts.ubuntuCondensedTextTheme().copyWith(
-      titleSmall: GoogleFonts.ubuntuCondensed(
-        fontWeight: FontWeight.bold,
-      ),
-      titleMedium: GoogleFonts.ubuntuCondensed(
-        fontWeight: FontWeight.bold,
-      ),
-      titleLarge: GoogleFonts.ubuntuCondensed(
-        fontWeight: FontWeight.bold,
-      ),
+      titleSmall: GoogleFonts.ubuntuCondensed(fontWeight: FontWeight.bold),
+      titleMedium: GoogleFonts.ubuntuCondensed(fontWeight: FontWeight.bold),
+      titleLarge: GoogleFonts.ubuntuCondensed(fontWeight: FontWeight.bold),
       bodyMedium: TextStyle(
         fontSize: 16,
         // Use onSurface for readable default text on dark surfaces

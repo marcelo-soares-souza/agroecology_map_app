@@ -1,12 +1,12 @@
 import 'package:agroecology_map_app/helpers/form_helper.dart';
 import 'package:agroecology_map_app/helpers/practice_helper.dart';
+import 'package:agroecology_map_app/l10n/app_localizations.dart';
 import 'package:agroecology_map_app/models/practice/characterises.dart';
 import 'package:agroecology_map_app/models/practice/practice.dart';
 import 'package:agroecology_map_app/screens/practice_details.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/practice_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewCharacterises extends StatefulWidget {
   final Practice practice;
