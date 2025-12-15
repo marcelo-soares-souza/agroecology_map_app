@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class GalleryItem {
   int id;
   int accountId;
@@ -53,10 +55,7 @@ class GalleryItem {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, String> json = {
-      'description': description,
-      'image_url': imageUrl,
-    };
+    final Map<String, String> json = {'description': description, 'image_url': imageUrl};
 
     if (base64Image.isNotEmpty) {
       json['base64Image'] = base64Image;

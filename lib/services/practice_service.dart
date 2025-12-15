@@ -1,5 +1,6 @@
 // ignore_for_file: strict_top_level_inference
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:agroecology_map_app/configs/config.dart';
@@ -15,7 +16,7 @@ import 'package:http_interceptor/http/intercepted_client.dart';
 
 class PracticeService {
   static InterceptedClient httpClient = InterceptedClient.build(
-    onRequestTimeout: () => throw 'Request Timeout',
+    onRequestTimeout: () => throw TimeoutException('Request Timeout'),
     requestTimeout: const Duration(seconds: 60),
     interceptors: [
       CustomInterceptor(),
@@ -188,8 +189,12 @@ class PracticeService {
 
       String error = 'Generic Error. Please try again.';
       if (res.body.isNotEmpty) {
-        final dynamic message = json.decode(res.body);
-        error = message['error'] ? message['error'].toString().replaceAll('{', '').replaceAll('}', '') : '';
+        try {
+          final dynamic message = json.decode(res.body);
+          if (message is Map && message['error'] != null) {
+            error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
+          }
+        } catch (_) {}
       }
 
       if (res.statusCode >= 400) return {'status': 'failed', 'message': error};

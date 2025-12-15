@@ -235,6 +235,16 @@
     "description": "Soil moisture sensor label"
   },
 
+  "ndviValue": "NDVI value",
+  "@ndviValue": {
+    "description": "NDVI value label"
+  },
+
+  "cloudCover": "Cloud cover",
+  "@cloudCover": {
+    "description": "Cloud cover label"
+  },
+
   "updatedAt": "Updated at",
   "@updatedAt": {
     "description": "Last update timestamp label"
@@ -248,6 +258,11 @@
   "gallery": "Gallery",
   "@gallery": {
     "description": "Gallery navigation item"
+  },
+
+  "ndvi": "NDVI",
+  "@ndvi": {
+    "description": "NDVI navigation item"
   },
 
   "sensors": "Sensors",
@@ -265,6 +280,11 @@
     "description": "Characterise section title"
   },
 
+  "ndviTimeline": "NDVI timeline",
+  "@ndviTimeline": {
+    "description": "NDVI timeline section title"
+  },
+
   "noImagesAvailable": "No images available",
   "@noImagesAvailable": {
     "description": "Empty state message for gallery"
@@ -277,6 +297,11 @@
   "noDataAvailable": "No data available for this section.",
   "@noDataAvailable": {
     "description": "Empty state message for sections"
+  },
+
+  "noNdviData": "No NDVI data available yet",
+  "@noNdviData": {
+    "description": "Empty state when NDVI timeline is empty"
   },
 
   "pleaseLoginToChat": "Please login to start a conversation",

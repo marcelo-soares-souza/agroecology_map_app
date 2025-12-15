@@ -1,5 +1,6 @@
 // ignore_for_file: strict_top_level_inference
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:agroecology_map_app/configs/config.dart';
@@ -8,6 +9,7 @@ import 'package:agroecology_map_app/models/gallery_item.dart';
 import 'package:agroecology_map_app/models/location.dart';
 import 'package:agroecology_map_app/models/location_filters.dart';
 import 'package:agroecology_map_app/models/location_like_state.dart';
+import 'package:agroecology_map_app/models/ndvi_timeline_entry.dart';
 import 'package:agroecology_map_app/models/pagination.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:flutter/foundation.dart';
@@ -16,11 +18,9 @@ import 'package:latlong2/latlong.dart';
 
 class LocationService {
   static InterceptedClient httpClient = InterceptedClient.build(
-    onRequestTimeout: () => throw 'Request Timeout',
+    onRequestTimeout: () => throw TimeoutException('Request Timeout'),
     requestTimeout: const Duration(seconds: 60),
-    interceptors: [
-      CustomInterceptor(),
-    ],
+    interceptors: [CustomInterceptor()],
   );
 
   static Future<List<Location>> retrieveAllLocations() async {
@@ -54,19 +54,13 @@ class LocationService {
     int perPage = 4,
     LocationFilters? filters,
   }) async {
-    final Map<String, dynamic> params = {
-      'page': page,
-      'per_page': perPage,
-    };
+    final Map<String, dynamic> params = {'page': page, 'per_page': perPage};
 
     if (filters != null) {
       params.addAll(filters.toParams());
     }
 
-    final res = await httpClient.get(
-      Config.getURI('locations.json'),
-      params: params,
-    );
+    final res = await httpClient.get(Config.getURI('locations.json'), params: params);
 
     final List<Location> locations = [];
     final dynamic decoded = json.decode(res.body.toString());
@@ -78,10 +72,7 @@ class LocationService {
       }
     }
 
-    return PaginatedResponse<Location>(
-      data: locations,
-      metadata: PaginationMetadata.fromHeaders(res.headers),
-    );
+    return PaginatedResponse<Location>(data: locations, metadata: PaginationMetadata.fromHeaders(res.headers));
   }
 
   static Future<List<Location>> retrieveLocationsByFilter(String filter) async {
@@ -105,18 +96,39 @@ class LocationService {
     return location;
   }
 
+  static Future<List<NdviTimelineEntry>> retrieveNdviTimeline(String slugOrName) async {
+    final uri = Config.getURI('/locations/${Uri.encodeComponent(slugOrName)}/ndvi_timeline.json');
+    final res = await httpClient.get(uri);
+
+    if (res.statusCode >= 400) {
+      throw Exception('Failed to load NDVI data');
+    }
+
+    final dynamic data = json.decode(res.body.toString());
+    if (data is Map<String, dynamic>) {
+      final dynamic timeline = data['timeline'];
+      if (timeline is List) {
+        return timeline.whereType<Map<String, dynamic>>().map(NdviTimelineEntry.fromJson).toList();
+      }
+    }
+
+    throw Exception('Invalid NDVI response format');
+  }
+
   static Future<List<GalleryItem>> retrieveLocationGallery(String locationId) async {
     final List<GalleryItem> gallery = [];
 
     final res = await httpClient.get(Config.getURI('/locations/$locationId/gallery.json'));
 
-    debugPrint('[DEBUG]: statusCode ${res.statusCode}');
-    debugPrint('[DEBUG]: body ${res.body}');
+    debugPrint('[DEBUG]: retrieveLocationGallery statusCode ${res.statusCode}');
+    debugPrint('[DEBUG]: retrieveLocationGallery body ${res.body}');
 
     final dynamic data = json.decode(res.body.toString());
 
     if (res.body.length > 14) {
       for (final item in data['gallery']) {
+        debugPrint('[DEBUG]: item ${item.toString()}');
+
         gallery.add(GalleryItem.fromJson(item));
       }
     }
@@ -130,14 +142,11 @@ class LocationService {
   }) async {
     final res = await httpClient.get(
       Config.getURI('/locations/$locationId/gallery.json'),
-      params: {
-        'page': page,
-        'per_page': perPage,
-      },
+      params: {'page': page, 'per_page': perPage},
     );
 
-    debugPrint('[DEBUG]: statusCode ${res.statusCode}');
-    debugPrint('[DEBUG]: body ${res.body}');
+    debugPrint('[DEBUG]: retrieveLocationGalleryPerPagestatusCode ${res.statusCode}');
+    debugPrint('[DEBUG]: retrieveLocationGalleryPerPage body ${res.body}');
 
     final List<GalleryItem> gallery = [];
     final dynamic data = json.decode(res.body.toString());
@@ -149,6 +158,7 @@ class LocationService {
           gallery.add(GalleryItem.fromJson(item));
         }
       }
+      debugPrint('[DEBUG]: retrieveLocationGalleryPerPage item ${gallery.toString()}');
     } else if (data is List) {
       // Some endpoints may return a bare array.
       for (final item in data) {
@@ -156,10 +166,7 @@ class LocationService {
       }
     }
 
-    return PaginatedResponse<GalleryItem>(
-      data: gallery,
-      metadata: PaginationMetadata.fromHeaders(res.headers),
-    );
+    return PaginatedResponse<GalleryItem>(data: gallery, metadata: PaginationMetadata.fromHeaders(res.headers));
   }
 
   static Future<List<Location>> retrieveAllLocationsByAccount(String accountId) async {
@@ -199,18 +206,12 @@ class LocationService {
       throw const LocationLikeException('missing_slug');
     }
 
-    final res = await httpClient.put(
-      Config.getURI('/locations/$slug/like.json'),
-      body: json.encode({}),
-    );
+    final res = await httpClient.put(Config.getURI('/locations/$slug/like.json'), body: json.encode({}));
 
     if (res.statusCode == 200 || res.statusCode == 201) {
       final dynamic data = json.decode(res.body.toString());
       if (data is Map<String, dynamic>) {
-        return LocationLikeState(
-          likesCount: (data['likes_count'] as num?)?.toInt() ?? 0,
-          liked: true,
-        );
+        return LocationLikeState(likesCount: (data['likes_count'] as num?)?.toInt() ?? 0, liked: true);
       }
     }
 
@@ -310,10 +311,7 @@ class LocationService {
       final body = json.encode(galleryItemJson);
       debugPrint('[DEBUG]: sendMediaToLocation body: $body');
 
-      final res = await httpClient.post(
-        Config.getURI('/$to/$id/medias.json'),
-        body: body,
-      );
+      final res = await httpClient.post(Config.getURI('/$to/$id/medias.json'), body: body);
 
       debugPrint('[DEBUG]: statusCode ${res.statusCode}');
       debugPrint('[DEBUG]: Body ${res.body}');

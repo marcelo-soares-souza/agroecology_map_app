@@ -378,6 +378,18 @@ abstract class AppLocalizations {
   /// **'Soil moisture'**
   String get soilMoisture;
 
+  /// NDVI value label
+  ///
+  /// In en, this message translates to:
+  /// **'NDVI value'**
+  String get ndviValue;
+
+  /// Cloud cover label
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud cover'**
+  String get cloudCover;
+
   /// Last update timestamp label
   ///
   /// In en, this message translates to:
@@ -395,6 +407,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Gallery'**
   String get gallery;
+
+  /// NDVI navigation item
+  ///
+  /// In en, this message translates to:
+  /// **'NDVI'**
+  String get ndvi;
 
   /// Sensors navigation item
   ///
@@ -414,6 +432,12 @@ abstract class AppLocalizations {
   /// **'Characterise'**
   String get characterise;
 
+  /// NDVI timeline section title
+  ///
+  /// In en, this message translates to:
+  /// **'NDVI timeline'**
+  String get ndviTimeline;
+
   /// Empty state message for gallery
   ///
   /// In en, this message translates to:
@@ -431,6 +455,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No data available for this section.'**
   String get noDataAvailable;
+
+  /// Empty state when NDVI timeline is empty
+  ///
+  /// In en, this message translates to:
+  /// **'No NDVI data available yet'**
+  String get noNdviData;
 
   /// Login required message for chat
   ///

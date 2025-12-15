@@ -3,10 +3,10 @@ import 'dart:io';
 
 import 'package:agroecology_map_app/helpers/form_helper.dart';
 import 'package:agroecology_map_app/l10n/app_localizations.dart';
+import 'package:agroecology_map_app/models/home_section.dart';
 import 'package:agroecology_map_app/models/location.dart';
 import 'package:agroecology_map_app/models/practice/practice.dart';
 import 'package:agroecology_map_app/screens/home.dart';
-import 'package:agroecology_map_app/screens/practices.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/location_service.dart';
 import 'package:agroecology_map_app/services/practice_service.dart';
@@ -106,14 +106,10 @@ class _NewPractice extends State<NewPractice> {
 
       if (status == 'success') {
         FormHelper.successMessage(context, message);
-        final l10n = AppLocalizations.of(context)!;
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeScreen(
-              activePage: const PracticesScreen(),
-              activePageTitle: l10n.practices,
-            ),
+            builder: (context) => const HomeScreen(initialSection: HomeSection.practices),
           ),
         );
       } else {
@@ -169,7 +165,7 @@ class _NewPractice extends State<NewPractice> {
                       keyboardType: TextInputType.text,
                       maxLength: 64,
                       style: const TextStyle(color: Colors.white),
-                      validator: (value) => FormHelper.validateInputSize(value, 1, 64),
+                      validator: (value) => FormHelper.validateInputSize(value, 1, 64, l10n: l10n),
                       onSaved: (value) => _practice.name = value!,
                       decoration: InputDecoration(
                         hintText: l10n.practiceNameHint,

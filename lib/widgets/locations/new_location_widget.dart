@@ -5,9 +5,9 @@ import 'package:agroecology_map_app/configs/config.dart';
 import 'package:agroecology_map_app/helpers/form_helper.dart';
 import 'package:agroecology_map_app/helpers/location_helper.dart';
 import 'package:agroecology_map_app/l10n/app_localizations.dart';
+import 'package:agroecology_map_app/models/home_section.dart';
 import 'package:agroecology_map_app/models/location.dart';
 import 'package:agroecology_map_app/screens/home.dart';
-import 'package:agroecology_map_app/screens/locations.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/location_service.dart';
 import 'package:agroecology_map_app/widgets/image_input.dart';
@@ -83,14 +83,10 @@ class _NewLocation extends State<NewLocation> {
 
       if (status == 'success') {
         FormHelper.successMessage(context, message);
-        final l10n = AppLocalizations.of(context)!;
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeScreen(
-              activePage: const LocationsScreen(),
-              activePageTitle: l10n.locations,
-            ),
+            builder: (context) => const HomeScreen(initialSection: HomeSection.locations),
           ),
         );
       } else {
@@ -141,7 +137,7 @@ class _NewLocation extends State<NewLocation> {
                     autocorrect: true,
                     maxLength: 64,
                     style: const TextStyle(color: Colors.white),
-                    validator: (value) => FormHelper.validateInputSize(value, 1, 64),
+                    validator: (value) => FormHelper.validateInputSize(value, 1, 64, l10n: l10n),
                     onSaved: (value) => _location.name = value!,
                     decoration: InputDecoration(
                       hintText: l10n.locationNameHint,

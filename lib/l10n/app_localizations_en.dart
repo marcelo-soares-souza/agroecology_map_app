@@ -152,6 +152,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get soilMoisture => 'Soil moisture';
 
   @override
+  String get ndviValue => 'NDVI value';
+
+  @override
+  String get cloudCover => 'Cloud cover';
+
+  @override
   String get updatedAt => 'Updated at';
 
   @override
@@ -159,6 +165,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get gallery => 'Gallery';
+
+  @override
+  String get ndvi => 'NDVI';
 
   @override
   String get sensors => 'Sensors';
@@ -170,6 +179,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get characterise => 'Characterise';
 
   @override
+  String get ndviTimeline => 'NDVI timeline';
+
+  @override
   String get noImagesAvailable => 'No images available';
 
   @override
@@ -178,6 +190,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noDataAvailable => 'No data available for this section.';
+
+  @override
+  String get noNdviData => 'No NDVI data available yet';
 
   @override
   String get pleaseLoginToChat => 'Please login to start a conversation';

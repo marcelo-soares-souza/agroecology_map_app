@@ -4,9 +4,9 @@ import 'package:agroecology_map_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class FormHelper {
-  static String? validateInputSize(String? value, int min, int max) {
+  static String? validateInputSize(String? value, int min, int max, {required AppLocalizations l10n}) {
     if (value == null || value.isEmpty || value.trim().length <= min || value.trim().length > max) {
-      return 'Must be between $min and $max characters long.'; // Note: validation messages are not context-dependent
+      return l10n.lengthBetween(min, max);
     }
     return null;
   }

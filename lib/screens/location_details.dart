@@ -7,6 +7,7 @@ import 'package:agroecology_map_app/models/gallery_item.dart';
 import 'package:agroecology_map_app/models/location.dart';
 import 'package:agroecology_map_app/models/location_like_state.dart';
 import 'package:agroecology_map_app/models/practice/practice.dart';
+import 'package:agroecology_map_app/models/ndvi_timeline_entry.dart';
 import 'package:agroecology_map_app/screens/account_details.dart';
 import 'package:agroecology_map_app/screens/home.dart';
 import 'package:agroecology_map_app/services/account_service.dart';
@@ -51,6 +52,10 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
   bool _isLoading = true;
   bool _isLiking = false;
   int _selectedPageIndex = 0;
+  List<NdviTimelineEntry> _ndviTimeline = [];
+  bool _ndviLoaded = false;
+  bool _isLoadingNdvi = false;
+  String? _ndviError;
   late Location _location;
   Marker? _marker;
 
@@ -88,12 +93,52 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
         widget.location.liked = _location.liked;
         widget.location.slug = _location.slug;
         _marker = marker;
+        _ndviLoaded = false;
+        _ndviTimeline = [];
+        _ndviError = null;
         _isLoading = false;
       });
     } catch (e) {
       debugPrint('[DEBUG] _retrieveAll error --> $e');
       if (mounted) {
         setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  Future<void> _loadNdviTimeline({bool forceRefresh = false}) async {
+    if (_isLoadingNdvi) return;
+
+    if (_ndviLoaded && !forceRefresh) {
+      setState(() => _isLoading = false);
+      return;
+    }
+
+    setState(() {
+      _isLoadingNdvi = true;
+      _ndviError = null;
+    });
+
+    try {
+      final slugOrName = _location.slug.isNotEmpty ? _location.slug : _location.name;
+      final entries = await LocationService.retrieveNdviTimeline(slugOrName);
+      if (!mounted) return;
+      setState(() {
+        _ndviTimeline = entries;
+        _ndviLoaded = true;
+        _isLoading = false;
+      });
+    } catch (e) {
+      debugPrint('[DEBUG] Failed to load NDVI timeline: $e');
+      if (!mounted) return;
+      setState(() {
+        _ndviError = e.toString();
+        _ndviTimeline = [];
+        _isLoading = false;
+      });
+    } finally {
+      if (mounted) {
+        setState(() => _isLoadingNdvi = false);
       }
     }
   }
@@ -108,13 +153,15 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
       _isLoading = true;
       _selectedPageIndex = index;
       _sendMedia = false;
-
-      if (_selectedPageIndex == 1) {
-        _retrieveAll();
-      } else {
-        setState(() => _isLoading = false);
-      }
     });
+
+    if (_selectedPageIndex == 1) {
+      _retrieveAll();
+    } else if (_selectedPageIndex == 2) {
+      _loadNdviTimeline();
+    } else {
+      setState(() => _isLoading = false);
+    }
   }
 
   @override
@@ -258,9 +305,163 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
     }
   }
 
+  Color _colorFromHex(String hexColor, Color fallback) {
+    final cleaned = hexColor.replaceAll('#', '');
+    try {
+      if (cleaned.length == 6) {
+        return Color(int.parse('0xff$cleaned'));
+      } else if (cleaned.length == 8) {
+        return Color(int.parse('0x$cleaned'));
+      }
+    } catch (_) {}
+    return fallback;
+  }
+
+  Widget _buildInfoChip(String label, String value, Color borderColor) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: borderColor.withOpacity(0.7)),
+        color: theme.colorScheme.surfaceVariant.withOpacity(0.2),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurface.withOpacity(0.7),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            value,
+            style: theme.textTheme.titleMedium?.copyWith(
+              color: borderColor,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNdviCard(NdviTimelineEntry entry, AppLocalizations l10n) {
+    final theme = Theme.of(context);
+    final Color ndviColor = _colorFromHex(entry.ndviColor, theme.colorScheme.primary);
+
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (entry.rgbImageUrl.isNotEmpty)
+            AppCachedImage(
+              cacheKey: 'location-${_location.id}-ndvi-${entry.id}',
+              height: 220,
+              width: double.infinity,
+              imageUrl: entry.rgbImageUrl,
+            )
+          else
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text(
+                l10n.noImagesAvailable,
+                style: theme.textTheme.bodyMedium,
+              ),
+            ),
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      entry.monthYear.isNotEmpty ? entry.monthYear : entry.measurementDate,
+                      style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    Icon(
+                      FontAwesomeIcons.seedling,
+                      color: ndviColor,
+                      size: 18,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 12,
+                  runSpacing: 8,
+                  children: [
+                    _buildInfoChip(l10n.ndviValue, entry.ndviValue.toStringAsFixed(3), ndviColor),
+                    _buildInfoChip(l10n.cloudCover, '${entry.cloudCoverPercentage.toStringAsFixed(1)}%', theme.colorScheme.secondary),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNdviList(AppLocalizations l10n) {
+    if (_ndviError != null) {
+      return ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(
+              l10n.errorOccurred(_ndviError ?? l10n.genericError),
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ),
+        ],
+      );
+    }
+
+    if (_ndviTimeline.isEmpty) {
+      return ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(
+              l10n.noNdviData,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ),
+        ],
+      );
+    }
+
+    return ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+          child: Text(
+            l10n.ndviTimeline,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+        ),
+        ..._ndviTimeline.map((entry) => _buildNdviCard(entry, l10n)),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final bool hasSensors = _location.temperature.isNotEmpty && _location.temperature != 'null';
     Widget activePage = const Center(child: CircularProgressIndicator());
 
     final Widget galleryWidget = RefreshIndicator(
@@ -332,6 +533,11 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
     if (!_isLoading) {
       if (_selectedPageIndex == 1 && _sendMedia == false) {
         activePage = galleryWidget;
+      } else if (_selectedPageIndex == 2) {
+        activePage = RefreshIndicator(
+          onRefresh: () => _loadNdviTimeline(forceRefresh: true),
+          child: _buildNdviList(l10n),
+        );
       } else {
         activePage = RefreshIndicator(
           onRefresh: () async {
@@ -455,7 +661,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                     practice: Practice.initPractice(),
                     onSetPage: _selectPage,
                   ),
-                ] else if (_selectedPageIndex == 2) ...[
+                ] else if (_selectedPageIndex == 3 && hasSensors) ...[
                   Stack(
                     children: [
                       AppCachedImage(
@@ -567,7 +773,11 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
               icon: const Icon(FontAwesomeIcons.photoFilm),
               label: l10n.gallery,
             ),
-            if (_location.temperature.isNotEmpty && _location.temperature != 'null') ...[
+            BottomNavigationBarItem(
+              icon: const Icon(FontAwesomeIcons.satellite),
+              label: l10n.ndvi,
+            ),
+            if (hasSensors) ...[
               BottomNavigationBarItem(
                 icon: const Icon(FontAwesomeIcons.temperatureFull),
                 label: l10n.sensors,

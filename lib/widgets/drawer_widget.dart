@@ -1,14 +1,16 @@
 import 'package:agroecology_map_app/configs/config.dart';
 import 'package:agroecology_map_app/l10n/app_localizations.dart';
+import 'package:agroecology_map_app/models/home_section.dart';
 import 'package:agroecology_map_app/services/auth_service.dart';
 import 'package:agroecology_map_app/services/locale_service.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DrawerWidget extends StatefulWidget {
-  final void Function(String screen) onSelectScreen;
+  final void Function(HomeSection section) onSelectScreen;
+  final HomeSection activeSection;
 
-  const DrawerWidget({super.key, required this.onSelectScreen});
+  const DrawerWidget({super.key, required this.onSelectScreen, this.activeSection = HomeSection.locations});
 
   @override
   State<DrawerWidget> createState() {
@@ -22,7 +24,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
     if (logoutSuccess) {
       debugPrint('[DEBUG]: _logout $logoutSuccess');
-      widget.onSelectScreen('map');
+      widget.onSelectScreen(HomeSection.map);
     } else {
       debugPrint('[DEBUG]: _logout ERROR');
     }
@@ -59,7 +61,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     if (!mounted) return;
 
     if (deleteSuccess) {
-      widget.onSelectScreen('locations');
+      widget.onSelectScreen(HomeSection.locations);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(l10n.accountSuccessfullyDeleted),
@@ -118,7 +120,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             if (isLoggedIn) {
               _logout();
             } else {
-              widget.onSelectScreen('login');
+              widget.onSelectScreen(HomeSection.login);
             }
           },
         );
@@ -235,8 +237,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                     title: Text(l10n.locations, style: textStyle),
+                    selected: widget.activeSection == HomeSection.locations,
                     onTap: () {
-                      widget.onSelectScreen('locations');
+                      widget.onSelectScreen(HomeSection.locations);
                     },
                   ),
                   ListTile(
@@ -246,8 +249,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                     title: Text(l10n.practices, style: textStyle),
+                    selected: widget.activeSection == HomeSection.practices,
                     onTap: () {
-                      widget.onSelectScreen('practices');
+                      widget.onSelectScreen(HomeSection.practices);
                     },
                   ),
                   ListTile(
@@ -257,8 +261,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                     title: Text(l10n.gallery, style: textStyle),
+                    selected: widget.activeSection == HomeSection.gallery,
                     onTap: () {
-                      widget.onSelectScreen('gallery');
+                      widget.onSelectScreen(HomeSection.gallery);
                     },
                   ),
                   ListTile(
@@ -268,8 +273,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                     title: Text(l10n.map, style: textStyle),
+                    selected: widget.activeSection == HomeSection.map,
                     onTap: () {
-                      widget.onSelectScreen('map');
+                      widget.onSelectScreen(HomeSection.map);
                     },
                   ),
                   ListTile(
@@ -279,8 +285,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                     title: Text(l10n.accounts, style: textStyle),
+                    selected: widget.activeSection == HomeSection.accounts,
                     onTap: () {
-                      widget.onSelectScreen('accounts');
+                      widget.onSelectScreen(HomeSection.accounts);
                     },
                   ),
                   ListTile(
@@ -290,8 +297,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                     title: Text(l10n.chat, style: textStyle),
+                    selected: widget.activeSection == HomeSection.chat,
                     onTap: () {
-                      widget.onSelectScreen('chat');
+                      widget.onSelectScreen(HomeSection.chat);
                     },
                   ),
                   _buildAuthTile(context),
@@ -302,8 +310,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                     title: Text(l10n.about, style: textStyle),
+                    selected: widget.activeSection == HomeSection.about,
                     onTap: () {
-                      widget.onSelectScreen('about');
+                      widget.onSelectScreen(HomeSection.about);
                     },
                   ),
                   ListTile(

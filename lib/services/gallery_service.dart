@@ -13,9 +13,7 @@ class GalleryService {
   static InterceptedClient httpClient = InterceptedClient.build(
     onRequestTimeout: () => throw 'Request Timeout',
     requestTimeout: const Duration(seconds: 60),
-    interceptors: [
-      CustomInterceptor(),
-    ],
+    interceptors: [CustomInterceptor()],
   );
 
   static Future<PaginatedResponse<GalleryItem>> retrieveGallery({
@@ -23,19 +21,13 @@ class GalleryService {
     int perPage = 4,
     String? location,
   }) async {
-    final Map<String, dynamic> params = {
-      'page': page,
-      'per_page': perPage,
-    };
+    final Map<String, dynamic> params = {'page': page, 'per_page': perPage};
 
     if (location != null && location.trim().isNotEmpty) {
       params['location'] = location;
     }
 
-    final res = await httpClient.get(
-      Config.getURI('gallery.json'),
-      params: params,
-    );
+    final res = await httpClient.get(Config.getURI('gallery.json'), params: params);
 
     debugPrint('[DEBUG]: retrieveGallery statusCode ${res.statusCode}');
 
@@ -45,6 +37,8 @@ class GalleryService {
 
     final List<GalleryItem> gallery = [];
     final dynamic data = json.decode(res.body.toString());
+
+    debugPrint('[DEBUG]: retrieveGallery data ${data.toString()}');
 
     if (data is Map<String, dynamic>) {
       final dynamic galleryData = data['gallery'];
@@ -63,9 +57,6 @@ class GalleryService {
       }
     }
 
-    return PaginatedResponse<GalleryItem>(
-      data: gallery,
-      metadata: PaginationMetadata.fromHeaders(res.headers),
-    );
+    return PaginatedResponse<GalleryItem>(data: gallery, metadata: PaginationMetadata.fromHeaders(res.headers));
   }
 }
