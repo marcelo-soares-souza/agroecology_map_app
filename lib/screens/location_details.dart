@@ -45,7 +45,7 @@ class LocationDetailsScreen extends StatefulWidget {
 }
 
 class _LocationDetailsScreen extends State<LocationDetailsScreen> {
-  final _numberOfItemsPerRequest = 8;
+  static const int _galleryItemsPerPage = 4;
   final PagingController<int, GalleryItem> _pagingController = PagingController(firstPageKey: 1);
 
   bool _sendMedia = false;
@@ -184,7 +184,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
       final response = await LocationService.retrieveLocationGalleryPerPage(
         widget.location.id.toString(),
         page,
-        perPage: _numberOfItemsPerRequest,
+        perPage: _galleryItemsPerPage,
       );
 
       final gallery = response.data;

@@ -10,6 +10,7 @@ import 'package:agroecology_map_app/widgets/practices/new_characterises_widget.d
 import 'package:agroecology_map_app/widgets/text_block_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class PracticeDetailsScreen extends StatefulWidget {
   final Practice practice;
@@ -25,12 +26,13 @@ class PracticeDetailsScreen extends StatefulWidget {
 }
 
 class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
+  static const int _galleryItemsPerPage = 4;
   String activePageTitle = '';
   bool _isLoading = true;
   int _selectedPageIndex = 0;
   String _selectedPageOperation = '';
   Practice _practice = Practice.initPractice();
-  late List<GalleryItem> _gallery;
+  final PagingController<int, GalleryItem> _galleryPagingController = PagingController(firstPageKey: 1);
 
   late List<Widget> mainBlock;
   late List<Widget> characteriseBlock;
@@ -59,11 +61,11 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
           )
     ];
 
-    _gallery = await PracticeService.retrievePracticeGallery(widget.practice.id.toString());
-
     setState(() {
       _isLoading = false;
     });
+
+    _galleryPagingController.refresh();
   }
 
   Map<int, String> getPageSelectedTitle(BuildContext context) {
@@ -87,6 +89,7 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
   void initState() {
     super.initState();
     activePageTitle = widget.practice.name;
+    _galleryPagingController.addPageRequestListener(_fetchGalleryPage);
     _retrieveFullPractice();
   }
 
@@ -131,117 +134,152 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
     );
   }
 
+  Future<void> _fetchGalleryPage(int page) async {
+    try {
+      final response = await PracticeService.retrievePracticeGalleryPerPage(
+        widget.practice.id.toString(),
+        page,
+        perPage: _galleryItemsPerPage,
+      );
+
+      final gallery = response.data;
+      final nextPage = response.metadata?.nextPage;
+
+      if (nextPage == null || nextPage <= page || gallery.isEmpty) {
+        _galleryPagingController.appendLastPage(gallery);
+      } else {
+        _galleryPagingController.appendPage(gallery, nextPage);
+      }
+    } catch (e) {
+      _galleryPagingController.error = e;
+    }
+  }
+
+  @override
+  void dispose() {
+    _galleryPagingController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     Widget activePage = const Center(child: CircularProgressIndicator());
 
     if (!_isLoading) {
-      activePage = RefreshIndicator(
-        onRefresh: () async {
-          setState(() => _isLoading = true);
-          await _retrieveFullPractice();
-        },
-        child: SingleChildScrollView(
+      if (_selectedPageIndex == 2 && _selectedPageOperation == 'add') {
+        activePage = SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          child: Column(
-            children: [
-              if (_selectedPageIndex != 2)
+          child: SizedBox(
+            child: NewMediaWidget(
+              practice: _practice,
+              location: Location.initLocation(),
+              onSetPage: _selectPage,
+            ),
+          ),
+        );
+      } else if (_selectedPageIndex == 2) {
+        activePage = RefreshIndicator(
+          onRefresh: () => Future.sync(() => _galleryPagingController.refresh()),
+          child: PagedListView<int, GalleryItem>(
+            pagingController: _galleryPagingController,
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.only(bottom: 16),
+            builderDelegate: PagedChildBuilderDelegate<GalleryItem>(
+              itemBuilder: (context, item, index) => Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Stack(
+                  children: [
+                    AppCachedImage(
+                      cacheKey: 'practice-gallery-${item.id}',
+                      height: 300,
+                      width: double.infinity,
+                      imageUrl: item.imageUrl,
+                    ),
+                    if (item.description.length > 5)
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          color: Colors.black54,
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 6,
+                            horizontal: 44,
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                item.description,
+                                maxLines: 2,
+                                textAlign: TextAlign.center,
+                                softWrap: true,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                  ],
+                ),
+              ),
+              noItemsFoundIndicatorBuilder: (_) => Padding(
+                padding: const EdgeInsets.all(32),
+                child: Center(
+                  child: Text(
+                    l10n.noImagesAvailable,
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      } else {
+        activePage = RefreshIndicator(
+          onRefresh: () async {
+            setState(() => _isLoading = true);
+            await _retrieveFullPractice();
+          },
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              children: [
                 AppCachedImage(
                   cacheKey: 'practice-${widget.practice.id}-header',
                   height: 300,
                   width: double.infinity,
                   imageUrl: widget.practice.imageUrl,
                 ),
-              if (_selectedPageOperation == 'add') ...[
-                if (_selectedPageIndex == 1)
+                if (_selectedPageOperation == 'add' && _selectedPageIndex == 1)
                   SizedBox(child: NewCharacterises(practice: _practice))
-                else if (_selectedPageIndex == 2)
-                  SizedBox(
-                    child: NewMediaWidget(
-                      practice: _practice,
-                      location: Location.initLocation(),
-                      onSetPage: _selectPage,
-                    ),
-                  )
-              ] else if (_selectedPageIndex == 0 && mainBlock.isNotEmpty)
-                ...mainBlock
-              else if (_selectedPageIndex == 1 && characteriseBlock.isNotEmpty)
-                ...characteriseBlock
-              else if (_selectedPageIndex == 2) ...[
-                //
-                // Gallery
-                //
-                if (_gallery.isEmpty) ...[
-                  Column(children: [
-                    const SizedBox(height: 200),
-                    Center(
-                        child: Text(
-                      textAlign: TextAlign.center,
-                      l10n.noImagesAvailable,
+                else if (_selectedPageIndex == 0 && mainBlock.isNotEmpty)
+                  ...mainBlock
+                else if (_selectedPageIndex == 1 && characteriseBlock.isNotEmpty)
+                  ...characteriseBlock
+                else ...[
+                  const SizedBox(height: 100),
+                  Center(
+                    child: Text(
+                      l10n.noDataAvailable,
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
                             color: Theme.of(context).colorScheme.secondary,
                           ),
-                    ))
-                  ])
-                ] else
-                  for (final i in _gallery) ...[
-                    Stack(
-                      children: [
-                        AppCachedImage(
-                          cacheKey: 'practice-gallery-${i.id}',
-                          height: 300,
-                          width: double.infinity,
-                          imageUrl: i.imageUrl,
-                        ),
-                        if (i.description.length > 5)
-                          Positioned(
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            child: Container(
-                              color: Colors.black54,
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 6,
-                                horizontal: 44,
-                              ),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    i.description,
-                                    maxLines: 2,
-                                    textAlign: TextAlign.center,
-                                    softWrap: true,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
-                      ],
                     ),
-                    const SizedBox(height: 8),
-                  ],
-              ] else ...[
-                const SizedBox(height: 100),
-                Center(
-                  child: Text(
-                    l10n.noDataAvailable,
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                  ),
-                )
-              ]
-            ],
+                  )
+                ]
+              ],
+            ),
           ),
-        ),
-      );
+        );
+      }
     }
 
     return Scaffold(

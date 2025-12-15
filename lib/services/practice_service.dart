@@ -95,6 +95,35 @@ class PracticeService {
     return gallery;
   }
 
+  static Future<PaginatedResponse<GalleryItem>> retrievePracticeGalleryPerPage(
+    String id,
+    int page, {
+    int perPage = 4,
+  }) async {
+    final res = await httpClient.get(
+      Config.getURI('/practices/$id/gallery.json'),
+      params: {'page': page, 'per_page': perPage},
+    );
+
+    final List<GalleryItem> gallery = [];
+    final dynamic data = json.decode(res.body.toString());
+
+    if (data is Map<String, dynamic>) {
+      final dynamic galleryData = data['gallery'];
+      if (galleryData is List) {
+        for (final item in galleryData) {
+          gallery.add(GalleryItem.fromJson(item));
+        }
+      }
+    } else if (data is List) {
+      for (final item in data) {
+        gallery.add(GalleryItem.fromJson(item));
+      }
+    }
+
+    return PaginatedResponse<GalleryItem>(data: gallery, metadata: PaginationMetadata.fromHeaders(res.headers));
+  }
+
   static Future<Map<String, String>> sendPractice(Practice practice) async {
     final bool isTokenValid = await AuthService.validateToken();
     if (isTokenValid) {
